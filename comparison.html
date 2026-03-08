@@ -1,247 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Compare properties side-by-side on FirstCape">
-    <title>Property Comparison | FirstCape Estate Management</title>
-    
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/comparison.css">
-    <link rel="stylesheet" href="css/favorites.css">
-    <link rel="stylesheet" href="css/dark-mode.css">
-    <link rel="stylesheet" href="css/mobile-app-banner.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Compare up to 4 properties side by side">
+  <title>Compare Properties | FirstCape Estate Management</title>
+  
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  
+  <style>body { font-family: 'Inter', sans-serif; }</style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html"><i class="fas fa-home"></i> FirstCape</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="properties.html">Properties</a></li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="favorites.html">
-                            <i class="fas fa-heart"></i> Favorites 
-                            <span class="badge bg-danger favorites-counter">0</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="comparison.html">
-                            <i class="fas fa-balance-scale"></i> Compare 
-                            <span class="badge bg-warning comparison-counter">0</span>
-                        </a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="alerts.html"><i class="fas fa-bell"></i> Alerts</a></li>
-                    <li class="nav-item"><a class="nav-link" href="analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                </ul>
-            </div>
+
+
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: #FACC15;">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html" style="color: #374151;">
+        <i class="fas fa-home me-2"></i>FirstCape Estate Management
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: #374151;">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link fw-semibold " href="index.html" style="color: #374151;">Home</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold " href="properties.html" style="color: #374151;">Buy</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold " href="rentals.html" style="color: #374151;">Rent</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold " href="landlords.html" style="color: #374151;">Landlords</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold " href="services.html" style="color: #374151;">Services</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold " href="about.html" style="color: #374151;">About</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold " href="contact.html" style="color: #374151;">Contact</a></li>
+          
+          <li class="nav-item ms-3">
+            <a class="nav-link" href="favorites.html" style="color: #374151;">
+              <i class="fas fa-heart"></i> <span class="badge bg-danger favorites-counter">0</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="comparison.html" style="color: #374151;">
+              <i class="fas fa-balance-scale"></i> <span class="badge bg-warning comparison-counter">0</span>
+            </a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="alerts.html" style="color: #374151;"><i class="fas fa-bell"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="analytics.html" style="color: #374151;"><i class="fas fa-chart-bar"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <section class="py-5" style="background: linear-gradient(135deg, #374151 0%, #4B5563 100%);">
+    <div class="container text-center text-white">
+      <h1 class="display-4 fw-bold mb-3"><i class="fas fa-balance-scale me-3"></i>Compare Properties</h1>
+      <p class="lead">Compare up to 4 properties side by side</p>
+    </div>
+  </section>
+
+  <section class="py-5">
+    <div class="container">
+      <div id="comparisonGrid" class="row g-4"></div>
+      <div id="emptyMessage" class="text-center py-5">
+        <i class="fas fa-balance-scale fa-3x mb-3" style="color: #9CA3AF;"></i>
+        <h4 style="color: #374151;">No Properties to Compare</h4>
+        <p class="text-muted">Add properties to comparison from the property listings.</p>
+        <a href="properties.html" class="btn btn-lg fw-bold mt-3" style="background: #FACC15; color: #374151; border: none;">Browse Properties</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-5" style="background: #374151; color: white;">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <h5 class="fw-bold mb-3" style="color: #FACC15;"><i class="fas fa-home me-2"></i>FirstCape Estate Management</h5>
+          <p class="text-light">Your trusted partner in real estate management across Ghana.</p>
         </div>
-    </nav>
-
-    <!-- Page Header -->
-    <section class="page-header bg-light py-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h1 class="display-4 mb-2"><i class="fas fa-balance-scale text-primary"></i> Property Comparison</h1>
-                    <p class="lead text-muted mb-0">Compare up to 3 properties side-by-side</p>
-                </div>
-                <div class="col-md-4 text-md-end">
-                    <span class="badge bg-warning text-dark" style="font-size: 1.5rem; padding: 1rem;">
-                        <span class="comparison-counter">0</span> / 3
-                    </span>
-                </div>
-            </div>
+        <div class="col-md-4">
+          <h6 class="fw-bold mb-3" style="color: #FACC15;">Quick Links</h6>
+          <ul class="list-unstyled">
+            <li class="mb-2"><a href="privacy-policy.html" class="text-light text-decoration-none">Privacy Policy</a></li>
+            <li class="mb-2"><a href="terms-of-service.html" class="text-light text-decoration-none">Terms of Service</a></li>
+          </ul>
         </div>
-    </section>
-
-    <!-- Main Content -->
-    <section class="comparison-section py-5">
-        <div class="container">
-            
-            <!-- Action Buttons -->
-            <div class="row mb-4" id="action-buttons" style="display: none;">
-                <div class="col-12">
-                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                        <div>
-                            <button class="btn btn-success" onclick="propertyComparison.exportToPDF()">
-                                <i class="fas fa-file-pdf"></i> Export to PDF
-                            </button>
-                            <button class="btn btn-info text-white" onclick="propertyComparison.exportToCSV()">
-                                <i class="fas fa-file-csv"></i> Export to CSV
-                            </button>
-                        </div>
-                        <button class="btn btn-danger" onclick="if(confirm('Clear all properties from comparison?')) { propertyComparison.clearAll(); location.reload(); }">
-                            <i class="fas fa-trash"></i> Clear All
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Empty State -->
-            <div id="comparison-empty" class="text-center py-5">
-                <i class="fas fa-balance-scale" style="font-size: 5rem; color: #e5e7eb; margin-bottom: 1rem;"></i>
-                <h3 class="mb-3">No Properties to Compare</h3>
-                <p class="text-muted mb-4">
-                    Add properties to comparison by checking the box on property listings.
-                    <br>You can compare up to 3 properties side-by-side.
-                </p>
-                <a href="properties.html" class="btn btn-primary btn-lg">
-                    <i class="fas fa-search"></i> Browse Properties
-                </a>
-            </div>
-
-            <!-- Comparison Table -->
-            <div id="comparison-container" class="table-responsive" style="display: none;">
-                <table class="table table-bordered comparison-table">
-                    <thead class="table-dark">
-                        <tr id="comparison-header">
-                            <th style="width: 200px;">Feature</th>
-                        </tr>
-                    </thead>
-                    <tbody id="comparison-body">
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Loading State -->
-            <div id="comparison-loading" class="text-center py-5" style="display: none;">
-                <div class="spinner-border text-primary" role="status"></div>
-                <p class="mt-3 text-muted">Loading comparison...</p>
-            </div>
-
+        <div class="col-md-4">
+          <h6 class="fw-bold mb-3" style="color: #FACC15;">Contact</h6>
+          <p class="text-light mb-2">Abokobi, Accra, Ghana</p>
+          <p class="mb-2"><a href="tel:+233596871452" style="color: #FACC15; text-decoration: none;">+233 59 687 1452</a></p>
         </div>
-    </section>
+      </div>
+      <hr class="my-4" style="border-color: #4B5563;">
+      <div class="text-center text-light"><p class="mb-0">&copy; 2026 FirstCape Estate Management. All Rights Reserved.</p></div>
+    </div>
+  </footer>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5><i class="fas fa-home"></i> FirstCape Estate Management</h5>
-                    <p class="mb-0">Your trusted partner in real estate</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <p class="mb-0">&copy; 2024 FirstCape. All rights reserved.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/airtable.js"></script>
-    <script src="js/comparison.js"></script>
-    <script src="js/favorites.js"></script>
-    <script src="js/analytics.js"></script>
-    <script src="js/dark-mode.js"></script>
-    <script src="js/mobile-app-banner.js"></script>
-    
-    <script>
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', async function() {
-            document.getElementById('comparison-loading').style.display = 'block';
-            
-            try {
-                const comparisonIds = propertyComparison.getAll();
-                
-                if (comparisonIds.length === 0) {
-                    document.getElementById('comparison-loading').style.display = 'none';
-                    document.getElementById('comparison-empty').style.display = 'block';
-                    return;
-                }
-                
-                const properties = [];
-                for (const id of comparisonIds) {
-                    try {
-                        const property = await airtableClient.fetchRecord(id);
-                        if (property) properties.push(property);
-                    } catch (e) {
-                        propertyComparison.remove(id);
-                    }
-                }
-                
-                if (properties.length === 0) {
-                    document.getElementById('comparison-loading').style.display = 'none';
-                    document.getElementById('comparison-empty').style.display = 'block';
-                    return;
-                }
-                
-                displayComparison(properties);
-                document.getElementById('comparison-loading').style.display = 'none';
-                document.getElementById('comparison-container').style.display = 'block';
-                document.getElementById('action-buttons').style.display = 'block';
-                
-            } catch (error) {
-                console.error('Error loading comparison:', error);
-                document.getElementById('comparison-loading').innerHTML = '<div class="alert alert-danger">Error loading comparison</div>';
-            }
-        });
-        
-        function displayComparison(properties) {
-            // Build header
-            const header = document.getElementById('comparison-header');
-            header.innerHTML = '<th style="width: 200px;">Feature</th>' + 
-                properties.map(p => `
-                    <th class="text-center">
-                        <img src="${p.fields.Images?.[0]?.thumbnails?.large?.url || p.fields.Images?.[0]?.url}" 
-                             style="width: 100%; max-width: 200px; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;">
-                        <div>${p.fields.Name}</div>
-                        <button class="btn btn-sm btn-danger mt-2" onclick="removeFromComparison('${p.id}')">
-                            <i class="fas fa-times"></i> Remove
-                        </button>
-                    </th>
-                `).join('');
-            
-            // Build body
-            const features = [
-                { label: 'Price', key: 'Price', format: v => v ? `GH₵${v.toLocaleString()}` : 'N/A' },
-                { label: 'Location', key: null, format: (v, p) => `${p.City || 'N/A'}, ${p.State || ''}` },
-                { label: 'Property Type', key: 'Property Type' },
-                { label: 'Listing Type', key: 'Listing Type' },
-                { label: 'Bedrooms', key: 'Bedrooms', format: v => v ? `${v} bed${v > 1 ? 's' : ''}` : 'N/A' },
-                { label: 'Bathrooms', key: 'Bathrooms', format: v => v ? `${v} bath${v > 1 ? 's' : ''}` : 'N/A' },
-                { label: 'Size', key: 'Size', format: v => v ? `${v.toLocaleString()} sqft` : 'N/A' },
-                { label: 'Year Built', key: 'Year Built' },
-                { label: 'Parking', key: 'Parking Spaces', format: v => v ? `${v} space${v > 1 ? 's' : ''}` : 'N/A' },
-                { label: 'Pet Friendly', key: 'Pet Friendly', format: v => v ? 'Yes' : 'No' },
-                { label: 'Furnished', key: 'Furnished', format: v => v ? 'Yes' : 'No' },
-                { label: 'Amenities', key: 'Amenities', format: v => v?.join(', ') || 'None' }
-            ];
-            
-            const body = document.getElementById('comparison-body');
-            body.innerHTML = features.map(feature => {
-                const row = `
-                    <tr>
-                        <th>${feature.label}</th>
-                        ${properties.map(p => {
-                            const value = feature.key ? p.fields[feature.key] : null;
-                            const formatted = feature.format ? 
-                                feature.format(value, p.fields) : 
-                                (value || 'N/A');
-                            return `<td class="text-center">${formatted}</td>`;
-                        }).join('')}
-                    </tr>
-                `;
-                return row;
-            }).join('');
-        }
-        
-        function removeFromComparison(id) {
-            propertyComparison.remove(id);
-            location.reload();
-        }
-    </script>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/comparison.js"></script>
+
 </body>
 </html>
