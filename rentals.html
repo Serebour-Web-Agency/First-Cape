@@ -1,0 +1,823 @@
+﻿<!DOCTYPE html>
+<!-- FILE METADATA
+Filename: rentals.html
+Version: rentals-v3.0-CDN-ENABLED
+Status: Rentals Page — CDN Integration + Canonical Landlord Modal
+Last Updated: 2026-01-05
+Changes: Integrated Airtable + CDN loader, preserved all existing modals and functionality
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="author" content="FirstCape Estate Management"/>
+  <title>Rent Properties | FirstCape Estate Management</title>
+  <link rel="shortcut icon" href="favicon.png"/>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S4HVLVJR36"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-S4HVLVJR36');
+  </script>
+
+  <!-- Fonts + Core CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css?v=1.4"/>
+  <link rel="stylesheet" href="css/aos.css?v=1.4"/>
+  <link rel="stylesheet" href="css/tiny-slider.css?v=1.4"/>
+  
+  <!-- CANONICAL LANDLORD MODAL CSS -->
+  <link rel="stylesheet" href="css/landlord-modal.css?v=1.0"/>
+
+  <script src="js/aos.js?v=1.4"></script>
+
+  <!-- PAGE-SPECIFIC STYLES -->
+  <style>
+    :root {
+      --hub-green: #064635;
+      --modal-timeout: 1500;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: repeating-linear-gradient(45deg, #f8fafc 0%, #f8fafc 5%, #f1f5f9 5%, #f1f5f9 10%);
+    }
+
+    .hero-wrapper {
+      position: relative;
+      background-image: url('images/hero_bg_3.jpg');
+      background-size: cover;
+      background-position: center;
+      min-height: 60vh;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .hero-wrapper::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 1;
+    }
+
+    .navbar-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: transparent;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-bg.scrolled .menu-bg-wrap {
+      background: rgba(6, 70, 53, 0.95);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .menu-bg-wrap {
+      background: rgba(6, 70, 53, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 0 0 12px 12px;
+      margin: 0 auto;
+      max-width: 1200px;
+      padding: 12px 10px;
+      transition: all 0.3s ease;
+    }
+
+    .site-nav a { color: white; }
+
+    .hero-content-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      padding: 0 16px;
+      text-align: center;
+    }
+
+    .hero-content h1 {
+      font-size: 2rem;
+      margin-bottom: 0.4rem;
+      color: white;
+    }
+
+    .hero-content p {
+      font-size: 0.98rem;
+      opacity: 0.9;
+      max-width: 600px;
+      color: white;
+      margin: 0 0 1.5rem 0;
+    }
+
+    .search-container {
+      position: relative;
+      z-index: 10;
+      max-width: 650px;
+      width: 100%;
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .search-container label {
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    #city-input {
+      flex: 1;
+      height: 52px;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      padding: 0 12px;
+    }
+
+    #city-search-btn {
+      height: 52px;
+      padding: 0 1.25rem;
+      border-radius: 6px;
+      border: none;
+      background-color: var(--hub-green);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    #city-search-btn:hover { opacity: 0.9; }
+
+    #fallback-box {
+      margin-top: 15px;
+      display: none;
+      font-size: 1.1rem;
+      color: white;
+      background: rgba(0,0,0,0.45);
+      padding: 12px;
+      border-radius: 6px;
+      width: 90%;
+      max-width: 480px;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .filters-shell {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 1.25rem 1.25rem 1.1rem;
+      transform: translateY(-4rem);
+      margin-bottom: -2.5rem;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+      position: relative;
+      z-index: 5;
+      max-width: 1120px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .filters-shell__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 0.75rem;
+      align-items: flex-end;
+    }
+
+    @media (max-width: 900px) {
+      .filters-shell__grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .filters-shell__grid { grid-template-columns: 1fr; }
+    }
+
+    .filters-shell__field label {
+      display: block;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6b7280;
+      margin-bottom: 0.25rem;
+    }
+
+    .filters-shell__field select {
+      width: 100%;
+      padding: 0.55rem 0.7rem;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 0.9rem;
+      background-color: #f9fafb;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .filters-shell__field select:focus { border-color: var(--hub-green); }
+
+    .filters-shell__actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      padding-bottom: 2px;
+      gap: 0.5rem;
+    }
+
+    .btn-hub {
+      background-color: var(--hub-green);
+      color: white;
+      border-radius: 999px;
+      padding: 0.55rem 1.1rem;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.2s ease;
+    }
+
+    .btn-hub:hover { opacity: 0.92; }
+
+    .filters-shell__hint {
+      margin-top: 0.45rem;
+      font-size: 0.78rem;
+      color: #6b7280;
+    }
+
+    .sort-container {
+      margin-top: 0.5rem;
+      text-align: right;
+    }
+
+    .sort-container label {
+      font-size: 0.78rem;
+      color: #6b7280;
+      margin-right: 0.5rem;
+    }
+
+    .sort-container select {
+      padding: 0.45rem 0.7rem;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 0.9rem;
+      background-color: #f9fafb;
+    }
+
+    .spinner {
+      border: 3px solid #f3f4f6;
+      border-top: 3px solid var(--hub-green);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 2rem auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      background: #fee;
+      border-left: 4px solid #dc2626;
+      padding: 12px 14px;
+      border-radius: 6px;
+      color: #991b1b;
+      font-size: 0.88rem;
+      margin-top: 0.75rem;
+      display: none;
+    }
+
+    .properties-section {
+      padding: 1.5rem 2rem 3rem;
+    }
+
+    .properties-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding: 0 1rem;
+      max-width: 95%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .properties-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+      gap: 1.25rem;
+      padding: 0 1rem;
+      max-width: 95%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .property-card {
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      box-shadow: 0 14px 45px rgba(15, 23, 42, 0.10);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .property-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 60px rgba(15, 23, 42, 0.16);
+    }
+
+    .property-card__media {
+      position: relative;
+      padding-top: 62%;
+      overflow: hidden;
+    }
+
+    .property-card__media img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .property-card__badge {
+      position: absolute;
+      left: 0.9rem;
+      top: 0.9rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: rgba(15, 23, 42, 0.92);
+      color: #f9fafb;
+    }
+
+    .property-card__body {
+      padding: 0.9rem 1rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      flex: 1;
+    }
+
+    .property-card__title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0;
+      color: #111827;
+    }
+
+    .property-card__meta {
+      font-size: 0.8rem;
+      color: #6b7280;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .property-card__meta span::before {
+      content: "• ";
+      color: #9ca3af;
+    }
+
+    .property-card__meta span:first-child::before {
+      content: "";
+    }
+
+    .property-card__price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-top: 0.2rem;
+    }
+
+    .property-card__price-main {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .property-card__price-hint {
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+
+    .property-card__footer {
+      padding: 0 1rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: auto;
+    }
+
+    .property-card__tag {
+      font-size: 0.78rem;
+      background: #f3f4f6;
+      color: #374151;
+      padding: 0.25rem 0.55rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .property-card__link {
+      font-size: 0.8rem;
+      text-decoration: none;
+      color: #111827;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: color 0.2s ease;
+    }
+
+    .property-card__link:hover {
+      color: var(--hub-green);
+      text-decoration: underline;
+    }
+
+    .properties-empty-state {
+      padding: 2rem 1rem;
+      text-align: center;
+      border-radius: 18px;
+      background: #f9fafb;
+      border: 1px dashed #d1d5db;
+      margin: 1rem auto;
+      display: none;
+      max-width: 95%;
+    }
+
+    .properties-empty-state h3 {
+      margin-bottom: 0.35rem;
+      font-size: 1rem;
+      color: #111827;
+    }
+
+    .properties-empty-state p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    /* MODAL STYLES */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 1rem;
+    }
+
+    .modal-backdrop.is-visible { display: flex; }
+
+    .modal-shell {
+      background: #ffffff;
+      border-radius: 18px;
+      max-width: 520px;
+      width: 100%;
+      padding: 1.75rem;
+      position: relative;
+      box-shadow: 0 24px 70px rgba(15,23,42,0.4);
+    }
+
+    .modal-shell__close {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: transparent;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: #6b7280;
+      transition: color 0.2s ease;
+    }
+
+    .modal-shell__close:hover { color: #111827; }
+
+    .modal-shell h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .modal-shell p {
+      font-size: 0.88rem;
+      color: #6b7280;
+      margin-bottom: 1rem;
+    }
+
+    .modal-form-field {
+      margin-bottom: 0.75rem;
+    }
+
+    .modal-form-field label {
+      display: block;
+      font-size: 0.78rem;
+      margin-bottom: 0.2rem;
+      color: #4b5563;
+    }
+
+    .modal-form-field input,
+    .modal-form-field textarea,
+    .modal-form-field select {
+      width: 100%;
+      border-radius: 9px;
+      border: 1px solid #d1d5db;
+      padding: 0.5rem 0.6rem;
+      font-size: 0.88rem;
+      outline: none;
+      resize: vertical;
+      min-height: 2.4rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .modal-form-field input:focus,
+    .modal-form-field textarea:focus,
+    .modal-form-field select:focus {
+      border-color: var(--hub-green);
+    }
+
+    .modal-form-field textarea {
+      min-height: 90px;
+    }
+
+    .modal-success-message {
+      display: none;
+      background: #ecfdf3;
+      color: #065f46;
+      padding: 0.75rem 0.9rem;
+      border-radius: 10px;
+      margin-top: 0.75rem;
+      font-size: 0.88rem;
+    }
+
+    .modal-success-message strong {
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body id="rentals-page" data-patch-version="rentals-v3.0-CDN-ENABLED">
+
+  <!-- HERO WITH NAVBAR OVERLAY -->
+  <div class="hero-wrapper">
+    <!-- NAVIGATION -->
+    <nav class="site-nav navbar-bg" id="siteNavbar">
+      <div class="container">
+        <div class="menu-bg-wrap">
+          <div class="site-navigation">
+            <a href="index.html" class="logo m-0 float-start text-white">FirstCape Estate Management</a>
+            <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end">
+              <li><a class="text-white" href="index.html">Home</a></li>
+              <li><a class="text-white" href="properties.html">Buy</a></li>
+              <li class="active"><a class="text-white" href="rentals.html">Rent</a></li>
+              <li><a class="text-white landlord-open" href="javascript:void(0)">Landlords</a></li>
+              <li><a class="text-white" href="services.html">Services</a></li>
+              <li><a class="text-white" href="about.html">About</a></li>
+              <li><a class="text-white" href="contact.html">Contact</a></li>
+              <li><a href="favorites.html"><i class="fas fa-heart"></i> Favorites <span class="badge bg-danger favorites-counter">0</span></a></li>
+              <li><a href="comparison.html"><i class="fas fa-balance-scale"></i> Compare <span class="badge bg-warning comparison-counter">0</span></a></li>
+              <li><a href="alerts.html"><i class="fas fa-bell"></i> Alerts</a></li>
+              <li><a href="analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+            </ul>
+            <a href="#" class="burger light me-auto float-end mt-1 site-menu-toggle js-menu-toggle d-inline-block d-lg-none">
+              <span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO CONTENT -->
+    <div class="hero-content-wrapper">
+      <div class="hero-content">
+        <h1>Find Properties for Rent</h1>
+        <p>Discover rental homes, apartments, and more in your preferred location</p>
+      </div>
+
+      <div class="search-container">
+        <label for="city-input">Search by city</label>
+        <input id="city-input" type="text" placeholder="Search by city (e.g. East Legon, Kumasi, Cantonments)" aria-label="Search rentals by city"/>
+        <button id="city-search-btn" type="button">Search</button>
+      </div>
+
+      <div id="fallback-box" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+
+
+  <!-- FILTERS -->
+  <div class="container">
+    <div class="filters-shell">
+      <div class="filters-shell__grid">
+        <div class="filters-shell__field">
+          <label for="bedroomsFilter">Bedrooms</label>
+          <select id="bedroomsFilter" aria-label="Filter by number of bedrooms">
+            <option value="any">Any</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+            <option value="4">4+</option>
+          </select>
+        </div>
+
+       
+        <div class="filters-shell__field">
+          <label for="bathroomsFilter">Bathrooms</label>
+          <select id="bathroomsFilter" aria-label="Filter by number of bathrooms">
+            <option value="any">Any</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+          </select>
+        </div>
+
+        <div class="filters-shell__field">
+          <label for="typeFilter">Type</label>
+          <select id="typeFilter" aria-label="Filter by property type">
+            <option value="any">Any</option>
+            <option value="Residential">Residential</option>
+            <option value="Commercial">Commercial</option>
+            <option value="Mixed-Use">Mixed-Use</option>
+          </select>
+        </div>
+
+        <div class="filters-shell__actions">
+          <button id="refreshRentals" class="btn-hub" type="button">Refresh</button>
+        </div>
+      </div>
+
+      <!-- SORT BY PRICE -->
+      <div class="sort-container">
+        <label for="sortFilter">Sort by</label>
+        <select id="sortFilter" aria-label="Sort rentals by price">
+          <option value="newest">Newest First</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+        </select>
+      </div>
+
+      <div class="filters-shell__hint">
+        Use the filters to refine rentals by bedrooms, bathrooms, and type. Results update automatically.
+      </div>
+
+      <div id="errorMessage" class="error-message" role="alert" aria-live="assertive"></div>
+    </div>
+
+  <!-- NOTIFY CTA (Correctly positioned after filters) -->
+  <div class="container" style="margin-top: -2rem;">
+    <div id="notifyInlineCTA" class="notify-inline-cta">
+      <strong>🔔 No rentals found in <span id="notifyCityName"></span></strong>
+      <p style="margin: 0.5rem 0 0.75rem 0;">We can notify you when new rentals become available.</p>
+      <button id="openNotifyModal" class="btn-hub">Notify Me When Available</button>
+    </div>
+  </div>
+
+  <!-- PROPERTIES SECTION -->
+  <section class="properties-section">
+    <div class="properties-header-row">
+      <h2>Available Rentals</h2>
+      <div id="propertyCount" role="status" aria-live="polite">Loading rentals...</div>
+    </div>
+
+    <div id="loadingSpinner" class="spinner" aria-label="Loading rentals" style="display:block;"></div>
+
+    <div id="propertiesEmptyState" class="properties-empty-state" role="status">
+      <h3>No rentals found</h3>
+      <p>Try adjusting your filters or searching a different city.</p>
+    </div>
+
+    <div id="rentalsContainer" class="properties-grid" style="display:none;"></div>
+  </section>
+
+  <!-- CANONICAL LANDLORD MODAL -->
+  <div id="landlord-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="landlordModalTitle">
+    <div class="modal-shell">
+      <button class="modal-shell__close modal-close" aria-label="Close">×</button>
+      
+      <div id="landlord-form-view" style="display: block;">
+        <h2 id="landlordModalTitle">List Your Property with FirstCape</h2>
+        <p>Tell us about your property and we'll reach out within one business day with a management proposal.</p>
+
+        <form id="landlord-form">
+          <div class="modal-form-field">
+            <label for="landlordService">Service Required *</label>
+            <select id="landlordService" name="service" required aria-required="true">
+              <option value="">Select a service</option>
+              <option value="Property Management">Property Management</option>
+              <option value="Tenant Finding">Tenant Finding Only</option>
+              <option value="Property Sales">Property Sales</option>
+              <option value="Maintenance">Maintenance & Repairs</option>
+              <option value="Consultation">General Consultation</option>
+            </select>
+          </div>
+
+          <div class="modal-form-field">
+            <label for="landlordFullName">Full Name *</label>
+            <input id="landlordFullName" name="fullname" type="text" required aria-required="true" placeholder="Enter your full name">
+          </div>
+
+          <div class="modal-form-field">
+            <label for="landlordPhone">Phone / WhatsApp *</label>
+            <input id="landlordPhone" name="phone" type="tel" required aria-required="true" placeholder="+233 or 0XX XXX XXXX">
+          </div>
+
+
+          <div class="modal-form-field">
+            <label for="landlordEmail">Email Address (Optional)</label>
+            <input id="landlordEmail" name="email" type="email" placeholder="your.email@example.com">
+          </div>
+          <div class="modal-form-field">
+            <label for="landlordLocation">City / Region *</label>
+            <input id="landlordLocation" name="location" type="text" required aria-required="true" placeholder="e.g. East Legon, Kumasi, Tema">
+          </div>
+
+          <div class="modal-form-field">
+            <label for="landlordNotes">Property Details</label>
+            <textarea id="landlordNotes" name="notes" rows="4" placeholder="Tell us about your property: type, bedrooms, bathrooms, expected rent, availability date, etc."></textarea>
+          </div>
+
+          <button type="submit" class="btn-hub">Submit Request</button>
+
+          <div id="landlord-error" class="error-message" role="alert" aria-live="assertive"></div>
+        </form>
+      </div>
+
+      <div id="landlord-thankyou" class="modal-success-message" style="display: none;">
+        <h3 style="margin-top: 0; color: #065f46;">Thank You!</h3>
+        <p style="margin-bottom: 0;">We've received your request. Our team will contact you within one business day to discuss your property management needs.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CORE SCRIPTS -->
+  <script src="js/bootstrap.bundle.min.js?v=1.4"></script>
+  <script src="js/navbar.js?v=1.4"></script>
+  <script src="js/custom.js?v=1.4"></script>
+
+  <!-- CDN-ENABLED RENTAL LOADER -->
+  <script src="js/config.js?v=1.0"></script>
+  <script src="js/airtable.js?v=1.0"></script>
+  <script src="js/lead.js?v=1.4"></script>
+  <script src="js/rentals.js?v=1.0"></script>
+  
+  <!-- CANONICAL LANDLORD MODAL SCRIPT -->
+  <script src="js/landlord-modal.js?v=1.0"></script>
+
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById("siteNavbar");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 100) {
+        navbar.classList.add("scrolled");
+      } else {
+        navbar.classList.remove("scrolled");
+      }
+    });
+
+    // Initialize AOS
+    if (typeof AOS !== "undefined") AOS.init();
+
+    // Hide old spinner once rentals.js takes over
+    document.addEventListener("DOMContentLoaded", () => {
+      const loadingSpinner = document.getElementById("loadingSpinner");
+      if (loadingSpinner) {
+        setTimeout(() => {
+          loadingSpinner.style.display = "none";
+        }, 500);
+      }
+    });
+  </script>
+  <!-- Feature Scripts -->
+  <script src="js/favorites.js"></script>
+  <script src="js/comparison.js"></script>
+  <script src="js/analytics.js"></script>
+
+</body>
+</html>

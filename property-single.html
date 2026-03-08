@@ -1,0 +1,696 @@
+﻿<!DOCTYPE html>
+<!--
+FILE METADATA
+Filename: property-single.html
+Version: property-single-v4.1-SVG-FLOORPLAN
+Status: Property Detail Page — WITH 360° PANORAMA + LIGHTBOX + ENHANCED VIDEO + INTERACTIVE SVG FLOOR PLAN
+Last Updated: 2026-01-10
+Changes: 
+- Added interactive SVG floor plan viewer with pan/zoom (using panzoom library)
+- Added new section #propertyFloorplan with responsive container
+- Integrated support for 'CDN Floorplan SVG URL' from Airtable
+- Added mobile responsiveness for floor plan height
+- Previous: Added interactive 360° panorama viewer (Pannellum)
+- Added lightbox gallery with zoom
+- Enhanced video player
+- Improved loading states
+- Better mobile responsiveness
+Features:
+✓ Interactive SVG Floor Plan Viewer (pan, zoom, clickable rooms)
+✓ Interactive 360° Panorama Viewer
+✓ Lightbox Image Gallery with Keyboard Navigation
+✓ Enhanced Video Player with Error Handling
+✓ Smooth Transitions and Loading States
+✓ Mobile-Optimized Experience
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="author" content="FirstCape Estate Management"/>
+<link rel="shortcut icon" href="favicon.png"/>
+<title>Property Details | FirstCape Estate Management</title>
+<meta name="description" content="FirstCape Estate Management provides professional property management, rental services, tenant sourcing, and transparent reporting for landlords across Ghana."/>
+
+<!-- Preconnect + Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+
+<!-- Preload hero image -->
+<link rel="preload" as="image" href="images/hero_bg_1.jpg" fetchpriority="high"/>
+
+<!-- Local Work Sans -->
+<link rel="preconnect" href="fonts/work-sans/" crossorigin/>
+<style>
+@font-face { font-family: 'Work Sans'; src: url('fonts/work-sans/WorkSans-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Work Sans'; src: url('fonts/work-sans/WorkSans-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Work Sans'; src: url('fonts/work-sans/WorkSans-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Work Sans'; src: url('fonts/work-sans/WorkSans-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Work Sans'; src: url('fonts/work-sans/WorkSans-ExtraBold.woff2') format('woff2'); font-weight: 800; font-display: swap; }
+</style>
+
+<!-- FirstCape theme -->
+<style>
+:root { --hub-green: #064635; }
+.btn-hub { 
+  background-color: var(--hub-green) !important; 
+  border-color: var(--hub-green) !important; 
+  color: #fff !important; 
+  transition: all 0.3s ease;
+}
+.btn-hub:hover { 
+  opacity: 0.88;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(6, 70, 53, 0.3);
+}
+</style>
+
+<!-- External CSS files -->
+<link rel="stylesheet" href="fonts/icomoon/style.css"/>
+<link rel="stylesheet" href="fonts/flaticon/font/flaticon.css"/>
+<link rel="stylesheet" href="css/aos.css"/>
+<link rel="stylesheet" href="css/style.css"/>
+<link rel="stylesheet" href="css/landlord-modal.css?v=1.0"/>
+
+<style>
+/* ========================================
+   ENHANCED GALLERY STYLES
+   ======================================== */
+.gallery-wrap {
+  margin-bottom: 2rem;
+}
+
+.gallery-slider {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: #f3f4f6;
+}
+
+.gallery-slider img {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-slider img:hover {
+  opacity: 0.95;
+}
+
+#imageThumbnails {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  padding: 0.5rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.thumbnail {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.thumbnail.active {
+  border-color: var(--hub-green);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(6, 70, 53, 0.3);
+}
+
+.thumbnail:hover {
+  border-color: var(--hub-green);
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.controls span {
+  cursor: pointer;
+  padding: 0.75rem 1.5rem;
+  background: var(--hub-green);
+  color: white;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.controls span:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(6, 70, 53, 0.3);
+}
+
+.controls span:active {
+  transform: translateY(0);
+}
+
+/* ========================================
+   PROPERTY DETAILS STYLES
+   ======================================== */
+.spec-box {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.spec-box strong {
+  color: var(--hub-green);
+  font-weight: 600;
+}
+
+.enquiry-box {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  padding: 1.75rem;
+  border-radius: 12px;
+  margin-top: 2rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 100px;
+}
+
+.enquiry-box h4 {
+  color: var(--hub-green);
+  margin-bottom: 1.25rem;
+  font-weight: 600;
+}
+
+.enquiry-box .form-control {
+  border-radius: 8px;
+  border: 2px solid #e5e7eb;
+  padding: 0.75rem;
+  transition: border-color 0.3s ease;
+}
+
+.enquiry-box .form-control:focus {
+  border-color: var(--hub-green);
+  box-shadow: 0 0 0 3px rgba(6, 70, 53, 0.1);
+}
+
+/* ========================================
+   LOADING & ERROR STATES
+   ======================================== */
+.loading-state, .error-state {
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.spinner {
+  border: 4px solid #f3f4f6;
+  border-top: 4px solid var(--hub-green);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 0.8s linear infinite;
+  margin: 2rem auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ========================================
+   VIDEO PLAYER ENHANCEMENTS
+   ======================================== */
+.video-player-wrapper {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  margin-bottom: 1.5rem;
+}
+
+.video-player-wrapper video {
+  width: 100%;
+  display: block;
+  max-height: 500px;
+}
+
+/* ========================================
+   360° PANORAMA VIEWER STYLES
+   ======================================== */
+#panoramaViewer {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e7eb;
+  margin-bottom: 1rem;
+}
+
+.panorama-info {
+  background: #f9fafb;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  border-left: 4px solid var(--hub-green);
+}
+
+.panorama-info i {
+  color: var(--hub-green);
+  margin-right: 0.5rem;
+}
+
+/* ========================================
+   SECTION HEADERS
+   ======================================== */
+.section h4 {
+  color: var(--hub-green);
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+/* ========================================
+   MOBILE RESPONSIVENESS
+   ======================================== */
+@media (max-width: 768px) {
+  .gallery-slider img {
+    max-height: 350px;
+  }
+  
+  .thumbnail {
+    width: 70px;
+    height: 70px;
+  }
+  
+  #imageThumbnails {
+    gap: 0.5rem;
+  }
+  
+  .controls span {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  
+  .enquiry-box {
+    position: static;
+    margin-top: 2rem;
+  }
+  
+  #panoramaViewer {
+    height: 350px !important;
+  }
+
+  /* New: Responsive height for interactive floor plan */
+  #floorplan-container {
+    height: 350px !important;
+  }
+}
+
+/* ========================================
+   ALERT MESSAGES
+   ======================================== */
+.alert {
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-top: 1rem;
+  border: 1px solid transparent;
+}
+
+.alert-success {
+  background: #ecfdf3;
+  color: #065f46;
+  border-color: #a7f3d0;
+}
+
+.alert-warning {
+  background: #fffbeb;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+/* ========================================
+   GOOGLE MAPS SECTION STYLES
+   ======================================== */
+.property-map-section {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.property-map-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  height: 450px;
+  background: #f3f4f6;
+  position: relative;
+}
+
+#propertyMap {
+  width: 100%;
+  height: 100%;
+}
+
+.map-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #6b7280;
+}
+
+@media (max-width: 768px) {
+  .property-map-container {
+    height: 350px;
+  }
+}
+
+</style>
+
+<!-- Google Maps loaded via secure backend proxy -->
+
+</head>
+
+<body id="property-single-page" data-patch-version="property-single-v4.0-ENHANCED">
+
+  <!-- Mobile Menu -->
+  <div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+      <div class="site-mobile-menu-close">
+        <span class="icofont-close js-menu-toggle"></span>
+      </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="site-nav">
+    <div class="container">
+      <div class="menu-bg-wrap">
+        <div class="site-navigation">
+          <a href="index.html" class="logo m-0 float-start">FirstCape Estate Management</a>
+
+          <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end">
+            <li><a href="index.html">Home</a></li>
+            <li class="active"><a href="properties.html">Buy</a></li>
+            <li><a href="rentals.html">Rent</a></li>
+            <li><a href="javascript:void(0)" class="landlord-open">Landlords</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="favorites.html">Favorites <span class="favorites-counter">0</span></a></li>
+          </ul>
+
+          <a href="#" class="burger light me-auto float-end mt-1 site-menu-toggle js-menu-toggle d-inline-block d-lg-none">
+            <span></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero page-inner overlay" style="background-image: url('images/hero_bg_1.jpg')">
+    <div class="container">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-lg-9 text-center mt-5">
+          <h1 class="heading" data-aos="fade-up">Property Details</h1>
+          <nav aria-label="breadcrumb" data-aos="fade-up" data-aos-delay="150">
+            <ol class="breadcrumb text-center justify-content-center">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item"><a href="properties.html">Buy</a></li>
+              <li class="breadcrumb-item active text-white-50" aria-current="page">Property Details</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Property Section -->
+  <div class="section">
+    <div class="container" id="propertyDetailContainer">
+
+      <!-- LOADING SPINNER -->
+      <div id="loadingSpinner" class="loading-state">
+        <div class="spinner"></div>
+        <p style="color: #6b7280; font-size: 1.1rem;">Loading property details...</p>
+      </div>
+
+      <!-- PROPERTY CONTENT (HIDDEN UNTIL LOADED) -->
+      <div id="propertyContent" style="display:none;">
+        
+        <!-- Image Gallery -->
+        <div class="gallery-wrap">
+          <div class="gallery-slider" id="gallery-slider">
+            <img 
+              id="mainPropertyImage" 
+              src="" 
+              alt="Property image" 
+              loading="eager"
+            />
+          </div>
+
+          <div id="imageThumbnails">
+            <!-- Thumbnails will be populated by JavaScript -->
+          </div>
+
+          <div id="gallery-nav" class="controls">
+            <span id="prevImage">← Previous</span>
+            <span id="nextImage">Next →</span>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+
+          <!-- Left column - Property Details -->
+          <div class="col-lg-8">
+            
+            <!-- Title & Price -->
+            <div class="mb-4">
+              <h2 id="propertyTitle" class="text-primary mb-2">Loading...</h2>
+              <h3 id="propertyPrice" class="mb-2" style="color: var(--hub-green); font-weight: 600;">Loading...</h3>
+              <p id="propertyLocation" class="text-muted mb-0">
+                <i class="icon-location-pin"></i> Loading...
+              </p>
+            </div>
+
+            <!-- Property Specs -->
+            <div id="propertySpecs" class="spec-box mb-4">
+              <!-- Specs will be populated by JavaScript -->
+            </div>
+
+            <!-- Description -->
+            <div class="mb-4">
+              <h4>Property Description</h4>
+              <p id="propertyDescription" class="text-black-50">
+                Loading property description...
+              </p>
+            </div>
+
+            <!-- Video Tour -->
+            <div id="propertyVideo" class="mb-4"></div>
+
+            <!-- 360° Panorama -->
+            <div id="property360" class="mb-4"></div>
+
+            <!-- Virtual Tour -->
+            <div id="propertyVirtualTour" class="mb-4"></div>
+
+            <!-- Google Maps Location -->
+            <div id="propertyMapSection" class="property-map-section mb-4" style="display:none;">
+              <h4><i class="icon-location-pin"></i> Property Location</h4>
+              <div class="property-map-container">
+                <div id="propertyMap"></div>
+                <div class="map-loading">
+                  <div class="spinner"></div>
+                  <p>Loading map...</p>
+                </div>
+              </div>
+              <p class="text-muted mt-2" style="font-size: 0.9rem;">
+                <i class="icon-info-circle"></i> Approximate location. Exact address provided after inquiry.
+              </p>
+            </div>
+
+
+          </div>
+
+          <!-- Right column - Enquiry Form -->
+          <div class="col-lg-4">
+            <div class="enquiry-box">
+              <h4>
+                <i class="icon-envelope"></i> Enquire About This Property
+              </h4>
+
+              <form id="propertyInquiryForm">
+                <input 
+                  type="text" 
+                  class="form-control mb-3" 
+                  name="fullName" 
+                  placeholder="Full Name *" 
+                  required 
+                />
+                
+                <input 
+                  type="tel" 
+                  class="form-control mb-3" 
+                  name="phone" 
+                  placeholder="Phone / WhatsApp * (with country code)" 
+                  required 
+                />
+                
+                <input 
+                  type="email" 
+                  class="form-control mb-3" 
+                  name="email" 
+                  placeholder="Email (optional)" 
+                />
+
+                <textarea 
+                  class="form-control mb-3" 
+                  name="message" 
+                  rows="4" 
+                  placeholder="Message (optional)"
+                ></textarea>
+
+                <button type="submit" class="btn btn-hub w-100 py-2">
+                  <i class="icon-paper-plane"></i> Send Enquiry
+                </button>
+
+                <p class="text-muted small mt-3 mb-0">
+                  <i class="icon-shield"></i> Your information is secure and will only be used to contact you about this property.
+                </p>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CANONICAL LANDLORD MODAL -->
+  <div id="landlord-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="landlordModalTitle">
+    <div class="modal-shell">
+      <button class="modal-shell__close modal-close" aria-label="Close">×</button>
+      
+      <div id="landlord-form-view" style="display: block;">
+        <h2 id="landlordModalTitle">List Your Property with FirstCape</h2>
+        <p>Tell us about your property and we'll reach out within one business day with a management proposal.</p>
+
+        <form id="landlord-form">
+          <div class="modal-form-field">
+            <label for="landlordService">Service Required *</label>
+            <select id="landlordService" name="service" required aria-required="true">
+              <option value="">Select a service</option>
+              <option value="Property Management">Property Management</option>
+              <option value="Tenant Finding">Tenant Finding Only</option>
+              <option value="Property Sales">Property Sales</option>
+              <option value="Maintenance">Maintenance & Repairs</option>
+              <option value="Consultation">General Consultation</option>
+            </select>
+          </div>
+
+          <div class="modal-form-field">
+            <label for="landlordFullName">Full Name *</label>
+            <input id="landlordFullName" name="fullname" type="text" required aria-required="true" placeholder="Enter your full name">
+          </div>
+
+          <div class="modal-form-field">
+            <label for="landlordPhone">Phone / WhatsApp *</label>
+            <input id="landlordPhone" name="phone" type="tel" required aria-required="true" placeholder="+233 or 0XX XXX XXXX">
+          </div>
+
+          <div class="modal-form-field">
+            <label for="landlordEmail">Email (optional)</label>
+            <input id="landlordEmail" name="email" type="email" placeholder="your@email.com">
+          </div>
+
+          <div class="modal-form-field">
+            <label for="landlordLocation">City / Region *</label>
+            <input id="landlordLocation" name="location" type="text" required aria-required="true" placeholder="e.g. East Legon, Kumasi, Tema">
+          </div>
+
+          <div class="modal-form-field">
+            <label for="landlordNotes">Property Details</label>
+            <textarea id="landlordNotes" name="notes" rows="4" placeholder="Tell us about your property: type, bedrooms, bathrooms, expected price/rent, availability date, etc."></textarea>
+          </div>
+
+          <button type="submit" class="btn-hub">Submit Request</button>
+
+          <div id="landlord-error" class="error-message" role="alert" aria-live="assertive"></div>
+        </form>
+      </div>
+
+      <div id="landlord-thankyou" class="modal-success-message" style="display: none;">
+        <h3 style="margin-top: 0; color: #065f46;">Thank You!</h3>
+        <p style="margin-bottom: 0;">We've received your request. Our team will contact you within one business day to discuss your property management needs.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="site-footer">
+    <div class="container text-center">
+      <div class="footer-legal-links">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="terms-of-service.html">Terms of Service</a></li>
+          <li><a href="cookie-policy.html">Cookie Policy</a></li>
+          <li><a href="disclaimer.html">Disclaimer</a></li>
+        </ul>
+      </div>
+      <p>FirstCape Estate Management &copy; <script>document.write(new Date().getFullYear());</script>. All Rights Reserved.</p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/aos.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/custom.js"></script>
+
+  <!-- CDN-ENABLED PROPERTY DETAIL LOADER -->
+  <script src="js/config.js?v=1.0"></script>
+  <script src="js/airtable.js?v=1.0"></script>
+  <script src="js/lead.js?v=1.0"></script>
+  
+  <!-- ENHANCED PROPERTY SINGLE JS WITH 360° PANORAMA -->
+  <script src="js/property-single.js?v=4.0"></script>
+
+  <!-- CANONICAL LANDLORD MODAL SCRIPT -->
+  <script src="js/landlord-modal.js?v=1.0"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (typeof AOS !== "undefined") {
+        AOS.init({
+          duration: 800,
+          once: true,
+          offset: 100
+        });
+      }
+    });
+  </script>
+
+  <!-- Panzoom library for interactive SVG floor plan -->
+<script src="https://unpkg.com/panzoom@9.4.3/dist/panzoom.min.js"></script>
+</body>
+</html>

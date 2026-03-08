@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create property alerts and get notified of new listings">
+    <title>Property Alerts | FirstCape Estate Management</title>
+    
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/alerts.css">
+    <link rel="stylesheet" href="css/dark-mode.css">
+    <link rel="stylesheet" href="css/mobile-app-banner.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-home"></i> FirstCape</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="properties.html">Properties</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="favorites.html">
+                            <i class="fas fa-heart"></i> Favorites 
+                            <span class="badge bg-danger favorites-counter">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="comparison.html">
+                            <i class="fas fa-balance-scale"></i> Compare 
+                            <span class="badge bg-warning comparison-counter">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="alerts.html">
+                            <i class="fas fa-bell"></i> Alerts
+                        </a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header bg-light py-5">
+        <div class="container">
+            <h1 class="display-4 mb-2"><i class="fas fa-bell text-primary"></i> Property Alerts</h1>
+            <p class="lead text-muted mb-0">Get notified when properties matching your criteria become available</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="alerts-section py-5">
+        <div class="container">
+            
+            <!-- Create Alert Button -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <button class="btn btn-primary btn-lg" onclick="toggleAlertForm()">
+                        <i class="fas fa-plus"></i> Create New Alert
+                    </button>
+                </div>
+            </div>
+
+            <!-- Alert Form -->
+            <div id="alert-form-container" class="card mb-4" style="display: none;">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-bell"></i> Create Property Alert</h5>
+                </div>
+                <div class="card-body">
+                    <form id="alert-form">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="alert-email" required 
+                                       placeholder="your@email.com">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Phone (Optional)</label>
+                                <input type="tel" class="form-control" id="alert-phone" 
+                                       placeholder="+233 24 123 4567">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Location</label>
+                                <input type="text" class="form-control" id="alert-location" 
+                                       placeholder="e.g., Accra, Kumasi">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Property Type</label>
+                                <select class="form-select" id="alert-property-type">
+                                    <option value="">Any</option>
+                                    <option value="Residential">Residential</option>
+                                    <option value="Apartment">Apartment</option>
+                                    <option value="House">House</option>
+                                    <option value="Condo">Condo</option>
+                                    <option value="Commercial">Commercial</option>
+                                    <option value="Land">Land</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Min Price (GH₵)</label>
+                                <input type="number" class="form-control" id="alert-price-min" 
+                                       placeholder="0">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Max Price (GH₵)</label>
+                                <input type="number" class="form-control" id="alert-price-max" 
+                                       placeholder="1000000">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Min Bedrooms</label>
+                                <select class="form-select" id="alert-bedrooms">
+                                    <option value="0">Any</option>
+                                    <option value="1">1+</option>
+                                    <option value="2">2+</option>
+                                    <option value="3">3+</option>
+                                    <option value="4">4+</option>
+                                    <option value="5">5+</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Min Bathrooms</label>
+                                <select class="form-select" id="alert-bathrooms">
+                                    <option value="0">Any</option>
+                                    <option value="1">1+</option>
+                                    <option value="2">2+</option>
+                                    <option value="3">3+</option>
+                                    <option value="4">4+</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Listing Type</label>
+                                <select class="form-select" id="alert-listing-type">
+                                    <option value="">Any</option>
+                                    <option value="Buy">Buy</option>
+                                    <option value="Rent">Rent</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Alert Frequency</label>
+                                <select class="form-select" id="alert-frequency">
+                                    <option value="Instant">Instant - As soon as a match is found</option>
+                                    <option value="Daily">Daily - Once per day</option>
+                                    <option value="Weekly">Weekly - Once per week</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Status</label>
+                                <select class="form-select" id="alert-status">
+                                    <option value="Active">Active</option>
+                                    <option value="Paused">Paused</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Save Alert
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="toggleAlertForm()">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Alerts List -->
+            <div id="alerts-container"></div>
+
+            <!-- Empty State -->
+            <div id="alerts-empty" class="text-center py-5">
+                <i class="fas fa-bell-slash" style="font-size: 5rem; color: #e5e7eb; margin-bottom: 1rem;"></i>
+                <h3 class="mb-3">No Active Alerts</h3>
+                <p class="text-muted mb-4">
+                    Create an alert to get notified when properties matching your criteria become available.
+                </p>
+            </div>
+
+            <!-- Loading State -->
+            <div id="alerts-loading" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-3 text-muted">Loading your alerts...</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-home"></i> FirstCape Estate Management</h5>
+                    <p class="mb-0">Your trusted partner in real estate</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">&copy; 2024 FirstCape. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/airtable.js"></script>
+    <script src="js/alerts-with-airtable.js"></script>
+    <script src="js/analytics.js"></script>
+    <script src="js/dark-mode.js"></script>
+    <script src="js/mobile-app-banner.js"></script>
+    
+    <script>
+        function toggleAlertForm() {
+            const form = document.getElementById('alert-form-container');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Form submission
+            document.getElementById('alert-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const alertData = {
+                    email: document.getElementById('alert-email').value,
+                    phone: document.getElementById('alert-phone').value,
+                    location: document.getElementById('alert-location').value,
+                    propertyType: document.getElementById('alert-property-type').value,
+                    priceMin: parseInt(document.getElementById('alert-price-min').value) || 0,
+                    priceMax: parseInt(document.getElementById('alert-price-max').value) || 0,
+                    minBedrooms: parseInt(document.getElementById('alert-bedrooms').value) || 0,
+                    minBathrooms: parseInt(document.getElementById('alert-bathrooms').value) || 0,
+                    listingType: document.getElementById('alert-listing-type').value,
+                    frequency: document.getElementById('alert-frequency').value,
+                    status: document.getElementById('alert-status').value
+                };
+                
+                try {
+                    await propertyAlerts.createAlert(alertData);
+                    alert('Alert created successfully!');
+                    document.getElementById('alert-form').reset();
+                    toggleAlertForm();
+                    loadAlerts();
+                } catch (error) {
+                    console.error('Error creating alert:', error);
+                    alert('Error creating alert. Please try again.');
+                }
+            });
+            
+            // Load alerts
+            loadAlerts();
+        });
+        
+        async function loadAlerts() {
+            const loading = document.getElementById('alerts-loading');
+            const empty = document.getElementById('alerts-empty');
+            const container = document.getElementById('alerts-container');
+            
+            loading.style.display = 'block';
+            empty.style.display = 'none';
+            container.innerHTML = '';
+            
+            try {
+                const alerts = await propertyAlerts.getAllAlerts();
+                
+                loading.style.display = 'none';
+                
+                if (alerts.length === 0) {
+                    empty.style.display = 'block';
+                    return;
+                }
+                
+                container.innerHTML = alerts.map(alert => {
+                    const f = alert.fields;
+                    return `
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h5 class="card-title mb-2">
+                                            <i class="fas fa-bell text-primary"></i>
+                                            ${f.Location || 'Any Location'} - ${f['Property Type'] || 'Any Type'}
+                                        </h5>
+                                        <div class="alert-details">
+                                            <span class="badge bg-info me-2">${f['Listing Type'] || 'Buy/Rent'}</span>
+                                            <span class="badge bg-secondary me-2">
+                                                GH₵${f['Price Min']?.toLocaleString() || '0'} - GH₵${f['Price Max']?.toLocaleString() || 'Any'}
+                                            </span>
+                                            ${f['Min Bedrooms'] ? `<span class="badge bg-secondary me-2">${f['Min Bedrooms']}+ beds</span>` : ''}
+                                            ${f['Min Bathrooms'] ? `<span class="badge bg-secondary me-2">${f['Min Bathrooms']}+ baths</span>` : ''}
+                                        </div>
+                                        <div class="mt-2 text-muted small">
+                                            <i class="fas fa-envelope"></i> ${f.Email || 'N/A'}
+                                            ${f.Phone ? `<i class="fas fa-phone ms-3"></i> ${f.Phone}` : ''}
+                                            <i class="fas fa-sync ms-3"></i> ${f.Frequency || 'Instant'}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                        <span class="badge ${f.Status === 'Active' ? 'bg-success' : 'bg-warning'} mb-2">
+                                            ${f.Status || 'Active'}
+                                        </span>
+                                        <div>
+                                            <button class="btn btn-sm btn-danger" onclick="deleteAlert('${alert.id}')">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Error loading alerts:', error);
+                loading.innerHTML = '<div class="alert alert-danger">Error loading alerts</div>';
+            }
+        }
+        
+        async function deleteAlert(id) {
+            if (!confirm('Delete this alert?')) return;
+            
+            try {
+                await propertyAlerts.deleteAlert(id);
+                alert('Alert deleted successfully!');
+                loadAlerts();
+            } catch (error) {
+                console.error('Error deleting alert:', error);
+                alert('Error deleting alert. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+/* ========================================
+   FIRSTCAPE COLOR OVERRIDE
+   Green → Yellow + Grey Conversion
+   Just add this file, no other changes needed!
+   ======================================== */
+
+/* This file overrides green colors with yellow + grey
+   Add to HTML: <link rel="stylesheet" href="css/color-override.css">
+   Place this link AFTER your main stylesheet */
+
+/* ========================================
+   GREEN → YELLOW REPLACEMENTS
+   ======================================== */
+
+/* Replace all instances of primary green (#064635) with yellow */
+*[style*="#064635"],
+*[style*="rgb(6, 70, 53)"] {
+  background-color: #FACC15 !important;
+  border-color: #FACC15 !important;
+  color: #FACC15 !important;
+}
+
+/* Navigation backgrounds */
+.navbar,
+.site-nav,
+.navbar-bg,
+.menu-bg-wrap,
+nav,
+.bg-primary,
+[class*="bg-green"],
+[class*="bg-hub"] {
+  background-color: #FACC15 !important;
+}
+
+/* Navigation text - make it dark grey instead of white */
+.navbar a,
+.site-nav a,
+.navbar-brand,
+.navbar-dark .navbar-brand,
+.navbar-dark .navbar-nav .nav-link,
+nav a {
+  color: #374151 !important;
+}
+
+.navbar a:hover,
+.site-nav a:hover,
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: #4B5563 !important;
+}
+
+/* Buttons - Primary (Yellow) */
+.btn-primary,
+.btn-hub,
+.btn-green,
+button.primary,
+input[type="submit"],
+.submit-btn {
+  background-color: #FACC15 !important;
+  border-color: #FACC15 !important;
+  color: #374151 !important;
+}
+
+.btn-primary:hover,
+.btn-hub:hover,
+.btn-green:hover {
+  background-color: #FDE047 !important;
+  border-color: #FDE047 !important;
+  color: #374151 !important;
+}
+
+/* Buttons - Secondary (Dark Grey) */
+.btn-secondary,
+.btn-outline-primary {
+  background-color: #374151 !important;
+  border-color: #374151 !important;
+  color: #FACC15 !important;
+}
+
+.btn-secondary:hover,
+.btn-outline-primary:hover {
+  background-color: #4B5563 !important;
+  border-color: #4B5563 !important;
+}
+
+/* Links */
+a {
+  color: #FACC15 !important;
+}
+
+a:hover {
+  color: #FDE047 !important;
+}
+
+/* Make body text and headings dark grey instead of green/black */
+h1, h2, h3, h4, h5, h6 {
+  color: #374151 !important;
+}
+
+body,
+p,
+.text-body {
+  color: #4B5563 !important;
+}
+
+/* Hero sections - dark grey background instead of green */
+.hero,
+.hero-wrapper,
+.hero-section,
+[class*="hero"] {
+  background-color: #374151 !important;
+}
+
+/* Footer - dark grey */
+.site-footer,
+footer,
+.footer,
+footer.bg-dark {
+  background-color: #374151 !important;
+}
+
+.site-footer h4,
+.site-footer h5,
+footer h4,
+footer h5 {
+  color: #FACC15 !important;
+}
+
+.site-footer a,
+footer a {
+  color: #9CA3AF !important;
+}
+
+.site-footer a:hover,
+footer a:hover {
+  color: #FACC15 !important;
+}
+
+/* Badges */
+.badge.bg-primary,
+.badge-primary {
+  background-color: #FACC15 !important;
+  color: #374151 !important;
+}
+
+.badge.bg-success,
+.badge-success {
+  background-color: #10B981 !important;
+}
+
+.favorites-counter {
+  background-color: #DC2626 !important;
+}
+
+.comparison-counter {
+  background-color: #374151 !important;
+  color: #FACC15 !important;
+}
+
+/* Cards and sections */
+.card-header,
+.section-header {
+  background-color: #FACC15 !important;
+  color: #374151 !important;
+}
+
+/* Borders - replace green with yellow */
+.border-primary,
+[class*="border-green"] {
+  border-color: #FACC15 !important;
+}
+
+/* Background colors */
+.bg-light {
+  background-color: #F9FAFB !important;
+}
+
+.text-primary,
+.text-green,
+[class*="text-hub"] {
+  color: #FACC15 !important;
+}
+
+.text-secondary {
+  color: #374151 !important;
+}
+
+/* Forms */
+.form-control:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #FACC15 !important;
+  box-shadow: 0 0 0 0.2rem rgba(250, 204, 21, 0.25) !important;
+}
+
+/* Icons */
+.icon-circle,
+.icon-wrapper {
+  background-color: #374151 !important;
+  color: #FACC15 !important;
+}
+
+/* Alerts */
+.alert-success {
+  background-color: #D1FAE5 !important;
+  border-color: #6EE7B7 !important;
+  color: #374151 !important;
+}
+
+.alert-warning {
+  background-color: #FEF3C7 !important;
+  border-color: #FACC15 !important;
+  color: #374151 !important;
+}
+
+/* Tables */
+.table-dark th {
+  background-color: #374151 !important;
+  color: #FACC15 !important;
+}
+
+/* Modals */
+.modal-header {
+  background-color: #FACC15 !important;
+  color: #374151 !important;
+}
+
+/* Override any remaining green colors */
+*[class*="green"],
+*[class*="Green"] {
+  background-color: #FACC15 !important;
+  color: #374151 !important;
+}
+
+/* Specific overrides for common green hex codes */
+*[style*="#064635"] {
+  background-color: #FACC15 !important;
+}
+
+*[style*="#519872"] {
+  background-color: #4B5563 !important;
+}
+
+*[style*="#ECB159"] {
+  background-color: #FACC15 !important;
+}
+
+/* ========================================
+   SPECIFIC ELEMENT OVERRIDES
+   ======================================== */
+
+/* If you have specific class names, add them here */
+.property-card:hover {
+  border-color: #FACC15 !important;
+}
+
+.service-icon {
+  background-color: #FACC15 !important;
+  color: #374151 !important;
+}
+
+/* Stats and counters */
+.stat-number,
+.counter {
+  color: #374151 !important;
+}
+
+/* Section badges */
+.section-badge,
+.label-badge {
+  background-color: #FACC15 !important;
+  color: #374151 !important;
+}
+
+/* ========================================
+   UTILITY OVERRIDES
+   ======================================== */
+
+/* Text utilities */
+.text-muted {
+  color: #9CA3AF !important;
+}
+
+/* Shadow utilities */
+.shadow-lg:hover {
+  box-shadow: 0 10px 30px rgba(250, 204, 21, 0.2) !important;
+}
+
+/* ========================================
+   RESPONSIVE - MOBILE SPECIFIC
+   ======================================== */
+
+@media (max-width: 768px) {
+  .navbar,
+  .mobile-nav {
+    background-color: #FACC15 !important;
+  }
+  
+  .navbar a,
+  .mobile-nav a {
+    color: #374151 !important;
+  }
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+  * {
+    color: #000 !important;
+    background: #fff !important;
+  }
+}
+
+/* ========================================
+   END OF COLOR OVERRIDE
+   ======================================== */

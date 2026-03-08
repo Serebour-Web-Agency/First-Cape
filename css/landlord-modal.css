@@ -1,0 +1,440 @@
+/**
+ * SMART HUB - CANONICAL LANDLORD MODAL STYLES
+ * Version: 1.0.0
+ * File: css/landlord-modal.css
+ * 
+ * Universal modal styling for the landlord form
+ * Used across all pages: Home, Buy, Rent, Services, About, Contact
+ */
+
+/* =========================
+   MODAL BACKDROP & CONTAINER
+========================== */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(2px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.modal-backdrop.is-visible {
+  display: flex;
+  opacity: 1;
+}
+
+/* =========================
+   MODAL SHELL
+========================== */
+
+.modal-shell {
+  background: #ffffff;
+  border-radius: 18px;
+  max-width: 540px;
+  width: 100%;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.4);
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: scale(0.95);
+  transition: transform 0.25s ease;
+}
+
+.modal-backdrop.is-visible .modal-shell {
+  transform: scale(1);
+}
+
+/* Smooth scrolling within modal */
+.modal-shell {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db #f3f4f6;
+}
+
+.modal-shell::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-shell::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 10px;
+}
+
+.modal-shell::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+.modal-shell::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* =========================
+   CLOSE BUTTON
+========================== */
+
+.modal-shell__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6b7280;
+  transition: all 0.2s ease;
+  line-height: 1;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  z-index: 10;
+}
+
+.modal-shell__close:hover {
+  color: #111827;
+  background: #f3f4f6;
+}
+
+.modal-shell__close:active {
+  transform: scale(0.95);
+}
+
+/* =========================
+   MODAL CONTENT
+========================== */
+
+.modal-shell h2 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: #111827;
+  padding-right: 2.5rem;
+  line-height: 1.3;
+}
+
+.modal-shell > p {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.5;
+}
+
+/* =========================
+   FORM FIELDS
+========================== */
+
+.modal-form-field {
+  margin-bottom: 1.1rem;
+}
+
+.modal-form-field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #374151;
+  letter-spacing: -0.01em;
+}
+
+.modal-form-field label span.required {
+  color: #dc2626;
+}
+
+.modal-form-field input,
+.modal-form-field textarea,
+.modal-form-field select {
+  width: 100%;
+  border-radius: 8px;
+  border: 1.5px solid #d1d5db;
+  padding: 0.7rem 0.85rem;
+  font-size: 0.9rem;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: #ffffff;
+  color: #111827;
+}
+
+.modal-form-field input::placeholder,
+.modal-form-field textarea::placeholder {
+  color: #9ca3af;
+}
+
+.modal-form-field input:focus,
+.modal-form-field textarea:focus,
+.modal-form-field select:focus {
+  border-color: #064635;
+  box-shadow: 0 0 0 3px rgba(6, 70, 53, 0.1);
+}
+
+.modal-form-field input:disabled,
+.modal-form-field textarea:disabled,
+.modal-form-field select:disabled {
+  background: #f9fafb;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.modal-form-field textarea {
+  min-height: 110px;
+  line-height: 1.5;
+}
+
+.modal-form-field select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2.5rem;
+}
+
+/* Field hints */
+.modal-form-field .field-hint {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 0.3rem;
+  display: block;
+}
+
+/* =========================
+   SUBMIT BUTTON
+========================== */
+
+.btn-hub {
+  background-color: #064635;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  padding: 0.85rem 1.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.btn-hub:hover {
+  background-color: #053d2e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(6, 70, 53, 0.25);
+}
+
+.btn-hub:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(6, 70, 53, 0.25);
+}
+
+.btn-hub:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Loading state */
+.btn-hub.is-loading {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+}
+
+.btn-hub.is-loading::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: btn-spinner 0.6s linear infinite;
+}
+
+@keyframes btn-spinner {
+  to { transform: rotate(360deg); }
+}
+
+/* =========================
+   ERROR MESSAGE
+========================== */
+
+.error-message {
+  background: #fef2f2;
+  border-left: 4px solid #dc2626;
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  color: #991b1b;
+  font-size: 0.85rem;
+  margin-top: 1rem;
+  display: none;
+  line-height: 1.5;
+  animation: shake 0.4s ease;
+}
+
+.error-message.is-visible {
+  display: block;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+.error-message strong {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+/* =========================
+   SUCCESS MESSAGE
+========================== */
+
+.modal-success-message {
+  background: linear-gradient(135deg, #ecfdf3 0%, #d1fae5 100%);
+  border-left: 4px solid #10b981;
+  padding: 1.75rem;
+  border-radius: 12px;
+  animation: fadeInUp 0.4s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-success-message h3 {
+  color: #065f46;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modal-success-message h3::before {
+  content: "✓";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: #10b981;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.modal-success-message p {
+  color: #047857;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+========================== */
+
+@media (max-width: 640px) {
+  .modal-shell {
+    padding: 1.5rem;
+    border-radius: 16px;
+    max-height: 95vh;
+  }
+
+  .modal-shell h2 {
+    font-size: 1.2rem;
+    padding-right: 2rem;
+  }
+
+  .modal-shell > p {
+    font-size: 0.85rem;
+  }
+
+  .modal-form-field {
+    margin-bottom: 1rem;
+  }
+
+  .btn-hub {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .modal-backdrop {
+    padding: 0.5rem;
+  }
+
+  .modal-shell {
+    padding: 1.25rem;
+  }
+}
+
+/* =========================
+   ACCESSIBILITY
+========================== */
+
+/* Focus visible for keyboard navigation */
+.modal-shell *:focus-visible {
+  outline: 2px solid #064635;
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .modal-backdrop,
+  .modal-shell,
+  .btn-hub,
+  .error-message,
+  .modal-success-message {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .modal-shell {
+    border: 2px solid #111827;
+  }
+
+  .modal-form-field input,
+  .modal-form-field textarea,
+  .modal-form-field select {
+    border-width: 2px;
+  }
+}
+
+/* =========================
+   PRINT STYLES
+========================== */
+
+@media print {
+  .modal-backdrop {
+    display: none !important;
+  }
+}
