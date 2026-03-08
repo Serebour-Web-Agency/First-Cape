@@ -1,108 +1,49 @@
-// SmartHub Secure Configuration
-// Version: 2.1 - CORRECTED Lead Fields
-// Last Updated: Fixed all field mappings
+// FirstCape Configuration
+// This is the PUBLIC configuration file (safe to commit to GitHub)
 
-const SMARTHUB_CONFIG = {
-  api: {
-    useProxy: true,
-    proxyUrl: '/api/airtable-proxy.php'
-  },
+const FIRSTCAPE_CONFIG = {
+  // Airtable Configuration
+  // NOTE: For security, API keys should be in environment variables
+  // For now, we'll use a placeholder
+  airtableApiKey: '', // Leave empty - will be set via Cloudflare environment variable
+  airtableBaseId: 'appXXXXXXXXXXXXXX', // Replace with your actual base ID
   
-  airtable: {
-    tables: {
-      properties: 'Properties',
-      leads: 'Leads',
-      alerts: 'Alerts'
-    },
-    
-    propertyFields: {
-      name: 'Property Name',
-      price: 'Price',
-      city: 'City',
-      state: 'State/Province',
-      country: 'Country',
-      address: 'Address',
-      bedrooms: 'Bedrooms',
-      bathrooms: 'Bathrooms',
-      size: 'Size (sq ft)',
-      yearBuilt: 'Year Built',
-      propertyType: 'Property Type',
-      listingType: 'Listing Type',
-      status: 'Status',
-      mediaUploadStatus: 'Media Upload Status',
-      cdnMainImage: 'CDN Main Image URL',
-      cdnGalleryURLs: 'CDN Gallery URLs',
-      cdnGalleryJSON: 'CDN Gallery JSON',
-      cdnVideo: 'CDN Video Tour URL',
-      cdn360: 'CDN 360 Panorama URL',
-      cdn360Video: 'CDN 360 Video URL',
-      cdnPanoramaURL: 'CDN 360 Panorama URL',
-      panorama360VideoURL: 'CDN 360 Video URL',
-      cdnFloorplanSVG: 'CDN Floorplan SVG URL',
-      cdnTourZip: 'CDN Tour ZIP URL',
-      mainImage: 'Main Image',
-      galleryImages: 'Gallery Images',
-      videoTour: 'Video Tour',
-      description: 'Property Overview & Recommendations',
-      virtualTourURL: 'Virtual Tour URL',
-      slug: 'Slug',
-      latitude: 'Latitude',
-      longitude: 'Longitude',
-      activeTenants: 'Active Tenants Count',
-      totalUnits: 'Total Units',
-      vacancyRate: 'Vacancy Rate'
-    },
-    
-    leadFields: {
-      fullName: 'Full Name',
-      phone: 'Phone / WhatsApp',
-      email: 'Email',
-      message: 'Notes',
-      notes: 'Notes',
-      city: 'City / Region',
-      leadType: 'Lead Type',
-      sourcePage: 'Source Page',
-      status: 'Status',
-      createdAt: 'Created At',
-      timestamp: 'Created Time',
-      salesTeamNotified: 'Sales Team Notified'
+  // Site Configuration
+  siteName: 'FirstCape Estate Management',
+  siteUrl: 'https://firstcapeestatemanagement.com',
+  contactEmail: 'enquiries@firstcape.com',
+  contactPhone: '+233 59 687 1452',
+  
+  // Location
+  location: {
+    address: 'Abokobi, Accra, Ghana',
+    coordinates: {
+      lat: 5.6037,
+      lng: -0.1870
     }
   },
   
-  display: {
-    placeholderImage: '/images/placeholder-property.jpg',
-    defaultCity: 'Accra',
+  // Feature Flags
+  features: {
+    favorites: true,
+    comparison: true,
+    alerts: true,
+    analytics: true
+  },
+  
+  // UI Configuration
+  ui: {
+    primaryColor: '#FACC15', // Bright Yellow
+    secondaryColor: '#374151', // Dark Grey
     itemsPerPage: 12,
-    enableFilters: true,
-    enableSearch: true
-  },
-  
-  leadTypes: {
-    buy: 'Buy',
-    rent: 'Rent',
-    landlord: 'Landlord',
-    service: 'Service',
-    services: 'Services',
-    new: 'New',
-    notify: 'Notify',
-    buyNotify: 'Buy-Notify',
-    rentBuy: 'Rent/Buy'
-  },
-  
-  leadStatuses: {
-    new: 'New',
-    contacted: 'Contacted',
-    converted: 'Converted',
-    notInterested: 'Not Interested'
+    mapZoom: 12
   }
 };
 
+// Make config available globally
+window.FIRSTCAPE_CONFIG = FIRSTCAPE_CONFIG;
+
+// Export for modules (if using)
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = SMARTHUB_CONFIG;
+  module.exports = FIRSTCAPE_CONFIG;
 }
-
-if (typeof window !== 'undefined') {
-  window.SMARTHUB_CONFIG = SMARTHUB_CONFIG;
-}
-
-console.log('[Config] v2.1 loaded - All fields corrected');
