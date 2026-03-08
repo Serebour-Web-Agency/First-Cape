@@ -1,0 +1,262 @@
+/* ========================================
+   FIRSTCAPE YELLOW THEME - AGGRESSIVE OVERRIDE
+   This will force yellow colors over green
+   ======================================== */
+
+/* CRITICAL: Load this AFTER all other CSS files! */
+
+/* Force yellow navigation - multiple selectors for maximum coverage */
+nav,
+.navbar,
+.site-nav,
+.navbar-expand-md,
+.navbar-dark,
+.site-mobile-menu,
+header,
+[class*="navigation"],
+[class*="navbar"],
+[class*="nav-"] {
+  background-color: #FACC15 !important;
+  background: #FACC15 !important;
+}
+
+/* Force dark grey text on yellow navigation */
+nav a,
+nav .nav-link,
+.navbar a,
+.navbar .nav-link,
+.navbar-brand,
+.navbar-dark .navbar-brand,
+.navbar-dark .navbar-nav .nav-link,
+.site-nav a,
+.site-mobile-menu a,
+.site-mobile-menu .site-nav-wrap a,
+header a {
+  color: #374151 !important;
+}
+
+/* Hover states */
+nav a:hover,
+.navbar a:hover,
+.navbar-dark .navbar-nav .nav-link:hover,
+.site-nav a:hover,
+.site-mobile-menu a:hover {
+  color: #4B5563 !important;
+}
+
+/* Force yellow buttons */
+.btn-primary,
+.btn-hub,
+button[type="submit"],
+.submit-btn,
+.btn-search,
+.property-btn,
+[class*="btn-primary"],
+input[type="submit"] {
+  background-color: #FACC15 !important;
+  background: #FACC15 !important;
+  border-color: #FACC15 !important;
+  color: #374151 !important;
+}
+
+.btn-primary:hover,
+.btn-hub:hover,
+button[type="submit"]:hover,
+.btn-search:hover {
+  background-color: #FDE047 !important;
+  background: #FDE047 !important;
+  border-color: #FDE047 !important;
+  color: #374151 !important;
+}
+
+/* Force dark grey secondary buttons */
+.btn-secondary,
+.btn-outline-primary {
+  background-color: #374151 !important;
+  border-color: #374151 !important;
+  color: #FACC15 !important;
+}
+
+.btn-secondary:hover {
+  background-color: #4B5563 !important;
+  border-color: #4B5563 !important;
+}
+
+/* Force yellow links everywhere */
+a {
+  color: #FACC15 !important;
+}
+
+a:hover,
+a:focus {
+  color: #FDE047 !important;
+}
+
+/* Except links in navigation (dark grey) */
+nav a,
+.navbar a,
+.site-nav a,
+header a {
+  color: #374151 !important;
+}
+
+/* Force dark grey headings */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  color: #374151 !important;
+}
+
+/* Force dark grey text */
+body,
+p,
+.text-body,
+.property-text {
+  color: #4B5563 !important;
+}
+
+/* Force dark grey hero section */
+.hero,
+.hero-wrap,
+.hero-wrapper,
+.hero-section,
+[class*="hero"] {
+  background-color: #374151 !important;
+  background: #374151 !important;
+}
+
+.hero h1,
+.hero h2,
+.hero p {
+  color: #FFFFFF !important;
+}
+
+/* Force dark grey footer */
+footer,
+.site-footer,
+.footer,
+[class*="footer"] {
+  background-color: #374151 !important;
+  background: #374151 !important;
+}
+
+footer h1, footer h2, footer h3, footer h4, footer h5, footer h6,
+.site-footer h1, .site-footer h2, .site-footer h3, .site-footer h4, .site-footer h5, .site-footer h6 {
+  color: #FACC15 !important;
+}
+
+footer a,
+.site-footer a {
+  color: #9CA3AF !important;
+}
+
+footer a:hover,
+.site-footer a:hover {
+  color: #FACC15 !important;
+}
+
+/* Force yellow on any green backgrounds */
+.bg-primary,
+.bg-hub,
+.bg-green,
+[style*="background: #064635"],
+[style*="background-color: #064635"],
+[style*="background:#064635"],
+[style*="rgb(6, 70, 53)"] {
+  background-color: #FACC15 !important;
+  background: #FACC15 !important;
+}
+
+/* Override inline styles */
+[style*="#064635"] {
+  background-color: #FACC15 !important;
+  color: #374151 !important;
+  border-color: #FACC15 !important;
+}
+
+[style*="#519872"] {
+  background-color: #4B5563 !important;
+  color: #FFFFFF !important;
+}
+
+[style*="#ECB159"] {
+  background-color: #FACC15 !important;
+}
+
+/* Badges */
+.badge.bg-danger,
+.favorites-counter {
+  background-color: #DC2626 !important;
+  color: #FFFFFF !important;
+}
+
+.badge.bg-warning,
+.comparison-counter {
+  background-color: #374151 !important;
+  color: #FACC15 !important;
+}
+
+/* Cards */
+.card-header {
+  background-color: #FACC15 !important;
+  color: #374151 !important;
+}
+
+/* Forms */
+.form-control:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #FACC15 !important;
+  box-shadow: 0 0 0 0.2rem rgba(250, 204, 21, 0.25) !important;
+}
+
+/* Search button specifically */
+.btn-search,
+button.btn-search,
+[class*="search"] button {
+  background-color: #374151 !important;
+  color: #FACC15 !important;
+  border-color: #374151 !important;
+}
+
+/* Override any remaining green */
+*[class*="green"],
+*[class*="Green"],
+*[style*="green"] {
+  background-color: #FACC15 !important;
+}
+
+/* Ensure text on yellow is dark grey */
+.bg-primary,
+.bg-primary *:not(a),
+.navbar,
+.navbar * {
+  color: #374151 !important;
+}
+
+/* Mobile menu */
+.site-mobile-menu {
+  background: #FACC15 !important;
+}
+
+.site-mobile-menu .site-mobile-menu-header {
+  background: #FACC15 !important;
+}
+
+.site-mobile-menu .site-mobile-menu-body {
+  background: #FACC15 !important;
+}
+
+/* Dropdown menus */
+.dropdown-menu {
+  background: #FFFFFF !important;
+}
+
+.dropdown-item {
+  color: #374151 !important;
+}
+
+.dropdown-item:hover {
+  background: #FACC15 !important;
+  color: #374151 !important;
+}
