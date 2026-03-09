@@ -1,18 +1,19 @@
-// FirstCape Configuration
-// DO NOT change existing URLs/paths - keep as SmartHub if that's where assets are hosted!
+// FirstCape Configuration - Updated for Cloudflare Worker
 
 const FIRSTCAPE_CONFIG = {
-  // Airtable Configuration
-  // IMPORTANT: Replace these with your actual Airtable credentials
-  airtableApiKey: 'YOUR_AIRTABLE_API_KEY_HERE', // Get from Airtable account settings
-  airtableBaseId: 'YOUR_AIRTABLE_BASE_ID_HERE', // Get from your Airtable base URL
+  // Cloudflare Worker URL (replaces direct Airtable access)
+  apiProxyUrl: 'https://icy-cherry-d39b.fragrant-sea-e1f1.workers.dev',
   
-  // Table names (update these to match your Airtable base)
+  // NOTE: API credentials are now in Worker environment variables
+  // DO NOT add airtableApiKey or airtableBaseId here!
+  // They are secure in the Worker
+  
+  // Table names in your Airtable base
   tables: {
-    properties: 'Properties', // For sale properties table name
-    rentals: 'Rentals',       // Rental properties table name
-    alerts: 'Alerts',         // User alerts table name
-    analytics: 'Analytics'    // Analytics data table name
+    properties: 'Properties',
+    rentals: 'Rentals',
+    alerts: 'Alerts',
+    analytics: 'Analytics'
   },
   
   // Site Configuration
@@ -44,20 +45,18 @@ const FIRSTCAPE_CONFIG = {
   
   // UI Configuration
   ui: {
-    primaryColor: '#FACC15',      // Bright Yellow
-    secondaryColor: '#374151',    // Dark Grey
-    accentColor: '#FDE047',       // Light Yellow
+    primaryColor: '#FACC15',
+    secondaryColor: '#374151',
+    accentColor: '#FDE047',
     itemsPerPage: 12,
     mapZoom: 12,
-    maxComparison: 4,             // Max properties to compare
-    maxFavorites: 100             // Max favorites to save
+    maxComparison: 4,
+    maxFavorites: 100
   },
   
-  // Image paths - KEEP EXISTING PATHS!
-  // If your images are at smarthubestatemanagement.com, keep those URLs!
+  // Image paths
   imagePaths: {
-    // Update these to match where your actual images are hosted
-    base: 'images/',  // Local images folder
+    base: 'images/',
     properties: 'images/properties/',
     hero: 'images/hero/',
     logos: 'images/logos/'
@@ -67,14 +66,12 @@ const FIRSTCAPE_CONFIG = {
 // Make config available globally
 window.FIRSTCAPE_CONFIG = FIRSTCAPE_CONFIG;
 
-// For debugging
-console.log('FirstCape Config Loaded:', {
-  apiKeySet: !!FIRSTCAPE_CONFIG.airtableApiKey && FIRSTCAPE_CONFIG.airtableApiKey !== 'YOUR_AIRTABLE_API_KEY_HERE',
-  baseIdSet: !!FIRSTCAPE_CONFIG.airtableBaseId && FIRSTCAPE_CONFIG.airtableBaseId !== 'YOUR_AIRTABLE_BASE_ID_HERE',
-  features: FIRSTCAPE_CONFIG.features
-});
+// Log success
+console.log('✅ FirstCape Config Loaded');
+console.log('🔒 API Proxy URL:', FIRSTCAPE_CONFIG.apiProxyUrl);
+console.log('✅ API credentials secured in Cloudflare Worker');
 
-// Export for modules (if using)
+// Export for modules
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = FIRSTCAPE_CONFIG;
 }
