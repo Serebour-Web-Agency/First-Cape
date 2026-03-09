@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Config.js Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .test-box {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .success { color: #10b981; font-weight: bold; font-size: 20px; }
+    .error { color: #ef4444; font-weight: bold; font-size: 20px; }
+    .code { background: #1f2937; color: #10b981; padding: 15px; border-radius: 4px; font-family: monospace; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+  <div class="test-box">
+    <h1>🔍 Config.js Loading Test</h1>
+    <p>This page tests if config.js is loading correctly.</p>
+    <hr>
+    <div id="result"></div>
+  </div>
+
+  <!-- CRITICAL: This loads config.js -->
+  <script src="js/config.js"></script>
+  
+  <!-- Test Script -->
+  <script>
+    console.log('Test page loaded');
+    
+    // Wait a moment for config to load
+    setTimeout(function() {
+      const resultDiv = document.getElementById('result');
+      
+      // Check if FIRSTCAPE_CONFIG exists
+      if (typeof window.FIRSTCAPE_CONFIG !== 'undefined') {
+        // SUCCESS!
+        resultDiv.innerHTML = `
+          <p class="success">✅ SUCCESS! config.js is loading correctly!</p>
+          
+          <h3>Config Details:</h3>
+          <div class="code">
+            API Key Set: ${window.FIRSTCAPE_CONFIG.airtableApiKey !== 'YOUR_AIRTABLE_API_KEY_HERE' ? 'YES ✓' : 'NO ✗'}<br>
+            Base ID Set: ${window.FIRSTCAPE_CONFIG.airtableBaseId !== 'YOUR_AIRTABLE_BASE_ID_HERE' ? 'YES ✓' : 'NO ✗'}<br>
+            Primary Color: ${window.FIRSTCAPE_CONFIG.ui?.primaryColor || 'Not set'}<br>
+            Site Name: ${window.FIRSTCAPE_CONFIG.siteName || 'Not set'}
+          </div>
+          
+          <h3>Full Config Object:</h3>
+          <div class="code">
+            ${JSON.stringify(window.FIRSTCAPE_CONFIG, null, 2)}
+          </div>
+          
+          <hr>
+          <h3>✅ What This Means:</h3>
+          <p>config.js IS loading! The file is in the right place and executing correctly.</p>
+          
+          <p><strong>Next Steps:</strong></p>
+          <ul>
+            <li>If API Key shows "NO ✗" → Add your real Airtable API key to config.js</li>
+            <li>If API Key shows "YES ✓" → Config is fully set up!</li>
+            <li>Check other pages to make sure they also load config.js</li>
+          </ul>
+        `;
+        
+      } else {
+        // FAILED!
+        resultDiv.innerHTML = `
+          <p class="error">❌ FAILED! config.js is NOT loading!</p>
+          
+          <h3>Possible Causes:</h3>
+          <ul>
+            <li><strong>File not in /js/ folder</strong> - Check GitHub</li>
+            <li><strong>Wrong filename</strong> - Must be exactly "config.js" (lowercase)</li>
+            <li><strong>JavaScript error in file</strong> - Check browser console (F12)</li>
+            <li><strong>Path incorrect</strong> - Should be "js/config.js" not "/js/config.js"</li>
+          </ul>
+          
+          <h3>How to Fix:</h3>
+          <ol>
+            <li>Press <strong>F12</strong> to open Developer Tools</li>
+            <li>Go to <strong>Console</strong> tab</li>
+            <li>Look for errors related to config.js</li>
+            <li>Go to <strong>Network</strong> tab and refresh</li>
+            <li>Look for config.js - if it's red (404), file is missing</li>
+          </ol>
+          
+          <hr>
+          <h3>Quick Check:</h3>
+          <p>Go to: <a href="https://github.com/Serebour-Web-Agency/First-Cape/blob/main/js/config.js" target="_blank">
+            https://github.com/Serebour-Web-Agency/First-Cape/blob/main/js/config.js
+          </a></p>
+          <p>If you get "404 Not Found" → File is missing or in wrong place!</p>
+        `;
+      }
+      
+      // Also log to console
+      console.log('=== CONFIG.JS TEST RESULTS ===');
+      console.log('FIRSTCAPE_CONFIG exists:', typeof window.FIRSTCAPE_CONFIG !== 'undefined');
+      if (typeof window.FIRSTCAPE_CONFIG !== 'undefined') {
+        console.log('Config object:', window.FIRSTCAPE_CONFIG);
+      }
+      
+    }, 500);
+  </script>
+
+</body>
+</html>
