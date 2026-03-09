@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FirstCape Diagnostics</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Your CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #f8f9fa; }
+    .diagnostic-box { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .status-ok { color: #10b981; font-weight: bold; }
+    .status-error { color: #ef4444; font-weight: bold; }
+    .test-nav { background-color: #FACC15; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+    .code-block { background: #1f2937; color: #10b981; padding: 15px; border-radius: 4px; font-family: monospace; font-size: 12px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <h1 class="display-4 fw-bold" style="color: #374151;">
+        <i class="fas fa-stethoscope me-3"></i>FirstCape Diagnostics
+      </h1>
+      <p class="lead text-muted">Automatic system check - Running tests...</p>
+    </div>
+
+    <!-- Test Navigation -->
+    <div class="diagnostic-box">
+      <h3 class="mb-3"><i class="fas fa-palette me-2"></i>Navigation Color Test</h3>
+      <div class="test-nav" id="testNav">
+        <div style="color: #374151; font-weight: bold;">
+          <i class="fas fa-home me-2"></i>This should be YELLOW background with DARK GREY text
+        </div>
+      </div>
+      <div id="navColorResult"></div>
+    </div>
+
+    <!-- CSS Files -->
+    <div class="diagnostic-box">
+      <h3 class="mb-3"><i class="fas fa-file-code me-2"></i>CSS Files</h3>
+      <div id="cssStatus"></div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <div class="diagnostic-box">
+      <h3 class="mb-3"><i class="fas fa-code me-2"></i>JavaScript Files</h3>
+      <div id="jsStatus"></div>
+    </div>
+
+    <!-- Config -->
+    <div class="diagnostic-box">
+      <h3 class="mb-3"><i class="fas fa-cog me-2"></i>Configuration</h3>
+      <div id="configStatus"></div>
+    </div>
+
+    <!-- Console Errors -->
+    <div class="diagnostic-box">
+      <h3 class="mb-3"><i class="fas fa-exclamation-triangle me-2"></i>Console Errors</h3>
+      <div id="consoleErrors"></div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="diagnostic-box" style="background: #FEF3C7; border-left: 4px solid #F59E0B;">
+      <h3 class="mb-3"><i class="fas fa-lightbulb me-2"></i>What To Fix</h3>
+      <div id="recommendations"></div>
+    </div>
+
+    <!-- Copy Button -->
+    <div class="text-center mt-4">
+      <button class="btn btn-lg" style="background: #FACC15; color: #374151;" onclick="copyResults()">
+        <i class="fas fa-copy me-2"></i>Copy Results
+      </button>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    let errors = [];
+    const originalError = console.error;
+    console.error = function(...args) {
+      errors.push(args.join(' '));
+      originalError.apply(console, args);
+    };
+
+    let results = {};
+
+    function testNav() {
+      const nav = document.getElementById('testNav');
+      const bg = window.getComputedStyle(nav).backgroundColor;
+      const expected = 'rgb(250, 204, 21)';
+      
+      let html = '<p><strong>Current:</strong> ' + bg + '</p>';
+      if (bg === expected) {
+        html += '<p class="status-ok"><i class="fas fa-check-circle"></i> CORRECT - Yellow!</p>';
+        results.navColor = 'PASS';
+      } else {
+        html += '<p class="status-error"><i class="fas fa-times-circle"></i> WRONG - Should be rgb(250, 204, 21)</p>';
+        results.navColor = 'FAIL - Current: ' + bg;
+      }
+      document.getElementById('navColorResult').innerHTML = html;
+    }
+
+    function testCSS() {
+      const files = [
+        'bootstrap',
+        'font-awesome',
+        'style.css'
+      ];
+      
+      let html = '<ul>';
+      files.forEach(file => {
+        const found = document.querySelector(`link[href*="${file}"]`);
+        if (found) {
+          html += `<li class="status-ok"><i class="fas fa-check"></i> ${file} - Loaded</li>`;
+          results['css_' + file] = 'LOADED';
+        } else {
+          html += `<li class="status-error"><i class="fas fa-times"></i> ${file} - MISSING</li>`;
+          results['css_' + file] = 'MISSING';
+        }
+      });
+      html += '</ul>';
+      document.getElementById('cssStatus').innerHTML = html;
+    }
+
+    function testJS() {
+      let html = '<ul>';
+      
+      if (typeof jQuery !== 'undefined') {
+        html += '<li class="status-ok"><i class="fas fa-check"></i> jQuery - Loaded</li>';
+        results.jquery = 'LOADED';
+      } else {
+        html += '<li class="status-error"><i class="fas fa-times"></i> jQuery - MISSING</li>';
+        results.jquery = 'MISSING';
+      }
+
+      if (typeof bootstrap !== 'undefined') {
+        html += '<li class="status-ok"><i class="fas fa-check"></i> Bootstrap JS - Loaded</li>';
+        results.bootstrapJS = 'LOADED';
+      } else {
+        html += '<li class="status-error"><i class="fas fa-times"></i> Bootstrap JS - MISSING</li>';
+        results.bootstrapJS = 'MISSING';
+      }
+      
+      html += '</ul>';
+      document.getElementById('jsStatus').innerHTML = html;
+    }
+
+    function testConfig() {
+      let html = '';
+      
+      if (typeof window.FIRSTCAPE_CONFIG !== 'undefined') {
+        html += '<p class="status-ok"><i class="fas fa-check"></i> Config loaded</p>';
+        const cfg = window.FIRSTCAPE_CONFIG;
+        
+        if (cfg.airtableApiKey === 'YOUR_AIRTABLE_API_KEY_HERE') {
+          html += '<p class="status-error">⚠️ Airtable API key NOT configured!</p>';
+          results.airtable = 'NOT_CONFIGURED';
+        } else {
+          html += '<p class="status-ok">✓ Airtable API key configured</p>';
+          results.airtable = 'CONFIGURED';
+        }
+      } else {
+        html += '<p class="status-error"><i class="fas fa-times"></i> Config NOT loaded</p>';
+        results.config = 'MISSING';
+      }
+      
+      document.getElementById('configStatus').innerHTML = html;
+    }
+
+    function checkErrors() {
+      setTimeout(() => {
+        let html = '';
+        if (errors.length === 0) {
+          html = '<p class="status-ok"><i class="fas fa-check"></i> No errors</p>';
+        } else {
+          html = '<p class="status-error">' + errors.length + ' error(s):</p>';
+          html += '<div class="code-block">' + errors.join('<br>') + '</div>';
+        }
+        document.getElementById('consoleErrors').innerHTML = html;
+        results.errors = errors;
+      }, 1000);
+    }
+
+    function recommend() {
+      let recs = [];
+      
+      if (!document.querySelector('link[href*="bootstrap"]')) {
+        recs.push('❌ Bootstrap CSS missing - HTML files need Bootstrap CDN link');
+      }
+      
+      if (typeof window.FIRSTCAPE_CONFIG === 'undefined') {
+        recs.push('❌ config.js not loading - Check if file exists in /js/ folder');
+      }
+      
+      const nav = document.getElementById('testNav');
+      const bg = window.getComputedStyle(nav).backgroundColor;
+      if (bg !== 'rgb(250, 204, 21)') {
+        recs.push('❌ Navigation not yellow - HTML needs style="background-color: #FACC15"');
+      }
+      
+      if (recs.length === 0) {
+        recs.push('✅ All tests passed! Try hard refresh (Ctrl+Shift+R)');
+      }
+      
+      let html = '<ol>';
+      recs.forEach(r => html += '<li>' + r + '</li>');
+      html += '</ol>';
+      
+      document.getElementById('recommendations').innerHTML = html;
+      results.recommendations = recs;
+    }
+
+    function copyResults() {
+      const text = JSON.stringify(results, null, 2);
+      navigator.clipboard.writeText(text);
+      alert('✅ Results copied! Paste them to share.');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        testNav();
+        testCSS();
+        testJS();
+        testConfig();
+        checkErrors();
+        recommend();
+        console.log('DIAGNOSTIC RESULTS:', results);
+      }, 500);
+    });
+  </script>
+
+</body>
+</html>
