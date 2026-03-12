@@ -4,7 +4,7 @@ const FIRSTCAPE_CONFIG = {
   
   tables: {
     properties: 'Properties',
-    rentals: 'Rentals',
+    rentals: 'Properties',
     alerts: 'Alerts',
     analytics: 'Analytics'
   },
