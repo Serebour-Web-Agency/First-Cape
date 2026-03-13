@@ -175,23 +175,19 @@
     let offset = null;
 
     do {
-      const url = new URL(baseUrl);
-      // Filter by Listing Type (Buy or Rent) and only Active listings
-      url.searchParams.set(
-        'filterByFormula',
-        `AND({Listing Type}='${listingTypeFilter}',{Status}='Active')`
-      );
-      // Only fetch fields we actually need (faster, smaller payload)
+      // Build query string manually — URLSearchParams encodes [] as %5B%5D
+      // which some proxies mishandle. Manual encoding keeps fields[] intact.
+      const filter = encodeURIComponent(`AND({Listing Type}='${listingTypeFilter}',{Status}='Active')`);
       const fields = [
         'Property Name', 'Address', 'City', 'State/Province', 'Country',
         'Property Type', 'Status', 'Bedrooms', 'Bathrooms', 'Size (sq ft)',
         'Price', 'Listing Type', 'CDN Main Image URL', 'Main Image', 'Photos', 'Slug'
       ];
-      fields.forEach(f => url.searchParams.append('fields[]', f));
+      const fieldParams = fields.map(f => `fields%5B%5D=${encodeURIComponent(f)}`).join('&');
+      let qs = `filterByFormula=${filter}&${fieldParams}`;
+      if (offset) qs += `&offset=${encodeURIComponent(offset)}`;
 
-      if (offset) url.searchParams.set('offset', offset);
-
-      const response = await fetch(url.toString());
+      const response = await fetch(`${baseUrl}?${qs}`);
       if (!response.ok) {
         const err = await response.json();
         throw new Error(`Worker error ${response.status}: ${JSON.stringify(err)}`);
