@@ -92,7 +92,7 @@
               <span class="fw-bold fs-5" style="color:#374151;">${price}</span>
               <a href="${detailUrl}"
                  class="btn btn-sm fw-semibold"
-                 style="background:#FACC15;color:#374151;border:none;">
+                 style="background:#FACC15;color:#374151 !important;border:none;"
                 View Details
               </a>
             </div>
