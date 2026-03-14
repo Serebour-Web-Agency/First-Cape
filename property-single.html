@@ -91,6 +91,7 @@ Features:
   .page-inner .container { position:relative; z-index:2; }
   .breadcrumb { background:transparent; padding:0; }
   .breadcrumb-item a { color:rgba(255,255,255,0.8); }
+  .modal-backdrop { display: none !important; }
   .breadcrumb-item.active { color:rgba(255,255,255,0.6); }
 </style>
 
@@ -590,65 +591,6 @@ Features:
     </div>
   </div>
 
-  <!-- CANONICAL LANDLORD MODAL -->
-  <div id="landlord-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="landlordModalTitle">
-    <div class="modal-shell">
-      <button class="modal-shell__close modal-close" aria-label="Close">×</button>
-      
-      <div id="landlord-form-view" style="display: block;">
-        <h2 id="landlordModalTitle">List Your Property with FirstCape</h2>
-        <p>Tell us about your property and we'll reach out within one business day with a management proposal.</p>
-
-        <form id="landlord-form">
-          <div class="modal-form-field">
-            <label for="landlordService">Service Required *</label>
-            <select id="landlordService" name="service" required aria-required="true">
-              <option value="">Select a service</option>
-              <option value="Property Management">Property Management</option>
-              <option value="Tenant Finding">Tenant Finding Only</option>
-              <option value="Property Sales">Property Sales</option>
-              <option value="Maintenance">Maintenance & Repairs</option>
-              <option value="Consultation">General Consultation</option>
-            </select>
-          </div>
-
-          <div class="modal-form-field">
-            <label for="landlordFullName">Full Name *</label>
-            <input id="landlordFullName" name="fullname" type="text" required aria-required="true" placeholder="Enter your full name">
-          </div>
-
-          <div class="modal-form-field">
-            <label for="landlordPhone">Phone / WhatsApp *</label>
-            <input id="landlordPhone" name="phone" type="tel" required aria-required="true" placeholder="+233 or 0XX XXX XXXX">
-          </div>
-
-          <div class="modal-form-field">
-            <label for="landlordEmail">Email (optional)</label>
-            <input id="landlordEmail" name="email" type="email" placeholder="your@email.com">
-          </div>
-
-          <div class="modal-form-field">
-            <label for="landlordLocation">City / Region *</label>
-            <input id="landlordLocation" name="location" type="text" required aria-required="true" placeholder="e.g. East Legon, Kumasi, Tema">
-          </div>
-
-          <div class="modal-form-field">
-            <label for="landlordNotes">Property Details</label>
-            <textarea id="landlordNotes" name="notes" rows="4" placeholder="Tell us about your property: type, bedrooms, bathrooms, expected price/rent, availability date, etc."></textarea>
-          </div>
-
-          <button type="submit" class="btn-hub">Submit Request</button>
-
-          <div id="landlord-error" class="error-message" role="alert" aria-live="assertive"></div>
-        </form>
-      </div>
-
-      <div id="landlord-thankyou" class="modal-success-message" style="display: none;">
-        <h3 style="margin-top: 0; color: #065f46;">Thank You!</h3>
-        <p style="margin-bottom: 0;">We've received your request. Our team will contact you within one business day to discuss your property management needs.</p>
-      </div>
-    </div>
-  </div>
 
   <!-- Footer -->
   <footer class="py-4 mt-5" style="background:#374151;color:white;">
@@ -714,7 +656,7 @@ Features:
       if (main) { main.src = images[0]; main.alt = 'Property photo 1'; }
       if (thumbsEl) {
         thumbsEl.innerHTML = images.map(function(src,i){
-          return '<img src="'+src+'" style="width:70px;height:55px;object-fit:cover;cursor:pointer;border:2px solid '+(i===0?'#FACC15':'#ddd')+';border-radius:4px;margin:2px;" onerror="this.style.display='none'">';
+          return '<img src="'+src+'" style="width:70px;height:55px;object-fit:cover;cursor:pointer;border:2px solid '+(i===0?'#FACC15':'#ddd')+';border-radius:4px;margin:2px;" onerror="this.style.display=\'none\'">';
         }).join('');
         thumbsEl.querySelectorAll('img').forEach(function(t,i){
           t.addEventListener('click', function(){
@@ -805,7 +747,7 @@ Features:
   </script>
 
   <!-- Panzoom library for interactive SVG floor plan -->
-<script src="https://unpkg.com/panzoom@9.4.3/dist/panzoom.min.js"></script>
+
   </div>
 </body>
 
