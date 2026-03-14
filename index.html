@@ -62,6 +62,8 @@
           <li class="nav-item"><a class="nav-link fw-semibold " href="rentals.html" style="color: #374151;">Rent</a></li>
           <li class="nav-item"><a class="nav-link fw-semibold " href="landlords.html" style="color: #374151;">Landlords</a></li>
           <li class="nav-item"><a class="nav-link fw-semibold " href="services.html" style="color: #374151;">Services</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="blog.html" style="color: #374151;">Insights</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="resources.html" style="color: #374151;">Resources</a></li>
           <li class="nav-item"><a class="nav-link fw-semibold " href="about.html" style="color: #374151;">About</a></li>
           <li class="nav-item"><a class="nav-link fw-semibold " href="contact.html" style="color: #374151;">Contact</a></li>
           <li class="nav-item ms-3">
@@ -242,42 +244,6 @@
     </div>
   </section>
 
-  <script>
-  (function() {
-    var config = window.FIRSTCAPE_CONFIG;
-    if (!config || !config.apiProxyUrl) return;
-    var base = config.apiProxyUrl.replace(/\/$/, '');
-    var filter = encodeURIComponent("{Status}='Published'");
-    fetch(base + '/articles?filterByFormula=' + filter + '&maxRecords=100')
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        var el = document.getElementById('homeArticles');
-        if (!el) return;
-        var records = (data.records || []).sort(function(a,b){
-          return new Date(b.fields['Published Date']||0) - new Date(a.fields['Published Date']||0);
-        }).slice(0,3);
-        if (records.length === 0) {
-          el.innerHTML = '<div class="col-12 text-center text-muted py-3">No articles yet — check back soon.</div>';
-          return;
-        }
-        el.innerHTML = records.map(function(r) {
-          var f = r.fields;
-          var img = f['Cover Image URL'] || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80';
-          var date = f['Published Date'] ? new Date(f['Published Date']).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
-          return '<div class="col-md-4">' +
-            '<div class="card h-100 border-0 shadow-sm" style="cursor:pointer;" onclick="location.href='article.html?id=' + r.id + ''">' +
-            '<img src="' + img + '" class="card-img-top" style="height:180px;object-fit:cover;">' +
-            '<div class="card-body p-3">' +
-            (f['Category'] ? '<span style="font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:10px;background:#FACC15;color:#374151;">' + f['Category'] + '</span>' : '') +
-            '<h6 class="fw-bold mt-2 mb-1" style="color:#374151;">' + (f['Title'] || '') + '</h6>' +
-            '<p class="text-muted small mb-0">' + (f['Summary'] || '').substring(0,90) + '...</p>' +
-            '</div></div></div>';
-        }).join('');
-      })
-      .catch(function() {});
-  })();
-  </script>
-
   <!-- Footer -->
   <footer class="py-5" style="background: #374151; color: white;">
     <div class="container">
@@ -347,7 +313,7 @@
           var img = f['Cover Image URL'] || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80';
           var date = f['Published Date'] ? new Date(f['Published Date']).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
           return '<div class="col-md-4">' +
-            '<div class="card h-100 border-0 shadow-sm" style="cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''" onclick="location.href='article.html?id=' + r.id + ''">' +
+            '<div class="card h-100 border-0 shadow-sm" style="cursor:pointer;transition:transform 0.2s;" onclick="location.href=\'article.html?id=' + r.id + '\'">' +
             '<img src="' + img + '" class="card-img-top" style="height:180px;object-fit:cover;">' +
             '<div class="card-body p-3">' +
             (f['Category'] ? '<span style="font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:10px;background:#FACC15;color:#374151;display:inline-block;margin-bottom:6px;">' + f['Category'] + '</span>' : '') +
