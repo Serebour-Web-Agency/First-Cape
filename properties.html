@@ -197,7 +197,19 @@
         <p class="text-muted">Try adjusting your filters or searching a different city.</p>
       </div>
       
-      <!-- Properties Grid -->
+      <!-- No Results Alert Prompt -->
+      <div id="noResultsAlertPrompt" class="card border-0 shadow-sm mt-4" style="display:none;">
+        <div class="card-body p-4 text-center">
+          <i class="fas fa-bell fa-2x mb-3" style="color:#FACC15;"></i>
+          <h5 class="fw-bold mb-2" style="color:#374151;">No properties found right now</h5>
+          <p class="text-muted mb-3">Want to be notified when a matching property becomes available?</p>
+          <a id="setAlertBtn" href="alerts.html" class="btn fw-bold" style="background:#374151;color:#FACC15;border:none;">
+            <i class="fas fa-bell me-2"></i>Set Up an Alert
+          </a>
+        </div>
+      </div>
+
+            <!-- Properties Grid -->
       <div id="propertiesGrid" class="row g-4 d-none">
         <!-- Properties will be inserted here by JavaScript -->
       </div>
