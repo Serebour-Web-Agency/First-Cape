@@ -289,28 +289,8 @@
   
   <!-- Properties Page Script -->
   <script>
-  // Start fetching immediately — don't wait for DOMContentLoaded
-  var allRecords = [];
-  var _fetchStarted = false;
-
-  function _startFetch() {
-    if (_fetchStarted) return;
-    if (!window.FIRSTCAPE_CONFIG || !window.FIRSTCAPE_CONFIG.apiProxyUrl) return;
-    _fetchStarted = true;
-    fetchPage(null);
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    var loadingIndicator = document.getElementById('loadingIndicator');
-    var errorMessage = document.getElementById('errorMessage');
-    var grid = document.getElementById('propertiesGrid');
-    var noResults = document.getElementById('noResults');
-
-    if (!window.FIRSTCAPE_CONFIG || !window.FIRSTCAPE_CONFIG.apiProxyUrl) {
-      loadingIndicator.classList.add('d-none');
-      errorMessage.classList.remove('d-none');
-      return;
-    }
+  (function() {
+    var allRecords = [];
 
     function getImage(f) {
       if (f['CDN Main Image URL']) return f['CDN Main Image URL'];
@@ -340,18 +320,18 @@
     }
 
     function applyFilters() {
-      var beds = document.getElementById('bedroomsFilter').value;
-      var baths = document.getElementById('bathroomsFilter').value;
-      var type = document.getElementById('typeFilter').value;
-      var search = (document.getElementById('searchInput').value || '').toLowerCase();
-      var sort = document.getElementById('sortFilter').value;
+      var beds = (document.getElementById('bedroomsFilter') || {}).value || '';
+      var baths = (document.getElementById('bathroomsFilter') || {}).value || '';
+      var type = (document.getElementById('typeFilter') || {}).value || '';
+      var search = ((document.getElementById('searchInput') || {}).value || '').toLowerCase();
+      var sort = (document.getElementById('sortFilter') || {}).value || 'newest';
       var filtered = allRecords.filter(function(r) {
         var f = r.fields;
         if (beds && String(f['Bedrooms']) !== beds) return false;
         if (baths && String(f['Bathrooms']) !== baths) return false;
         if (type && f['Property Type'] !== type) return false;
         if (search) {
-          var hay = ((f['Property Name'] || '') + ' ' + (f['City'] || '') + ' ' + (f['Address'] || '')).toLowerCase();
+          var hay = ((f['Property Name'] || '') + ' ' + (f['City'] || '')).toLowerCase();
           if (hay.indexOf(search) === -1) return false;
         }
         return true;
@@ -365,36 +345,31 @@
     }
 
     function renderGrid(records) {
-      loadingIndicator.classList.add('d-none');
+      var loadingIndicator = document.getElementById('loadingIndicator');
+      var grid = document.getElementById('propertiesGrid');
+      var noResults = document.getElementById('noResults');
+      if (loadingIndicator) loadingIndicator.classList.add('d-none');
       if (!records || records.length === 0) {
-        noResults.classList.remove('d-none');
-        grid.classList.add('d-none');
+        if (noResults) noResults.classList.remove('d-none');
+        if (grid) grid.classList.add('d-none');
       } else {
-        noResults.classList.add('d-none');
-        grid.innerHTML = records.map(renderCard).join('');
-        grid.classList.remove('d-none');
+        if (noResults) noResults.classList.add('d-none');
+        if (grid) {
+          grid.innerHTML = records.map(renderCard).join('');
+          grid.classList.remove('d-none');
+        }
       }
     }
 
-    function refresh() { renderGrid(applyFilters()); }
-
-    ['bedroomsFilter','bathroomsFilter','typeFilter','sortFilter'].forEach(function(id) {
-      var el = document.getElementById(id);
-      if (el) el.addEventListener('change', refresh);
-    });
-    document.getElementById('searchBtn').addEventListener('click', refresh);
-    document.getElementById('refreshBtn').addEventListener('click', function() {
-      document.getElementById('searchInput').value = '';
-      refresh();
-    });
-
     function fetchPage(offset) {
-      var fields = ['Property Name','Price','City','Bedrooms','Bathrooms','Size (sq ft)',
-                    'CDN Main Image URL','Main Image','Photos','Property Type','Listing Type'];
+      var config = window.FIRSTCAPE_CONFIG;
+      if (!config || !config.apiProxyUrl) return;
+      var fields = ['Property Name','Price','City','Bedrooms','Bathrooms',
+                    'Size (sq ft)','CDN Main Image URL','Main Image','Photos','Property Type'];
       var fieldParams = fields.map(function(f) {
         return 'fields%5B%5D=' + encodeURIComponent(f);
       }).join('&');
-      var url = window.FIRSTCAPE_CONFIG.apiProxyUrl +
+      var url = config.apiProxyUrl +
         '?filterByFormula=' + encodeURIComponent("AND({Listing Type}='Buy',{Status}='Active')") +
         '&pageSize=100&' + fieldParams;
       if (offset) url += '&offset=' + encodeURIComponent(offset);
@@ -406,22 +381,35 @@
           else { renderGrid(applyFilters()); }
         })
         .catch(function(err) {
-          loadingIndicator.classList.add('d-none');
-          errorMessage.classList.remove('d-none');
-          errorMessage.innerHTML = '<h5>Failed to load properties</h5><p class="mb-0">' + err.message + '</p>';
+          var loadingIndicator = document.getElementById('loadingIndicator');
+          var errorMessage = document.getElementById('errorMessage');
+          if (loadingIndicator) loadingIndicator.classList.add('d-none');
+          if (errorMessage) {
+            errorMessage.classList.remove('d-none');
+            errorMessage.innerHTML = '<h5>Failed to load properties</h5><p class="mb-0">' + err.message + '</p>';
+          }
         });
     }
 
-    // Kick off fetch now if config already loaded, else it was called above
-    _startFetch();
-  });
+    // Start fetch immediately
+    fetchPage(null);
 
-  // Also try immediately in case DOMContentLoaded already fired
-  if (document.readyState === 'loading') {
-    // fetchPage will be called in DOMContentLoaded above
-  } else {
-    _startFetch();
-  }
+    // Wire up filters after DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+      ['bedroomsFilter','bathroomsFilter','typeFilter','sortFilter'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('change', function() { renderGrid(applyFilters()); });
+      });
+      var searchBtn = document.getElementById('searchBtn');
+      if (searchBtn) searchBtn.addEventListener('click', function() { renderGrid(applyFilters()); });
+      var refreshBtn = document.getElementById('refreshBtn');
+      if (refreshBtn) refreshBtn.addEventListener('click', function() {
+        var si = document.getElementById('searchInput');
+        if (si) si.value = '';
+        renderGrid(applyFilters());
+      });
+    });
+  })();
   </script>
 
   <!-- Favorites -->
