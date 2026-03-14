@@ -38,8 +38,7 @@
   }
 
   function buildDetailUrl(record) {
-    const slug = record.fields['Slug'] || record.id;
-    return `property-detail.html?id=${encodeURIComponent(slug)}`;
+    return `property-single.html?id=${encodeURIComponent(record.id)}`;
   }
 
   // ─── Card renderer ───────────────────────────────────────────────────────
