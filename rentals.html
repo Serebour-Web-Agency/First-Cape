@@ -65,39 +65,111 @@
     </div>
   </nav>
 
-  <section class="py-5" id="page-hero" style="min-height: 50vh; display: flex; align-items: center;">
+  <!-- Hero + Search Section -->
+  <section id="page-hero" class="py-5">
     <div class="container">
-      <div class="text-center text-white">
-        <h1 class="display-4 fw-bold mb-3">Rental Properties in Ghana</h1>
-        <p class="lead mb-0">Find your perfect rental home — apartments, houses and more</p>
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="text-center mb-4">
+            <h1 class="display-5 fw-bold text-white mb-3">Rental Properties in Ghana</h1>
+            <p class="lead text-white-50">Find your perfect rental home</p>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="card shadow-lg border-0 mb-4">
+            <div class="card-body p-4">
+              <div class="row g-3">
+                <div class="col-lg-8">
+                  <input type="text" class="form-control form-control-lg" id="searchInput"
+                         placeholder="Search by city (e.g. East Legon, Kumasi, Cantonments)">
+                </div>
+                <div class="col-lg-4">
+                  <button class="btn btn-lg w-100 fw-bold" id="searchBtn"
+                          style="background:#374151;color:#FACC15;border:none;">
+                    <i class="fas fa-search me-2"></i>Search
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="card shadow-lg border-0">
+            <div class="card-body p-4">
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold text-uppercase small">Bedrooms</label>
+                  <select class="form-select" id="bedroomsFilter">
+                    <option value="">Any</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5+</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold text-uppercase small">Bathrooms</label>
+                  <select class="form-select" id="bathroomsFilter">
+                    <option value="">Any</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4+</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold text-uppercase small">Type</label>
+                  <select class="form-select" id="typeFilter">
+                    <option value="">Any</option>
+                    <option value="House">House</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="Villa">Villa</option>
+                    <option value="Land">Land</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col">
+                  <button class="btn fw-bold" id="refreshBtn"
+                          style="background:#374151;color:#FACC15;border:none;">
+                    <i class="fas fa-sync-alt me-2"></i>Refresh
+                  </button>
+                </div>
+                <div class="col text-end">
+                  <label class="form-label fw-semibold me-2">Sort by:</label>
+                  <select class="form-select d-inline-block w-auto" id="sortFilter">
+                    <option value="newest">Newest First</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- Rentals Grid -->
   <section class="py-5">
     <div class="container">
-      <!-- Loading Indicator -->
       <div id="loadingIndicator" class="text-center py-5">
-        <div class="spinner-border" style="color: #FACC15; width: 3rem; height: 3rem;" role="status">
+        <div class="spinner-border" style="color:#FACC15;width:3rem;height:3rem;" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
         <p class="mt-3 text-muted">Loading rentals...</p>
       </div>
-
-      <!-- Error Message -->
       <div id="errorMessage" class="alert alert-warning d-none" role="alert">
         <h5 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i>Unable to Load Rentals</h5>
-        <p class="mb-0">Please check your configuration in config.js or try again later.</p>
+        <p class="mb-0">Please try again later.</p>
       </div>
-
-      <!-- No Results -->
       <div id="noResults" class="text-center py-5 d-none">
-        <i class="fas fa-search fa-3x mb-3" style="color: #9CA3AF;"></i>
-        <h4 class="mb-3" style="color: #374151;">No Rentals Found</h4>
-        <p class="text-muted">Check back soon for available rental properties.</p>
+        <i class="fas fa-search fa-3x mb-3" style="color:#9CA3AF;"></i>
+        <h4 class="mb-3" style="color:#374151;">No Rentals Found</h4>
+        <p class="text-muted">Try adjusting your filters or searching a different city.</p>
       </div>
-
-      <!-- Properties Grid -->
       <div id="propertiesGrid" class="row g-4 d-none"></div>
     </div>
   </section>
@@ -153,26 +225,44 @@
       return;
     }
 
-    // Call loadRentals() if airtable.js exposes it, else fall back to loadProperties()
-    if (typeof loadRentals === 'function') {
-      loadRentals();
-    } else if (typeof loadProperties === 'function') {
-      loadProperties();
-    } else {
+    // Try calling loadRentals / loadProperties
+    function tryLoad() {
+      if (typeof window.loadRentals === 'function') { window.loadRentals(); return true; }
+      if (typeof window.loadProperties === 'function') { window.loadProperties(); return true; }
+      return false;
+    }
+
+    if (!tryLoad()) {
       setTimeout(function() {
-        if (typeof loadRentals === 'function') {
-          loadRentals();
-        } else if (typeof loadProperties === 'function') {
-          loadProperties();
-        } else {
-          loadingIndicator.classList.add('d-none');
-          errorMessage.classList.remove('d-none');
-          errorMessage.innerHTML = `
-            <h5 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i>Script Error</h5>
-            <p class="mb-0"><code>airtable.js</code> did not expose a <code>loadRentals()</code> or <code>loadProperties()</code> function. Check the console for errors.</p>
-          `;
+        if (!tryLoad()) {
+          // Direct fetch fallback
+          const workerUrl = window.FIRSTCAPE_CONFIG.apiProxyUrl;
+          const filter = encodeURIComponent("AND({Listing Type}='Rent',{Status}='Active')");
+          fetch(workerUrl + '?filterByFormula=' + filter + '&maxRecords=50')
+            .then(r => r.json())
+            .then(data => {
+              loadingIndicator.classList.add('d-none');
+              const grid = document.getElementById('propertiesGrid');
+              const noResults = document.getElementById('noResults');
+              if (!data.records || data.records.length === 0) {
+                noResults.classList.remove('d-none');
+                return;
+              }
+              grid.innerHTML = data.records.map(function(r) {
+                const f = r.fields;
+                const img = f['CDN Main Image URL'] || (f['Main Image'] && f['Main Image'][0] && f['Main Image'][0].url) || 'images/placeholder.jpg';
+                const price = f['Price'] ? 'GH₵' + Number(f['Price']).toLocaleString() + '/mo' : 'Price on Request';
+                return '<div class="col-md-6 col-lg-4"><div class="card h-100 shadow border-0"><img src="' + img + '" class="card-img-top" style="height:200px;object-fit:cover;" onerror="this.src='images/placeholder.jpg'"><div class="card-body"><h6 class="fw-bold">' + (f['Property Name'] || 'Property') + '</h6><div class="fw-bold mb-2" style="color:#FACC15;">' + price + '</div><div class="text-muted small">' + (f['City'] || '') + (f['Bedrooms'] ? ' &bull; ' + f['Bedrooms'] + ' bed' : '') + (f['Bathrooms'] ? ' &bull; ' + f['Bathrooms'] + ' bath' : '') + '</div><a href="property-single.html?id=' + r.id + '" class="btn btn-sm mt-3 fw-bold" style="background:#374151;color:#FACC15;">View Details</a></div></div></div>';
+              }).join('');
+              grid.classList.remove('d-none');
+            })
+            .catch(function(err) {
+              loadingIndicator.classList.add('d-none');
+              errorMessage.classList.remove('d-none');
+              errorMessage.innerHTML = '<h5>Failed to load rentals</h5><p>' + err.message + '</p>';
+            });
         }
-      }, 100);
+      }, 300);
     }
   });
   </script>
