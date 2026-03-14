@@ -401,5 +401,44 @@
   <!-- Analytics -->
   <script src="js/analytics.js"></script>
 
+
+  <script>
+  // Show alert prompt when no results, pre-fill URL with current filters
+  (function() {
+    var origRenderGrid = window._origRenderGrid;
+
+    // Patch renderGrid to show alert prompt on no results
+    document.addEventListener('DOMContentLoaded', function() {
+      var noResults = document.getElementById('noResults');
+      var promptEl = document.getElementById('noResultsAlertPrompt');
+      var alertBtn = document.getElementById('setAlertBtn');
+
+      if (!noResults || !promptEl) return;
+
+      // Watch for noResults becoming visible
+      var observer = new MutationObserver(function() {
+        if (!noResults.classList.contains('d-none')) {
+          // Build alert URL with current filter values
+          var p = new URLSearchParams();
+          var listingType = window.location.pathname.includes('rental') ? 'Rent' : 'Buy';
+          p.set('listingType', listingType);
+          var city = document.getElementById('searchInput') ? document.getElementById('searchInput').value : '';
+          var beds = document.getElementById('bedroomsFilter') ? document.getElementById('bedroomsFilter').value : '';
+          var baths = document.getElementById('bathroomsFilter') ? document.getElementById('bathroomsFilter').value : '';
+          var type = document.getElementById('typeFilter') ? document.getElementById('typeFilter').value : '';
+          if (city) p.set('city', city);
+          if (beds) p.set('bedrooms', beds);
+          if (baths) p.set('bathrooms', baths);
+          if (type) p.set('type', type);
+          if (alertBtn) alertBtn.href = 'alerts.html?' + p.toString();
+          promptEl.style.display = 'block';
+        } else {
+          promptEl.style.display = 'none';
+        }
+      });
+      observer.observe(noResults, { attributes: true, attributeFilter: ['class'] });
+    });
+  })();
+  </script>
 </body>
 </html>

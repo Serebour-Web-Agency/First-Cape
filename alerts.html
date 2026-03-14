@@ -2,133 +2,271 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Set up alerts for new properties">
   <title>Property Alerts | FirstCape Estate Management</title>
-  
   <link rel="icon" type="image/png" href="images/favicon.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
-  
-  <style>body { font-family: 'Inter', sans-serif; }</style>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    #page-hero {
+      background-color: #374151 !important;
+      background-image: linear-gradient(rgba(20,20,20,0.6), rgba(20,20,20,0.6)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&q=80') !important;
+      background-size: cover !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
+      min-height: 40vh;
+      display: flex;
+      align-items: center;
+    }
+  </style>
 </head>
 <body>
 
-
+  <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: #FACC15;">
     <div class="container">
       <a class="navbar-brand fw-bold" href="index.html" style="color: #374151;">
         <i class="fas fa-home me-2"></i>FirstCape Estate Management
       </a>
-      
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: #374151;">
         <span class="navbar-toggler-icon"></span>
       </button>
-      
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link fw-semibold " href="index.html" style="color: #374151;">Home</a></li>
-          <li class="nav-item"><a class="nav-link fw-semibold " href="properties.html" style="color: #374151;">Buy</a></li>
-          <li class="nav-item"><a class="nav-link fw-semibold " href="rentals.html" style="color: #374151;">Rent</a></li>
-          <li class="nav-item"><a class="nav-link fw-semibold " href="landlords.html" style="color: #374151;">Landlords</a></li>
-          <li class="nav-item"><a class="nav-link fw-semibold " href="services.html" style="color: #374151;">Services</a></li>
-          <li class="nav-item"><a class="nav-link fw-semibold " href="about.html" style="color: #374151;">About</a></li>
-          <li class="nav-item"><a class="nav-link fw-semibold " href="contact.html" style="color: #374151;">Contact</a></li>
-          
+          <li class="nav-item"><a class="nav-link fw-semibold" href="index.html" style="color: #374151;">Home</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="properties.html" style="color: #374151;">Buy</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="rentals.html" style="color: #374151;">Rent</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="landlords.html" style="color: #374151;">Landlords</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="services.html" style="color: #374151;">Services</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="about.html" style="color: #374151;">About</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="contact.html" style="color: #374151;">Contact</a></li>
           <li class="nav-item ms-3">
             <a class="nav-link" href="favorites.html" style="color: #374151;">
-              <i class="fas fa-heart"></i> <span class="badge bg-danger favorites-counter">0</span>
+              <i class="fas fa-heart"></i><span class="badge bg-danger favorites-counter">0</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="comparison.html" style="color: #374151;">
-              <i class="fas fa-balance-scale"></i> <span class="badge bg-warning comparison-counter">0</span>
+              <i class="fas fa-balance-scale"></i><span class="badge bg-warning comparison-counter">0</span>
             </a>
           </li>
-          <li class="nav-item"><a class="nav-link" href="alerts.html" style="color: #374151;"><i class="fas fa-bell"></i></a></li>
+          <li class="nav-item"><a class="nav-link active" href="alerts.html" style="color: #374151;"><i class="fas fa-bell"></i></a></li>
           <li class="nav-item"><a class="nav-link" href="analytics.html" style="color: #374151;"><i class="fas fa-chart-bar"></i></a></li>
         </ul>
       </div>
     </div>
   </nav>
 
-
-  <section class="py-5" style="background: linear-gradient(135deg, #374151 0%, #4B5563 100%);">
-    <div class="container text-center text-white">
-      <h1 class="display-4 fw-bold mb-3"><i class="fas fa-bell me-3"></i>Property Alerts</h1>
-      <p class="lead">Get notified when new properties match your criteria</p>
+  <!-- Hero -->
+  <section id="page-hero">
+    <div class="container py-4">
+      <h1 class="text-white fw-bold mb-2"><i class="fas fa-bell me-2" style="color:#FACC15;"></i>Property Alerts</h1>
+      <p class="mb-0" style="color:rgba(255,255,255,0.8);">Get notified when properties matching your criteria become available</p>
     </div>
   </section>
 
+  <!-- Alert Form -->
   <section class="py-5">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <div class="card shadow-lg border-0">
-            <div class="card-body p-5">
-              <h4 class="fw-bold mb-4" style="color: #374151;">Create Alert</h4>
-              <form>
-                <div class="mb-3">
-                  <label class="form-label">Email</label>
-                  <input type="email" class="form-control" required>
+        <div class="col-lg-7">
+
+          <!-- Success state (hidden) -->
+          <div id="alertSuccess" style="display:none;" class="text-center py-5">
+            <div style="background:#374151;color:#FACC15;padding:40px;border-radius:12px;">
+              <i class="fas fa-check-circle fa-3x mb-3 d-block"></i>
+              <h4 class="mb-2">Alert Set!</h4>
+              <p class="mb-3" style="color:rgba(255,255,255,0.8);">We'll notify you as soon as a matching property becomes available.</p>
+              <a href="index.html" class="btn fw-bold" style="background:#FACC15;color:#374151;">Back to Home</a>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <div id="alertFormWrap" class="card shadow border-0">
+            <div class="card-body p-4 p-lg-5">
+              <h4 class="fw-bold mb-1" style="color:#374151;">Set Up Your Alert</h4>
+              <p class="text-muted mb-4">Fill in your criteria and we'll contact you when a match is found.</p>
+
+              <form id="alertForm">
+                <div class="row g-3">
+
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Full Name *</label>
+                    <input type="text" class="form-control" id="alertName" placeholder="Your full name" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Phone / WhatsApp *</label>
+                    <input type="tel" class="form-control" id="alertPhone" placeholder="+233 or 0XX XXX XXXX" required>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label fw-semibold">Email</label>
+                    <input type="email" class="form-control" id="alertEmail" placeholder="your@email.com">
+                  </div>
+
+                  <div class="col-12"><hr class="my-1"><p class="fw-semibold mb-0" style="color:#374151;">Property Criteria</p></div>
+
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">I'm looking to</label>
+                    <select class="form-select" id="alertListingType">
+                      <option value="Rent">Rent</option>
+                      <option value="Buy">Buy</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">City / Area</label>
+                    <input type="text" class="form-control" id="alertLocation" placeholder="e.g. East Legon, Kumasi">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Property Type</label>
+                    <select class="form-select" id="alertPropertyType">
+                      <option value="">Any</option>
+                      <option value="Apartment">Apartment</option>
+                      <option value="House">House</option>
+                      <option value="Land">Land</option>
+                      <option value="Commercial">Commercial</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label fw-semibold">Min Bedrooms</label>
+                    <select class="form-select" id="alertBedrooms">
+                      <option value="">Any</option>
+                      <option value="1">1+</option>
+                      <option value="2">2+</option>
+                      <option value="3">3+</option>
+                      <option value="4">4+</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label fw-semibold">Min Bathrooms</label>
+                    <select class="form-select" id="alertBathrooms">
+                      <option value="">Any</option>
+                      <option value="1">1+</option>
+                      <option value="2">2+</option>
+                      <option value="3">3+</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Max Price (GH₵)</label>
+                    <input type="number" class="form-control" id="alertMaxPrice" placeholder="e.g. 500000">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">How often to notify</label>
+                    <select class="form-select" id="alertFrequency">
+                      <option value="Instant">Instantly (as soon as listed)</option>
+                      <option value="Daily">Daily digest</option>
+                      <option value="Weekly">Weekly summary</option>
+                    </select>
+                  </div>
+
+                  <div class="col-12 mt-2">
+                    <button type="submit" class="btn btn-lg w-100 fw-bold" style="background:#374151;color:#FACC15;border:none;">
+                      <i class="fas fa-bell me-2"></i>Create Alert
+                    </button>
+                  </div>
+
+                  <div id="alertError" class="col-12 d-none">
+                    <div class="alert alert-danger mb-0">Something went wrong. Please try again.</div>
+                  </div>
+
                 </div>
-                <div class="mb-3">
-                  <label class="form-label">Location</label>
-                  <input type="text" class="form-control" placeholder="e.g. East Legon">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Property Type</label>
-                  <select class="form-select">
-                    <option value="">Any</option>
-                    <option value="house">House</option>
-                    <option value="apartment">Apartment</option>
-                  </select>
-                </div>
-                <button type="submit" class="btn w-100 fw-bold" style="background: #FACC15; color: #374151; border: none;">
-                  <i class="fas fa-bell me-2"></i>Create Alert
-                </button>
               </form>
             </div>
           </div>
+
         </div>
       </div>
     </div>
   </section>
 
-  <footer class="py-5" style="background: #374151; color: white;">
-    <div class="container">
-      <div class="row g-4">
-        <div class="col-md-4">
-          <h5 class="fw-bold mb-3" style="color: #FACC15;"><i class="fas fa-home me-2"></i>FirstCape Estate Management</h5>
-          <p class="text-light">Your trusted partner in real estate management across Ghana.</p>
-        </div>
-        <div class="col-md-4">
-          <h6 class="fw-bold mb-3" style="color: #FACC15;">Quick Links</h6>
-          <ul class="list-unstyled">
-            <li class="mb-2"><a href="privacy-policy.html" class="text-light text-decoration-none">Privacy Policy</a></li>
-            <li class="mb-2"><a href="terms-of-service.html" class="text-light text-decoration-none">Terms of Service</a></li>
-          </ul>
-        </div>
-        <div class="col-md-4">
-          <h6 class="fw-bold mb-3" style="color: #FACC15;">Contact</h6>
-          <p class="text-light mb-2">Abokobi, Accra, Ghana</p>
-          <p class="mb-2"><a href="tel:+233596871452" style="color: #FACC15; text-decoration: none;">+233 59 687 1452</a></p>
-        </div>
+  <!-- Footer -->
+  <footer class="py-4 mt-2" style="background:#374151;color:white;">
+    <div class="container text-center">
+      <div class="mb-3">
+        <a href="privacy-policy.html" class="text-white-50 me-3 text-decoration-none small">Privacy Policy</a>
+        <a href="terms-of-service.html" class="text-white-50 me-3 text-decoration-none small">Terms of Service</a>
+        <a href="contact.html" class="text-white-50 text-decoration-none small">Contact</a>
       </div>
-      <hr class="my-4" style="border-color: #4B5563;">
-      <div class="text-center text-light"><p class="mb-0">&copy; 2026 FirstCape Estate Management. All Rights Reserved.</p></div>
+      <p class="mb-0 text-white-50 small">&copy; 2026 FirstCape Estate Management. All Rights Reserved.</p>
     </div>
   </footer>
 
-
-  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/config.js"></script>
   <script src="js/favorites.js"></script>
   <script src="js/comparison.js"></script>
-  <script src="js/analytics.js"></script>
+
+  <script>
+  // Pre-fill from URL params (e.g. coming from no-results prompt)
+  (function() {
+    var p = new URLSearchParams(window.location.search);
+    if (p.get('listingType')) document.getElementById('alertListingType').value = p.get('listingType');
+    if (p.get('city')) document.getElementById('alertLocation').value = p.get('city');
+    if (p.get('bedrooms')) document.getElementById('alertBedrooms').value = p.get('bedrooms');
+    if (p.get('bathrooms')) document.getElementById('alertBathrooms').value = p.get('bathrooms');
+    if (p.get('type')) document.getElementById('alertPropertyType').value = p.get('type');
+  })();
+
+  document.getElementById('alertForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var btn = this.querySelector('button[type="submit"]');
+    var errEl = document.getElementById('alertError');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Setting Alert...';
+    btn.disabled = true;
+    errEl.classList.add('d-none');
+
+    var workerBase = (window.FIRSTCAPE_CONFIG && window.FIRSTCAPE_CONFIG.apiProxyUrl || '').replace(/\/$/, '');
+    var maxPrice = document.getElementById('alertMaxPrice').value;
+
+    var alertFields = {
+      'Name': document.getElementById('alertName').value,
+      'Phone': document.getElementById('alertPhone').value,
+      'Email': document.getElementById('alertEmail').value,
+      'Location': document.getElementById('alertLocation').value,
+      'Listing Type': document.getElementById('alertListingType').value,
+      'Property Type': document.getElementById('alertPropertyType').value || null,
+      'Min Bedrooms': document.getElementById('alertBedrooms').value ? Number(document.getElementById('alertBedrooms').value) : null,
+      'Min Bathrooms': document.getElementById('alertBathrooms').value ? Number(document.getElementById('alertBathrooms').value) : null,
+      'Price Max': maxPrice ? Number(maxPrice) : null,
+      'Frequency': document.getElementById('alertFrequency').value,
+      'Status': 'Active'
+    };
+
+    // Remove null fields
+    Object.keys(alertFields).forEach(function(k) { if (alertFields[k] === null || alertFields[k] === '') delete alertFields[k]; });
+
+    // Also create a Lead record
+    var leadFields = {
+      'Full Name': alertFields['Name'],
+      'Phone / WhatsApp': alertFields['Phone'],
+      'Email': alertFields['Email'] || '',
+      'City / Region': alertFields['Location'] || '',
+      'Lead Type': 'Notify',
+      'Source Page': 'alerts',
+      'Status': 'New',
+      'Created At': new Date().toISOString().split('T')[0]
+    };
+
+    Promise.all([
+      fetch(workerBase + '/alerts', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(alertFields) }).then(function(r){ return r.json(); }),
+      fetch(workerBase + '/leads',  { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(leadFields) }).then(function(r){ return r.json(); })
+    ])
+    .then(function(results) {
+      if (results[0].id) {
+        document.getElementById('alertFormWrap').style.display = 'none';
+        document.getElementById('alertSuccess').style.display = 'block';
+      } else {
+        throw new Error('No record ID returned');
+      }
+    })
+    .catch(function() {
+      btn.innerHTML = '<i class="fas fa-bell me-2"></i>Create Alert';
+      btn.disabled = false;
+      errEl.classList.remove('d-none');
+    });
+  });
+  </script>
 
 </body>
 </html>

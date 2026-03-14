@@ -170,6 +170,17 @@
         <h4 class="mb-3" style="color:#374151;">No Rentals Found</h4>
         <p class="text-muted">Try adjusting your filters or searching a different city.</p>
       </div>
+      
+      <div id="noResultsAlertPrompt" class="card border-0 shadow-sm mt-4" style="display:none;">
+        <div class="card-body p-4 text-center">
+          <i class="fas fa-bell fa-2x mb-3" style="color:#FACC15;"></i>
+          <h5 class="fw-bold mb-2" style="color:#374151;">No properties found right now</h5>
+          <p class="text-muted mb-3">Want to be notified when a matching property becomes available?</p>
+          <a id="setAlertBtn" href="alerts.html" class="btn fw-bold" style="background:#374151;color:#FACC15;border:none;">
+            <i class="fas fa-bell me-2"></i>Set Up an Alert
+          </a>
+        </div>
+      </div>
       <div id="propertiesGrid" class="row g-4 d-none"></div>
     </div>
   </section>
@@ -342,5 +353,44 @@
   <!-- Analytics -->
   <script src="js/analytics.js"></script>
 
+
+  <script>
+  // Show alert prompt when no results, pre-fill URL with current filters
+  (function() {
+    var origRenderGrid = window._origRenderGrid;
+
+    // Patch renderGrid to show alert prompt on no results
+    document.addEventListener('DOMContentLoaded', function() {
+      var noResults = document.getElementById('noResults');
+      var promptEl = document.getElementById('noResultsAlertPrompt');
+      var alertBtn = document.getElementById('setAlertBtn');
+
+      if (!noResults || !promptEl) return;
+
+      // Watch for noResults becoming visible
+      var observer = new MutationObserver(function() {
+        if (!noResults.classList.contains('d-none')) {
+          // Build alert URL with current filter values
+          var p = new URLSearchParams();
+          var listingType = window.location.pathname.includes('rental') ? 'Rent' : 'Buy';
+          p.set('listingType', listingType);
+          var city = document.getElementById('searchInput') ? document.getElementById('searchInput').value : '';
+          var beds = document.getElementById('bedroomsFilter') ? document.getElementById('bedroomsFilter').value : '';
+          var baths = document.getElementById('bathroomsFilter') ? document.getElementById('bathroomsFilter').value : '';
+          var type = document.getElementById('typeFilter') ? document.getElementById('typeFilter').value : '';
+          if (city) p.set('city', city);
+          if (beds) p.set('bedrooms', beds);
+          if (baths) p.set('bathrooms', baths);
+          if (type) p.set('type', type);
+          if (alertBtn) alertBtn.href = 'alerts.html?' + p.toString();
+          promptEl.style.display = 'block';
+        } else {
+          promptEl.style.display = 'none';
+        }
+      });
+      observer.observe(noResults, { attributes: true, attributeFilter: ['class'] });
+    });
+  })();
+  </script>
 </body>
 </html>

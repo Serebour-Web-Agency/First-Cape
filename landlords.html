@@ -90,7 +90,7 @@
           <div class="card shadow-lg border-0">
             <div class="card-body p-5">
               <h4 class="fw-bold mb-4" style="color: #374151;">List Your Property</h4>
-              <form>
+              <form id="landlordForm">
                 <div class="mb-3">
                   <input type="text" class="form-control" placeholder="Your Name" required>
                 </div>
@@ -145,5 +145,56 @@
   <script src="js/comparison.js"></script>
   <script src="js/analytics.js"></script>
 
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('landlordForm');
+    if (!form) return;
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var btn = form.querySelector('button[type="submit"]');
+      var orig = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+      btn.disabled = true;
+
+      var inputs = form.querySelectorAll('input, textarea');
+      var vals = {};
+      inputs.forEach(function(el) { vals[el.placeholder || el.name || el.type] = el.value; });
+
+      var workerBase = (window.FIRSTCAPE_CONFIG && window.FIRSTCAPE_CONFIG.apiProxyUrl || '').replace(/\/$/, '');
+
+      fetch(workerBase + '/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          'Full Name': vals['Your Name'] || vals['fullname'] || '',
+          'Email': vals['Email'] || vals['email'] || '',
+          'Phone / WhatsApp': vals['Phone'] || vals['phone'] || '',
+          'City / Region': vals['Property Location'] || vals['location'] || '',
+          'Lead Type': 'Landlord',
+          'Source Page': 'landlords',
+          'Status': 'New',
+          'Created At': new Date().toISOString().split('T')[0]
+        })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.id) {
+          form.innerHTML = '<div style="background:#374151;color:#FACC15;padding:32px;border-radius:8px;text-align:center;">' +
+            '<i class="fas fa-check-circle fa-2x mb-3 d-block"></i>' +
+            '<h5 class="mb-2">Request Received!</h5>' +
+            '<p class="mb-0">Thank you! Our team will contact you within one business day.</p></div>';
+        } else {
+          btn.innerHTML = orig; btn.disabled = false;
+          alert('Something went wrong. Please try again.');
+        }
+      })
+      .catch(function() {
+        btn.innerHTML = orig; btn.disabled = false;
+        alert('Network error. Please try again.');
+      });
+    });
+  });
+  </script>
 </body>
 </html>

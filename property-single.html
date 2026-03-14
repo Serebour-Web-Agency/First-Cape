@@ -764,6 +764,63 @@ Features:
   <!-- Panzoom library for interactive SVG floor plan -->
 
   </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('propertyInquiryForm');
+    if (!form) return;
+
+    // Get property details from URL
+    var params = new URLSearchParams(window.location.search);
+    var recordId = params.get('id') || '';
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var btn = form.querySelector('button[type="submit"]');
+      var orig = btn ? btn.innerHTML : 'Send';
+      if (btn) { btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...'; btn.disabled = true; }
+
+      var nameEl = form.querySelector('[name="fullName"], [placeholder*="Name"]');
+      var phoneEl = form.querySelector('[name="phone"], [type="tel"]');
+      var emailEl = form.querySelector('[name="email"], [type="email"]');
+      var msgEl = form.querySelector('[name="message"], textarea');
+
+      var workerBase = (window.FIRSTCAPE_CONFIG && window.FIRSTCAPE_CONFIG.apiProxyUrl || '').replace(/\/$/, '');
+      var propTitle = document.getElementById('propertyTitle');
+
+      fetch(workerBase + '/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          'Full Name': nameEl ? nameEl.value : '',
+          'Phone / WhatsApp': phoneEl ? phoneEl.value : '',
+          'Email': emailEl ? emailEl.value : '',
+          'Notes': (msgEl ? msgEl.value + '\n' : '') + 'Property: ' + (propTitle ? propTitle.textContent : recordId),
+          'Lead Type': 'Buy',
+          'Source Page': 'property-single',
+          'Status': 'New',
+          'Created At': new Date().toISOString().split('T')[0]
+        })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.id) {
+          form.innerHTML = '<div style="background:#374151;color:#FACC15;padding:24px;border-radius:8px;text-align:center;">' +
+            '<i class="fas fa-check-circle fa-2x mb-2 d-block"></i>' +
+            '<h6 class="mb-1">Enquiry Sent!</h6>' +
+            '<p class="mb-0 small">We'll be in touch within one business day.</p></div>';
+        } else {
+          if (btn) { btn.innerHTML = orig; btn.disabled = false; }
+          alert('Something went wrong. Please try again.');
+        }
+      })
+      .catch(function() {
+        if (btn) { btn.innerHTML = orig; btn.disabled = false; }
+        alert('Network error. Please try again.');
+      });
+    });
+  });
+  </script>
 </body>
 
 </html>
