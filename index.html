@@ -1,312 +1,271 @@
-﻿<!DOCTYPE html>
-<!-- FILE METADATA
-Filename: index.html
-Version: index-v2.0-CANONICAL
-Status: Home Page — With Global Canonical Landlord Modal
-Last Updated: 2026-01-03
-Changes: Integrated canonical landlord modal, removed old modal code
--->
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="author" content="FirstCape Estate Management" />
-  <link rel="shortcut icon" href="favicon.png" />
-
-  <title>FirstCape Estate Management | Property Management & Rentals in Ghana</title>
-
-  <meta
-    name="description"
-    content="FirstCape Estate Management provides professional property management, rental services, tenant sourcing, and transparent reporting for landlords across Ghana."
-  />
-
-  <!-- Preconnect + Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    rel="preload"
-    as="style"
-    href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
-  />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
-
-  <!-- Preload hero image -->
-  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1600&q=80" />
-
-  <link rel="stylesheet" href="fonts/icomoon/style.css" />
-  <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css"
-  />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="css/aos.css" />
-  <link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8">
   
-  <!-- CANONICAL LANDLORD MODAL CSS -->
-  <link rel="stylesheet" href="css/landlord-modal.css?v=1.0"/>
-
+  <meta name="description" content="FirstCape Estate Management - Professional property management services in Ghana. Tenant placement, rent management, and diaspora property oversight.">
+  <meta name="keywords" content="property management Ghana, real estate Accra, tenant placement, diaspora property management">
+  <title>FirstCape Estate Management | Property Management in Ghana</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  
+  <!-- Bootstrap CSS (CRITICAL!) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Yellow Theme Override -->
+  <link rel="stylesheet" href="css/yellow-theme-aggressive.css">
+  
   <style>
-    :root {
-      --hub-green: #FACC15;
-    }
-    .btn-hub {
-      background-color: var(--hub-green) !important;
-      border-color: var(--hub-green) !important;
-      color: #374151 !important;
-    }
-    .btn-hub:hover {
-      opacity: 0.92;
-    }
-
-    .hero-slide .img {
-      height: 75vh !important;
-      background-size: cover;
-      background-position: center;
+    body {
+      font-family: 'Inter', sans-serif;
     }
   </style>
 </head>
-
 <body id="home-page">
-  <!-- Mobile Menu -->
-  <div class="site-mobile-menu site-navbar-target">
-    <div class="site-mobile-menu-header">
-      <div class="site-mobile-menu-close">
-        <span class="icofont-close js-menu-toggle"></span>
-      </div>
-    </div>
-    <div class="site-mobile-menu-body"></div>
-  </div>
 
   <!-- Navigation -->
-  <nav class="site-nav">
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: #FACC15;">
     <div class="container">
-      <div class="menu-bg-wrap">
-        <div class="site-navigation">
-          <a href="index.html" class="logo m-0 float-start">
-            FirstCape Estate Management
-          </a>
-
-          <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end">
-            <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="properties.html">Buy</a></li>
-            <li><a href="rentals.html">Rent</a></li>
-            <li><a href="javascript:void(0)" class="landlord-open">Landlords</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
-              <li><a href="favorites.html"><i class="fas fa-heart"></i> Favorites <span class="badge bg-danger favorites-counter">0</span></a></li>
-              <li><a href="comparison.html"><i class="fas fa-balance-scale"></i> Compare <span class="badge bg-warning comparison-counter">0</span></a></li>
-              <li><a href="alerts.html"><i class="fas fa-bell"></i> Alerts</a></li>
-              <li><a href="analytics.html"><i class="fas fa-chart-bar"></i> Analytics</a></li>
-            </ul>
-
-          <a
-            href="#"
-            class="burger light me-auto float-end mt-1 site-menu-toggle js-menu-toggle d-inline-block d-lg-none"
-          >
-            <span></span>
-          </a>
-        </div>
+      <a class="navbar-brand fw-bold" href="index.html" style="color: #374151;">
+        <i class="fas fa-home me-2"></i>FirstCape Estate Management
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: #374151;">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active fw-semibold" href="index.html" style="color: #374151;">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="properties.html" style="color: #374151;">Buy</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="rentals.html" style="color: #374151;">Rent</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="landlords.html" style="color: #374151;">Landlords</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="services.html" style="color: #374151;">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="about.html" style="color: #374151;">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="contact.html" style="color: #374151;">Contact</a>
+          </li>
+          
+          <!-- Feature Links -->
+          <li class="nav-item ms-3">
+            <a class="nav-link" href="favorites.html" style="color: #374151;">
+              <i class="fas fa-heart"></i>
+              <span class="badge bg-danger favorites-counter">0</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="comparison.html" style="color: #374151;">
+              <i class="fas fa-balance-scale"></i>
+              <span class="badge bg-warning comparison-counter">0</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="alerts.html" style="color: #374151;">
+              <i class="fas fa-bell"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="analytics.html" style="color: #374151;">
+              <i class="fas fa-chart-bar"></i>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
 
-  <!-- HERO SECTION -->
-  <div class="hero">
-    <div class="hero-slide">
-      <div class="img overlay" style="background-image: url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1600&q=80')"></div>
-      <div class="img overlay" data-bg="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=80"></div>
-      <div class="img overlay" data-bg="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1600&q=80"></div>
-    </div>
-
-    <div class="container">
-      <div class="row justify-content-center align-items-center">
-        <div class="col-lg-9 text-center">
-          <h1 class="heading" data-aos="fade-up">Stress-Free Property Management in Ghana</h1>
-
-          <p class="text-white mt-3 mb-4" data-aos="fade-up" data-aos-delay="120">
-            We help landlords and diaspora investors rent, manage, and protect their properties
+  <!-- Hero Section -->
+  <section class="hero" style="background: linear-gradient(135deg, #374151 0%, #4B5563 100%); min-height: 70vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #FACC15;"></div>
+    
+    <div class="container text-center text-white py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <span class="badge mb-3 px-4 py-2 fw-bold" style="background: #FACC15; color: #374151; font-size: 0.9rem;">GHANA'S PREMIER PROPERTY MANAGEMENT</span>
+          
+          <h1 class="display-3 fw-bold mb-4" style="color: #FFFFFF;">Stress-Free Property Management in Ghana</h1>
+          
+          <p class="lead mb-5" style="font-size: 1.3rem; color: #E5E7EB;">
+            We help landlords and diaspora investors rent, manage, and protect their properties 
             through tenant placement, rent management, and transparent reporting.
           </p>
-
-          <div data-aos="fade-up" data-aos-delay="200">
-            <a href="javascript:void(0)" class="btn btn-hub btn-lg me-2 landlord-open">
+          
+          <div class="d-flex flex-wrap gap-3 justify-content-center">
+            <a href="landlords.html" class="btn btn-lg px-5 py-3 fw-bold" style="background: #FACC15; color: #374151; border: none; text-decoration: none;">
               Manage My Property
             </a>
-
-            <a href="properties.html" class="btn btn-hub btn-lg me-2">
+            <a href="properties.html" class="btn btn-lg px-5 py-3 fw-bold" style="background: #FFFFFF; color: #374151; border: none; text-decoration: none;">
               Buy Property
             </a>
-
-            <a href="rentals.html" class="btn btn-hub btn-lg">
+            <a href="rentals.html" class="btn btn-lg px-5 py-3 fw-bold" style="background: #FDE047; color: #374151; border: none; text-decoration: none;">
               Rent Property
             </a>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- HOW SMART HUB WORKS -->
-  <div id="how-it-works" class="section bg-light">
+  <!-- Stats Section -->
+  <section class="py-4" style="background: #FACC15;">
     <div class="container">
-      <div class="row mb-5">
-        <div class="col-lg-8 mx-auto text-center">
-          <h2 class="heading text-primary">How FirstCape Works</h2>
-          <p class="text-black-50">
-            A clear, professional process designed to protect your property and maximise returns.
-          </p>
-        </div>
-      </div>
-
       <div class="row text-center">
-        <div class="col-md-3 mb-4">
-          <h5>1. Property Onboarding</h5>
-          <p class="text-black-50">We assess your property, agree on pricing, and set up management.</p>
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
+          <div class="h2 fw-bold mb-1" style="color: #1F2937;">500+</div>
+          <div class="fw-semibold" style="color: #374151;">Properties Managed</div>
         </div>
-        <div class="col-md-3 mb-4">
-          <h5>2. Tenant Placement</h5>
-          <p class="text-black-50">We market, screen, and place suitable tenants.</p>
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
+          <div class="h2 fw-bold mb-1" style="color: #1F2937;">98%</div>
+          <div class="fw-semibold" style="color: #374151;">Client Satisfaction</div>
         </div>
-        <div class="col-md-3 mb-4">
-          <h5>3. Rent & Maintenance</h5>
-          <p class="text-black-50">We collect rent and coordinate maintenance professionally.</p>
+        <div class="col-6 col-md-3">
+          <div class="h2 fw-bold mb-1" style="color: #1F2937;">50+</div>
+          <div class="fw-semibold" style="color: #374151;">Diaspora Clients</div>
         </div>
-        <div class="col-md-3 mb-4">
-          <h5>4. Monthly Reporting</h5>
-          <p class="text-black-50">You receive clear monthly income and expense reports. Not just for diaspora—every landlord benefits.</p>
+        <div class="col-6 col-md-3">
+          <div class="h2 fw-bold mb-1" style="color: #1F2937;">5+</div>
+          <div class="fw-semibold" style="color: #374151;">Years Experience</div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- CANONICAL LANDLORD MODAL -->
-  <div id="landlord-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="landlordModalTitle">
-    <div class="modal-shell">
-      <button class="modal-shell__close modal-close" aria-label="Close">×</button>
+  <!-- Services Preview -->
+  <section class="py-5">
+    <div class="container py-5">
+      <div class="text-center mb-5">
+        <span class="badge mb-3 px-4 py-2 fw-bold" style="background: #FACC15; color: #374151;">OUR SERVICES</span>
+        <h2 class="display-5 fw-bold mb-3" style="color: #374151;">What We Offer</h2>
+        <p class="lead text-muted">Complete solutions for managing, renting, and maintaining your property</p>
+      </div>
       
-      <div id="landlord-form-view" style="display: block;">
-        <h2 id="landlordModalTitle">List Your Property with FirstCape</h2>
-        <p>Tell us about your property and we'll reach out within one business day with a management proposal.</p>
-
-        <form id="landlord-form">
-          <div class="modal-form-field">
-            <label for="landlordService">Service Required *</label>
-            <select id="landlordService" name="service" required aria-required="true">
-              <option value="">Select a service</option>
-              <option value="Property Management">Property Management</option>
-              <option value="Tenant Finding">Tenant Finding Only</option>
-              <option value="Property Sales">Property Sales</option>
-              <option value="Maintenance">Maintenance & Repairs</option>
-              <option value="Consultation">General Consultation</option>
-            </select>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 border-0 shadow-sm" style="border-left: 4px solid #FACC15 !important;">
+            <div class="card-body p-4">
+              <div class="mb-3" style="width: 50px; height: 50px; background: #FACC15; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-home fa-lg" style="color: #374151;"></i>
+              </div>
+              <h5 class="fw-bold mb-3" style="color: #374151;">Full Property Management</h5>
+              <p class="text-muted">Rent collection, tenant relations, inspections, reporting, and maintenance—handled end to end.</p>
+            </div>
           </div>
-
-          <div class="modal-form-field">
-            <label for="landlordFullName">Full Name *</label>
-            <input id="landlordFullName" name="fullname" type="text" required aria-required="true" placeholder="Enter your full name">
+        </div>
+        
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 border-0 shadow-sm" style="border-left: 4px solid #FACC15 !important;">
+            <div class="card-body p-4">
+              <div class="mb-3" style="width: 50px; height: 50px; background: #FACC15; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-users fa-lg" style="color: #374151;"></i>
+              </div>
+              <h5 class="fw-bold mb-3" style="color: #374151;">Tenant Placement</h5>
+              <p class="text-muted">Verified screening, marketing, viewings, and onboarding for quality tenants.</p>
+            </div>
           </div>
-
-          <div class="modal-form-field">
-            <label for="landlordPhone">Phone / WhatsApp *</label>
-            <input id="landlordPhone" name="phone" type="tel" required aria-required="true" placeholder="+233 or 0XX XXX XXXX">
+        </div>
+        
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 border-0 shadow-sm" style="border-left: 4px solid #FACC15 !important;">
+            <div class="card-body p-4">
+              <div class="mb-3" style="width: 50px; height: 50px; background: #FACC15; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-globe fa-lg" style="color: #374151;"></i>
+              </div>
+              <h5 class="fw-bold mb-3" style="color: #374151;">Diaspora Oversight</h5>
+              <p class="text-muted">Trusted on-ground support for property owners living abroad.</p>
+            </div>
           </div>
-
-          <div class="modal-form-field">
-            <label for="landlordEmail">Email Address (Optional)</label>
-            <input id="landlordEmail" name="email" type="email" placeholder="your.email@example.com">
-          </div>
-
-          <div class="modal-form-field">
-            <label for="landlordLocation">City / Region *</label>
-            <input id="landlordLocation" name="location" type="text" required aria-required="true" placeholder="e.g. East Legon, Kumasi, Tema">
-          </div>
-
-          <div class="modal-form-field">
-            <label for="landlordNotes">Property Details</label>
-            <textarea id="landlordNotes" name="notes" rows="4" placeholder="Tell us about your property: type, bedrooms, bathrooms, expected price/rent, availability date, etc."></textarea>
-          </div>
-
-          <button type="submit" class="btn-hub">Submit Request</button>
-
-          <div id="landlord-error" class="error-message" role="alert" aria-live="assertive"></div>
-        </form>
+        </div>
       </div>
-
-      <div id="landlord-thankyou" class="modal-success-message" style="display: none;">
-        <h3 style="margin-top: 0; color: #065f46;">Thank You!</h3>
-        <p style="margin-bottom: 0;">We've received your request. Our team will contact you within one business day to discuss your property management needs.</p>
+      
+      <div class="text-center mt-5">
+        <a href="services.html" class="btn btn-lg px-5 py-3 fw-bold" style="background: #374151; color: #FACC15; border: none;">
+          View All Services
+        </a>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- FOOTER -->
-  <div class="site-footer">
-    <div class="container text-center">
-      <div class="footer-legal-links">
-        <h4>Legal</h4>
-        <ul>
-          <li><a href="privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="terms-of-service.html">Terms of Service</a></li>
-          <li><a href="cookie-policy.html">Cookie Policy</a></li>
-          <li><a href="disclaimer.html">Disclaimer</a></li>
-        </ul>
+  <!-- CTA Section -->
+  <section class="py-5" style="background: #FACC15;">
+    <div class="container py-5 text-center">
+      <h2 class="display-5 fw-bold mb-4" style="color: #374151;">Ready to Get Started?</h2>
+      <p class="lead mb-4" style="color: #4B5563;">Let us help you manage your property with transparency and professionalism.</p>
+      <div class="d-flex flex-wrap gap-3 justify-content-center">
+        <a href="contact.html" class="btn btn-lg px-5 py-3 fw-bold" style="background: #374151; color: #FACC15; border: none;">
+          Contact Us Today
+        </a>
+        <a href="landlords.html" class="btn btn-lg px-5 py-3 fw-bold" style="background: white; color: #374151; border: none;">
+          List Your Property
+        </a>
       </div>
-      <p>FirstCape Estate Management &copy; <script>document.write(new Date().getFullYear());</script>. All Rights Reserved.</p>
     </div>
-  </div>
+  </section>
 
-  <!-- SCRIPTS -->
-  <script src="js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
-  <script src="js/aos.js"></script>
-  <script src="js/navbar.js"></script>
-  <script src="js/config.js?v=1.0"></script>
-  <script src="js/airtable.js?v=1.0"></script>
-  <script src="js/custom.js"></script>
-  <script src="js/lead.js"></script>
+  <!-- Footer -->
+  <footer class="py-5" style="background: #374151; color: white;">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <h5 class="fw-bold mb-3" style="color: #FACC15;">
+            <i class="fas fa-home me-2"></i>FirstCape Estate Management
+          </h5>
+          <p class="text-light">Your trusted partner in real estate management across Ghana.</p>
+        </div>
+        
+        <div class="col-md-4">
+          <h6 class="fw-bold mb-3" style="color: #FACC15;">Quick Links</h6>
+          <ul class="list-unstyled">
+            <li class="mb-2"><a href="privacy-policy.html" class="text-light text-decoration-none">Privacy Policy</a></li>
+            <li class="mb-2"><a href="terms-of-service.html" class="text-light text-decoration-none">Terms of Service</a></li>
+            <li class="mb-2"><a href="cookie-policy.html" class="text-light text-decoration-none">Cookie Policy</a></li>
+            <li class="mb-2"><a href="disclaimer.html" class="text-light text-decoration-none">Disclaimer</a></li>
+          </ul>
+        </div>
+        
+        <div class="col-md-4">
+          <h6 class="fw-bold mb-3" style="color: #FACC15;">Contact</h6>
+          <p class="text-light mb-2">Abokobi, Accra, Ghana</p>
+          <p class="mb-2"><a href="tel:+233596871452" class="text-decoration-none" style="color: #FACC15; font-weight: 600;">+233 59 687 1452</a></p>
+          <p class="mb-0"><a href="/cdn-cgi/l/email-protection#f89d96898d918a919d8bb89e918a8b8c9b99889dd69b9795" class="text-light text-decoration-none"><span class="__cf_email__" data-cfemail="e7828996928e958e8294a7818e95949384869782c984888a">[email&#160;protected]</span></a></p>
+        </div>
+      </div>
+      
+      <hr class="my-4" style="border-color: #4B5563;">
+      
+      <div class="text-center text-light">
+        <p class="mb-0">&copy; 2026 FirstCape Estate Management. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      AOS.init();
+  <!-- jQuery -->
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.
 
-      /* HERO SLIDER FIX — apply all backgrounds before init */
-      const heroContainer = document.querySelector(".hero-slide");
-      const bgSlides = heroContainer.querySelectorAll(".img[data-bg]");
-      bgSlides.forEach(slide => {
-        const bg = slide.getAttribute("data-bg");
-        if (bg) {
-          slide.style.backgroundImage = `url('${bg}')`;
-          slide.removeAttribute("data-bg");
-        }
-      });
-
-      /* Initialise slider AFTER backgrounds applied */
-      tns({
-        container: ".hero-slide",
-        items: 1,
-        slideBy: "page",
-        autoplay: true,
-        autoplayTimeout: 4000,
-        autoplayButtonOutput: false,
-        controls: false,
-        nav: false,
-        mouseDrag: true,
-      });
-    });
-  </script>
-
-  <!-- CANONICAL LANDLORD MODAL SCRIPT -->
-  <script src="js/landlord-modal.js?v=1.0"></script>
-
-  <!-- Feature Scripts -->
-  <script src="js/favorites.js"></script>
-  <script src="js/comparison.js"></script>
-  <script src="js/analytics.js"></script>
-
-</body>
-</html>
+    <script src="js/config.js"></script>
