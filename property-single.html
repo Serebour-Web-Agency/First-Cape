@@ -38,7 +38,7 @@ Features:
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 
 <!-- Preload hero image -->
-<link rel="preload" as="image" href="images/hero_bg_1.jpg" fetchpriority="high"/>
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=1600&q=80" fetchpriority="high"/>
 
 <!-- Local Work Sans -->
 <link rel="preconnect" href="fonts/work-sans/" crossorigin/>
@@ -674,7 +674,110 @@ Features:
   <script src="js/lead.js?v=1.0"></script>
   
   <!-- ENHANCED PROPERTY SINGLE JS WITH 360° PANORAMA -->
-  <script src="js/property-single.js?v=4.0"></script>
+  <script>
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    var recordId = params.get('id');
+
+    if (!recordId) {
+      document.getElementById('loadingSpinner').innerHTML =
+        '<p style="color:red;">No property ID. <a href="properties.html">Back to properties</a></p>';
+      return;
+    }
+
+    function getImages(f) {
+      var imgs = [];
+      if (f['CDN Main Image URL']) imgs.push(f['CDN Main Image URL']);
+      if (f['CDN Gallery JSON']) {
+        try { var g = JSON.parse(f['CDN Gallery JSON']); if (Array.isArray(g)) imgs = imgs.concat(g); } catch(e) {}
+      }
+      if (f['Main Image']) f['Main Image'].forEach(function(a) { imgs.push(a.url); });
+      if (f['Photos']) f['Photos'].forEach(function(a) { imgs.push(a.url); });
+      return imgs.filter(function(v,i,a){ return a.indexOf(v)===i; });
+    }
+
+    function renderGallery(images) {
+      var main = document.getElementById('mainPropertyImage');
+      var thumbsEl = document.getElementById('imageThumbnails');
+      if (!images.length) { if(main) main.src='images/placeholder.jpg'; return; }
+      var current = 0;
+      if (main) { main.src = images[0]; main.alt = 'Property photo 1'; }
+      if (thumbsEl) {
+        thumbsEl.innerHTML = images.map(function(src,i){
+          return '<img src="'+src+'" style="width:70px;height:55px;object-fit:cover;cursor:pointer;border:2px solid '+(i===0?'#FACC15':'#ddd')+';border-radius:4px;margin:2px;" onerror="this.style.display='none'">';
+        }).join('');
+        thumbsEl.querySelectorAll('img').forEach(function(t,i){
+          t.addEventListener('click', function(){
+            current=i; if(main) main.src=images[i];
+            thumbsEl.querySelectorAll('img').forEach(function(th,j){ th.style.borderColor=j===i?'#FACC15':'#ddd'; });
+          });
+        });
+      }
+      var prev = document.getElementById('prevImage');
+      var next = document.getElementById('nextImage');
+      if (prev) prev.addEventListener('click', function(){
+        current=(current-1+images.length)%images.length; if(main) main.src=images[current];
+        if(thumbsEl) thumbsEl.querySelectorAll('img').forEach(function(th,j){ th.style.borderColor=j===current?'#FACC15':'#ddd'; });
+      });
+      if (next) next.addEventListener('click', function(){
+        current=(current+1)%images.length; if(main) main.src=images[current];
+        if(thumbsEl) thumbsEl.querySelectorAll('img').forEach(function(th,j){ th.style.borderColor=j===current?'#FACC15':'#ddd'; });
+      });
+    }
+
+    function renderProperty(record) {
+      var f = record.fields;
+      document.title = (f['Property Name']||'Property') + ' | FirstCape';
+      var titleEl = document.getElementById('propertyTitle');
+      var priceEl = document.getElementById('propertyPrice');
+      var locEl = document.getElementById('propertyLocation');
+      var specsEl = document.getElementById('propertySpecs');
+      var descEl = document.getElementById('propertyDescription');
+      if (titleEl) titleEl.textContent = f['Property Name']||'Property Details';
+      var price = f['Price'] ? 'GH₵'+Number(f['Price']).toLocaleString()+(f['Listing Type']==='Rent'?'/mo':'') : 'Price on Request';
+      if (priceEl) priceEl.textContent = price;
+      var loc = [f['Address'],f['City'],f['State/Province'],f['Country']].filter(Boolean).join(', ');
+      if (locEl) locEl.innerHTML = '<i class="fas fa-map-marker-alt me-1"></i>'+(loc||'Ghana');
+      var specs = [
+        f['Bedrooms'] ? '<span style="margin-right:16px;"><i class="fas fa-bed me-1"></i>'+f['Bedrooms']+' Bed</span>' : '',
+        f['Bathrooms'] ? '<span style="margin-right:16px;"><i class="fas fa-bath me-1"></i>'+f['Bathrooms']+' Bath</span>' : '',
+        f['Size (sq ft)'] ? '<span style="margin-right:16px;"><i class="fas fa-ruler-combined me-1"></i>'+Number(f['Size (sq ft)']).toLocaleString()+' sqft</span>' : '',
+        f['Property Type'] ? '<span style="margin-right:16px;"><i class="fas fa-home me-1"></i>'+f['Property Type']+'</span>' : '',
+        f['Year Built'] ? '<span><i class="fas fa-calendar me-1"></i>Built '+f['Year Built']+'</span>' : ''
+      ].filter(Boolean).join('');
+      if (specsEl) specsEl.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:8px;font-size:0.95rem;">'+specs+'</div>';
+      if (descEl) descEl.textContent = f['Description']||f['Notes']||'Contact us for full property details.';
+      renderGallery(getImages(f));
+      var spinner = document.getElementById('loadingSpinner');
+      var propContent = document.getElementById('propertyContent');
+      if (spinner) spinner.style.display='none';
+      if (propContent) propContent.style.display='block';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var config = window.FIRSTCAPE_CONFIG;
+      if (!config || !config.apiProxyUrl) {
+        document.getElementById('loadingSpinner').innerHTML='<p style="color:red;">Configuration error.</p>';
+        return;
+      }
+      var filter = encodeURIComponent("RECORD_ID()='"+recordId+"'");
+      fetch(config.apiProxyUrl+'?filterByFormula='+filter+'&maxRecords=1')
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          if (data.records && data.records.length>0) {
+            renderProperty(data.records[0]);
+          } else {
+            document.getElementById('loadingSpinner').innerHTML=
+              '<p>Property not found. <a href="properties.html">Back to properties</a></p>';
+          }
+        })
+        .catch(function(err){
+          document.getElementById('loadingSpinner').innerHTML=
+            '<p style="color:red;">Error: '+err.message+'</p>';
+        });
+    });
+  })();
+  </script>
 
   <!-- CANONICAL LANDLORD MODAL SCRIPT -->
   <script src="js/landlord-modal.js?v=1.0"></script>
