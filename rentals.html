@@ -258,6 +258,7 @@
         '<div class="d-flex gap-2 mt-2">' +
         '<a href="property-single.html?id=' + r.id + '" class="btn btn-sm fw-bold" style="background:#374151;color:#FACC15;flex:1;">View Details</a>' +
         '<button onclick="toggleFav(\'' + r.id + '\',this)" class="btn btn-sm fav-btn" data-id="' + r.id + '" style="width:38px;flex-shrink:0;border:none;background:#f3f4f6;color:#9ca3af;" title="Save to Favorites"><i class="fas fa-heart"></i></button>' +
+        '<button onclick="toggleCompare(\'' + r.id + '\',this)" class="btn btn-sm cmp-btn" data-id="' + r.id + '" style="width:38px;flex-shrink:0;border:none;background:#f3f4f6;color:#9ca3af;" title="Add to Compare"><i class="fas fa-balance-scale"></i></button>' +
         '</div>' +
         '</div></div></div>';
     }
@@ -433,6 +434,39 @@
         initHearts();
       });
       observer.observe(grid, { childList: true });
+    }
+  });
+  </script>
+
+  <script>
+  function toggleCompare(id, btn) {
+    if (!window.comparison) return;
+    var added = window.comparison.toggle(id);
+    if (added === false && !window.comparison.has(id)) {
+      // Was at max — show message
+      alert('You can compare up to 3 properties at a time. Remove one first.');
+      return;
+    }
+    btn.style.background = window.comparison.has(id) ? '#FACC15' : '#f3f4f6';
+    btn.style.color      = window.comparison.has(id) ? '#374151' : '#9ca3af';
+  }
+
+  function initCompareButtons() {
+    if (!window.comparison) return;
+    document.querySelectorAll('.cmp-btn').forEach(function(btn) {
+      var id = btn.getAttribute('data-id');
+      if (window.comparison.has(id)) {
+        btn.style.background = '#FACC15';
+        btn.style.color = '#374151';
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var grid = document.getElementById('propertiesGrid');
+    if (grid) {
+      new MutationObserver(function() { initCompareButtons(); })
+        .observe(grid, { childList: true });
     }
   });
   </script>
