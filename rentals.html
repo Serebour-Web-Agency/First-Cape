@@ -374,15 +374,11 @@
     // Patch renderGrid to show alert prompt on no results
     document.addEventListener('DOMContentLoaded', function() {
       var noResults = document.getElementById('noResults');
-      var promptEl = document.getElementById('noResultsAlertPrompt');
-      var alertBtn = document.getElementById('setAlertBtn');
+      if (!noResults) return;
 
-      if (!noResults || !promptEl) return;
-
-      // Watch for noResults becoming visible
+      // Watch for noResults becoming visible — show modal popup
       var observer = new MutationObserver(function() {
         if (!noResults.classList.contains('d-none')) {
-          // Build alert URL with current filter values
           var p = new URLSearchParams();
           var listingType = window.location.pathname.includes('rental') ? 'Rent' : 'Buy';
           p.set('listingType', listingType);
@@ -394,10 +390,9 @@
           if (beds) p.set('bedrooms', beds);
           if (baths) p.set('bathrooms', baths);
           if (type) p.set('type', type);
-          if (alertBtn) alertBtn.href = 'alerts.html?' + p.toString();
-          promptEl.style.display = 'block';
-        } else {
-          promptEl.style.display = 'none';
+          var btn = document.getElementById('modalAlertBtn');
+          if (btn) btn.href = 'alerts.html?' + p.toString();
+          openAlertModal();
         }
       });
       observer.observe(noResults, { attributes: true, attributeFilter: ['class'] });
@@ -468,6 +463,36 @@
       new MutationObserver(function() { initCompareButtons(); })
         .observe(grid, { childList: true });
     }
+  });
+  </script>
+
+  <!-- No Results Alert Modal -->
+  <div id="alertModal" style="display:none;position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;">
+    <div style="position:absolute;inset:0;background:rgba(0,0,0,0.55);" onclick="closeAlertModal()"></div>
+    <div style="position:relative;background:#fff;border-radius:12px;padding:36px 32px;max-width:460px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center;z-index:1;">
+      <button onclick="closeAlertModal()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.5rem;color:#9ca3af;cursor:pointer;line-height:1;">&times;</button>
+      <i class="fas fa-bell fa-2x mb-3 d-block" style="color:#FACC15;"></i>
+      <h5 class="fw-bold mb-2" style="color:#374151;">No Properties Found</h5>
+      <p class="text-muted mb-4">We don't have a match right now, but we can notify you as soon as one becomes available.</p>
+      <a id="modalAlertBtn" href="alerts.html" class="btn fw-bold btn-lg w-100 mb-2" style="background:#374151;color:#FACC15;border:none;">
+        <i class="fas fa-bell me-2"></i>Set Up an Alert
+      </a>
+      <button onclick="closeAlertModal()" class="btn fw-bold w-100" style="background:#f3f4f6;color:#374151;border:none;">
+        Keep Searching
+      </button>
+    </div>
+  </div>
+  <script>
+  function openAlertModal() {
+    var m = document.getElementById('alertModal');
+    if (m) { m.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+  }
+  function closeAlertModal() {
+    var m = document.getElementById('alertModal');
+    if (m) { m.style.display = 'none'; document.body.style.overflow = ''; }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeAlertModal();
   });
   </script>
 </body>
