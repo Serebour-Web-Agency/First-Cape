@@ -33,6 +33,17 @@
     .property-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
     .search-section { background: linear-gradient(135deg, #374151 0%, #4B5563 100%); }
   </style>
+
+  <style>
+    #page-hero {
+      background-color: #374151 !important;
+      background-image: linear-gradient(rgba(20,20,20,0.6), rgba(20,20,20,0.6)), url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=1600&q=80') !important;
+      background-size: cover !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
+      min-height: 60vh;
+    }
+  </style>
 </head>
 <body>
 
@@ -100,7 +111,7 @@
   </nav>
 
   <!-- Search Section -->
-  <section class="search-section py-5">
+  <section class="search-section py-5" id="page-hero">
     <div style="position: absolute; top: 72px; left: 0; width: 100%; height: 4px; background: #FACC15;"></div>
     
     <div class="container">
@@ -252,7 +263,7 @@
           <h6 class="fw-bold mb-3" style="color: #FACC15;">Contact</h6>
           <p class="text-light mb-2">Abokobi, Accra, Ghana</p>
           <p class="mb-2"><a href="tel:+233596871452" class="text-decoration-none" style="color: #FACC15;">+233 59 687 1452</a></p>
-          <p class="mb-0"><a href="mailto:enquiries@firstcape.com" class="text-light text-decoration-none">enquiries@firstcape.com</a></p>
+          <p class="mb-0"><a href="/cdn-cgi/l/email-protection#5d38332c28342f34382e1d3b342f2e293e3c2d38733e3230" class="text-light text-decoration-none"><span class="__cf_email__" data-cfemail="afcac1dedac6ddc6cadcefc9c6dddcdbcccedfca81ccc0c2">[email&#160;protected]</span></a></p>
         </div>
       </div>
       
@@ -265,7 +276,7 @@
   </footer>
 
   <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -309,19 +320,4 @@
             <p class="mb-0"><code>airtable.js</code> did not expose a <code>loadProperties()</code> function. Check the browser console for errors.</p>
           `;
         }
-      }, 100);
-    }
-  });
-  </script>
-  
-  <!-- Favorites -->
-  <script src="js/favorites.js"></script>
-  
-  <!-- Comparison -->
-  <script src="js/comparison.js"></script>
-  
-  <!-- Analytics -->
-  <script src="js/analytics.js"></script>
-
-</body>
-</html>
+     
