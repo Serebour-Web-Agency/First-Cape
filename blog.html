@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insights & Articles | FirstCape Estate Management</title>
+  <meta name="description" content="Real estate insights, market updates and property advice for Ghana from FirstCape Estate Management.">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    #page-hero {
+      background-color: #374151 !important;
+      background-image: linear-gradient(rgba(20,20,20,0.6), rgba(20,20,20,0.6)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&q=80') !important;
+      background-size: cover !important; background-position: center !important;
+      background-repeat: no-repeat !important; min-height: 40vh; display: flex; align-items: center;
+    }
+    .article-card { transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+    .article-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+    .article-card img { height: 200px; object-fit: cover; }
+    .category-badge { font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 20px;
+      background: #FACC15; color: #374151; }
+    .filter-btn { border: 2px solid #374151; color: #374151; background: #fff;
+      border-radius: 20px; padding: 6px 16px; font-weight: 600; font-size: 0.85rem;
+      transition: all 0.2s; cursor: pointer; }
+    .filter-btn.active, .filter-btn:hover { background: #374151; color: #FACC15; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: #FACC15;">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html" style="color: #374151;">
+        <i class="fas fa-home me-2"></i>FirstCape Estate Management
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: #374151;">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link fw-semibold" href="index.html" style="color:#374151;">Home</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="properties.html" style="color:#374151;">Buy</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="rentals.html" style="color:#374151;">Rent</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="landlords.html" style="color:#374151;">Landlords</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="services.html" style="color:#374151;">Services</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold active" href="blog.html" style="color:#374151;">Insights</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="resources.html" style="color:#374151;">Resources</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="about.html" style="color:#374151;">About</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="contact.html" style="color:#374151;">Contact</a></li>
+          <li class="nav-item ms-3">
+            <a class="nav-link" href="favorites.html" style="color:#374151;">
+              <i class="fas fa-heart"></i><span class="badge bg-danger favorites-counter">0</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="comparison.html" style="color:#374151;">
+              <i class="fas fa-balance-scale"></i><span class="badge bg-warning comparison-counter">0</span>
+            </a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="alerts.html" style="color:#374151;"><i class="fas fa-bell"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section id="page-hero">
+    <div class="container py-4">
+      <h1 class="text-white fw-bold mb-2"><i class="fas fa-newspaper me-2" style="color:#FACC15;"></i>Insights & Articles</h1>
+      <p class="mb-0" style="color:rgba(255,255,255,0.8);">Market updates, buying tips and property advice for Ghana</p>
+    </div>
+  </section>
+
+  <section class="py-5">
+    <div class="container">
+
+      <!-- Category filters -->
+      <div class="d-flex flex-wrap gap-2 mb-5" id="categoryFilters">
+        <button class="filter-btn active" data-cat="">All</button>
+        <button class="filter-btn" data-cat="Market Update">Market Update</button>
+        <button class="filter-btn" data-cat="Buying Tips">Buying Tips</button>
+        <button class="filter-btn" data-cat="Renting Tips">Renting Tips</button>
+        <button class="filter-btn" data-cat="Diaspora Advice">Diaspora Advice</button>
+        <button class="filter-btn" data-cat="Property Management">Property Management</button>
+      </div>
+
+      <!-- Loading -->
+      <div id="blogLoading" class="text-center py-5">
+        <div class="spinner-border" style="color:#FACC15;width:3rem;height:3rem;" role="status"></div>
+        <p class="mt-3 text-muted">Loading articles...</p>
+      </div>
+
+      <!-- Empty -->
+      <div id="blogEmpty" class="text-center py-5" style="display:none;">
+        <i class="fas fa-newspaper fa-3x mb-3" style="color:#e5e7eb;"></i>
+        <h4 class="mb-2" style="color:#374151;">No Articles Yet</h4>
+        <p class="text-muted">Check back soon — we are working on our first articles.</p>
+      </div>
+
+      <!-- Grid -->
+      <div id="blogGrid" class="row g-4" style="display:none;"></div>
+
+    </div>
+  </section>
+
+  <footer class="py-4 mt-2" style="background:#374151;color:white;">
+    <div class="container text-center">
+      <div class="mb-3">
+        <a href="privacy-policy.html" class="text-white-50 me-3 text-decoration-none small">Privacy Policy</a>
+        <a href="terms-of-service.html" class="text-white-50 me-3 text-decoration-none small">Terms of Service</a>
+        <a href="contact.html" class="text-white-50 text-decoration-none small">Contact</a>
+      </div>
+      <p class="mb-0 text-white-50 small">&copy; 2026 FirstCape Estate Management. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/favorites.js"></script>
+  <script src="js/comparison.js"></script>
+
+  <script>
+  var allArticles = [];
+
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    var d = new Date(dateStr);
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  function renderArticles(articles) {
+    var grid = document.getElementById('blogGrid');
+    var empty = document.getElementById('blogEmpty');
+    if (!articles || articles.length === 0) {
+      grid.style.display = 'none';
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+    grid.innerHTML = articles.map(function(r) {
+      var f = r.fields;
+      var img = f['Cover Image URL'] || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80';
+      var slug = f['Slug'] || r.id;
+      return '<div class="col-md-6 col-lg-4 article-item" data-cat="' + (f['Category'] || '') + '">' +
+        '<div class="card h-100 border-0 shadow-sm article-card" onclick="location.href=\'article.html?id=' + r.id + '\'">' +
+        '<img src="' + img + '" class="card-img-top" onerror="this.src=&quot;https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80&quot;">' +
+        '<div class="card-body p-4">' +
+        (f['Category'] ? '<span class="category-badge mb-2 d-inline-block">' + f['Category'] + '</span>' : '') +
+        '<h5 class="fw-bold mb-2" style="color:#374151;">' + (f['Title'] || 'Untitled') + '</h5>' +
+        '<p class="text-muted small mb-3">' + (f['Summary'] || '').substring(0, 120) + (f['Summary'] && f['Summary'].length > 120 ? '...' : '') + '</p>' +
+        '<div class="d-flex justify-content-between align-items-center">' +
+        '<span class="text-muted small"><i class="fas fa-user me-1"></i>' + (f['Author'] || 'FirstCape Team') + '</span>' +
+        '<span class="text-muted small">' + formatDate(f['Published Date']) + '</span>' +
+        '</div>' +
+        '</div></div></div>';
+    }).join('');
+    grid.style.display = 'flex';
+  }
+
+  // Category filter
+  document.getElementById('categoryFilters').addEventListener('click', function(e) {
+    var btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    var cat = btn.getAttribute('data-cat');
+    var filtered = cat ? allArticles.filter(function(r) { return r.fields['Category'] === cat; }) : allArticles;
+    renderArticles(filtered);
+  });
+
+  // Fetch articles
+  document.addEventListener('DOMContentLoaded', function() {
+    var config = window.FIRSTCAPE_CONFIG;
+    if (!config || !config.apiProxyUrl) {
+      document.getElementById('blogLoading').innerHTML = '<p class="text-danger">Configuration error.</p>';
+      return;
+    }
+    var base = config.apiProxyUrl.replace(/\/$/, '');
+    var filter = encodeURIComponent("{Status}='Published'");
+    var sort = encodeURIComponent('[{"field":"Published Date","direction":"desc"}]');
+    fetch(base + '/articles?filterByFormula=' + filter + '&sort=' + sort)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        document.getElementById('blogLoading').style.display = 'none';
+        allArticles = data.records || [];
+        renderArticles(allArticles);
+      })
+      .catch(function() {
+        document.getElementById('blogLoading').innerHTML = '<p class="text-danger">Failed to load articles.</p>';
+      });
+  });
+  </script>
+
+</body>
+</html>

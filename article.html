@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article | FirstCape Estate Management</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .article-hero {
+      background-size: cover; background-position: center;
+      min-height: 380px; display: flex; align-items: flex-end; position: relative;
+    }
+    .article-hero::before { content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 60%); }
+    .article-hero .container { position: relative; z-index: 2; padding-bottom: 40px; }
+    .category-badge { font-size: 0.75rem; font-weight: 700; padding: 4px 12px;
+      border-radius: 20px; background: #FACC15; color: #374151; }
+    .article-body { font-size: 1.05rem; line-height: 1.85; color: #374151; }
+    .article-body p { margin-bottom: 1.4rem; }
+    .article-body h2, .article-body h3 { color: #374151; font-weight: 700; margin: 2rem 0 1rem; }
+    .share-btn { border: 2px solid #374151; color: #374151; background: #fff;
+      border-radius: 20px; padding: 6px 16px; font-weight: 600; font-size: 0.85rem;
+      transition: all 0.2s; cursor: pointer; text-decoration: none; }
+    .share-btn:hover { background: #374151; color: #FACC15; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: #FACC15;">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html" style="color: #374151;">
+        <i class="fas fa-home me-2"></i>FirstCape Estate Management
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: #374151;">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link fw-semibold" href="index.html" style="color:#374151;">Home</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="properties.html" style="color:#374151;">Buy</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="rentals.html" style="color:#374151;">Rent</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="landlords.html" style="color:#374151;">Landlords</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="services.html" style="color:#374151;">Services</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold active" href="blog.html" style="color:#374151;">Insights</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="resources.html" style="color:#374151;">Resources</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="about.html" style="color:#374151;">About</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="contact.html" style="color:#374151;">Contact</a></li>
+          <li class="nav-item ms-3">
+            <a class="nav-link" href="favorites.html" style="color:#374151;">
+              <i class="fas fa-heart"></i><span class="badge bg-danger favorites-counter">0</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="comparison.html" style="color:#374151;">
+              <i class="fas fa-balance-scale"></i><span class="badge bg-warning comparison-counter">0</span>
+            </a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="alerts.html" style="color:#374151;"><i class="fas fa-bell"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Article Hero -->
+  <div id="articleHero" class="article-hero" style="background-image:linear-gradient(rgba(20,20,20,0.5),rgba(20,20,20,0.5)),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&q=80');">
+    <div class="container">
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="index.html" style="color:rgba(255,255,255,0.7);">Home</a></li>
+          <li class="breadcrumb-item"><a href="blog.html" style="color:rgba(255,255,255,0.7);">Insights</a></li>
+          <li class="breadcrumb-item active" style="color:rgba(255,255,255,0.6);">Article</li>
+        </ol>
+      </nav>
+      <span id="articleCategory" class="category-badge mb-3 d-inline-block" style="display:none!important;"></span>
+      <h1 id="articleTitle" class="text-white fw-bold mb-3" style="font-size:2.2rem;max-width:800px;">Loading...</h1>
+      <div class="d-flex gap-3 align-items-center flex-wrap">
+        <span id="articleAuthor" class="text-white-50 small"><i class="fas fa-user me-1"></i></span>
+        <span id="articleDate" class="text-white-50 small"><i class="fas fa-calendar me-1"></i></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Article Body -->
+  <section class="py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+          <!-- Loading -->
+          <div id="articleLoading" class="text-center py-5">
+            <div class="spinner-border" style="color:#FACC15;" role="status"></div>
+          </div>
+
+          <!-- Content -->
+          <div id="articleContent" style="display:none;">
+            <p id="articleSummary" class="lead fw-semibold mb-4" style="color:#374151;border-left:4px solid #FACC15;padding-left:16px;"></p>
+            <div id="articleBody" class="article-body"></div>
+
+            <!-- Share -->
+            <div class="mt-5 pt-4 border-top">
+              <p class="fw-semibold mb-3" style="color:#374151;">Share this article</p>
+              <div class="d-flex gap-2 flex-wrap">
+                <a id="shareWhatsapp" href="#" target="_blank" class="share-btn">
+                  <i class="fab fa-whatsapp me-1"></i>WhatsApp
+                </a>
+                <a id="shareTwitter" href="#" target="_blank" class="share-btn">
+                  <i class="fab fa-twitter me-1"></i>Twitter
+                </a>
+                <button onclick="copyLink()" class="share-btn">
+                  <i class="fas fa-link me-1"></i>Copy Link
+                </button>
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="mt-5 p-4 rounded" style="background:#374151;color:#fff;">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <h5 class="fw-bold mb-1" style="color:#FACC15;">Looking for a property in Ghana?</h5>
+                  <p class="mb-0 text-white-50 small">Browse our listings or speak to our team today.</p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                  <a href="properties.html" class="btn fw-bold me-2" style="background:#FACC15;color:#374151;border:none;">Buy</a>
+                  <a href="rentals.html" class="btn fw-bold" style="background:#FACC15;color:#374151;border:none;">Rent</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Back -->
+          <div class="mt-4">
+            <a href="blog.html" class="btn fw-bold" style="background:#374151;color:#FACC15;border:none;">
+              <i class="fas fa-arrow-left me-2"></i>Back to Insights
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-4 mt-2" style="background:#374151;color:white;">
+    <div class="container text-center">
+      <div class="mb-3">
+        <a href="privacy-policy.html" class="text-white-50 me-3 text-decoration-none small">Privacy Policy</a>
+        <a href="terms-of-service.html" class="text-white-50 me-3 text-decoration-none small">Terms of Service</a>
+        <a href="contact.html" class="text-white-50 text-decoration-none small">Contact</a>
+      </div>
+      <p class="mb-0 text-white-50 small">&copy; 2026 FirstCape Estate Management. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/favorites.js"></script>
+  <script src="js/comparison.js"></script>
+
+  <script>
+  function formatDate(d) {
+    if (!d) return '';
+    return new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+  }
+
+  // Convert plain text with newlines to paragraphs
+  function textToHtml(text) {
+    if (!text) return '';
+    return text.split(/\n\n+/).map(function(p) {
+      return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
+    }).join('');
+  }
+
+  function copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(function() {
+      alert('Link copied!');
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var params = new URLSearchParams(window.location.search);
+    var id = params.get('id');
+    if (!id) { window.location.href = 'blog.html'; return; }
+
+    var config = window.FIRSTCAPE_CONFIG;
+    if (!config || !config.apiProxyUrl) return;
+
+    var base = config.apiProxyUrl.replace(/\/$/, '');
+    var filter = encodeURIComponent("RECORD_ID()='" + id + "'");
+
+    fetch(base + '/articles?filterByFormula=' + filter + '&maxRecords=1')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        document.getElementById('articleLoading').style.display = 'none';
+        if (!data.records || !data.records[0]) {
+          document.getElementById('articleContent').innerHTML = '<p class="text-danger">Article not found.</p>';
+          document.getElementById('articleContent').style.display = 'block';
+          return;
+        }
+        var f = data.records[0].fields;
+
+        // Update page title
+        document.title = (f['Title'] || 'Article') + ' | FirstCape';
+
+        // Hero
+        if (f['Cover Image URL']) {
+          document.getElementById('articleHero').style.backgroundImage =
+            'linear-gradient(rgba(20,20,20,0.5),rgba(20,20,20,0.5)),url(\'' + f['Cover Image URL'] + '\')';
+        }
+        if (f['Category']) {
+          var catEl = document.getElementById('articleCategory');
+          catEl.textContent = f['Category'];
+          catEl.style.display = 'inline-block';
+        }
+        document.getElementById('articleTitle').textContent = f['Title'] || 'Untitled';
+        document.getElementById('articleAuthor').innerHTML = '<i class="fas fa-user me-1"></i>' + (f['Author'] || 'FirstCape Team');
+        document.getElementById('articleDate').innerHTML = '<i class="fas fa-calendar me-1"></i>' + formatDate(f['Published Date']);
+
+        // Body
+        document.getElementById('articleSummary').textContent = f['Summary'] || '';
+        document.getElementById('articleBody').innerHTML = textToHtml(f['Content'] || '');
+
+        // Share links
+        var url = encodeURIComponent(window.location.href);
+        var title = encodeURIComponent(f['Title'] || 'Article');
+        document.getElementById('shareWhatsapp').href = 'https://wa.me/?text=' + title + '%20' + url;
+        document.getElementById('shareTwitter').href = 'https://twitter.com/intent/tweet?text=' + title + '&url=' + url;
+
+        document.getElementById('articleContent').style.display = 'block';
+      })
+      .catch(function() {
+        document.getElementById('articleLoading').innerHTML = '<p class="text-danger">Failed to load article.</p>';
+      });
+  });
+  </script>
+
+</body>
+</html>
