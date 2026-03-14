@@ -230,7 +230,7 @@
       ].filter(Boolean).join(' &bull; ');
       return '<div class="col-md-6 col-lg-4">' +
         '<div class="card h-100 shadow-sm border-0">' +
-        '<img src="' + getImage(f) + '" class="card-img-top" style="height:220px;object-fit:cover;" onerror="this.src='images/placeholder.jpg'">' +
+        '<img src="' + getImage(f) + '" class="card-img-top" style="height:220px;object-fit:cover;" onerror="this.src=&quot;images/placeholder.jpg&quot;">' +
         '<div class="card-body p-3">' +
         '<h6 class="fw-bold mb-1">' + (f['Property Name'] || 'Property') + '</h6>' +
         '<div class="fw-bold mb-1" style="color:#374151;font-size:1.1rem;">' + price + '</div>' +
