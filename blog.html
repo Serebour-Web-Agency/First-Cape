@@ -178,12 +178,13 @@
     }
     var base = config.apiProxyUrl.replace(/\/$/, '');
     var filter = encodeURIComponent("{Status}='Published'");
-    var sort = encodeURIComponent('[{"field":"Published Date","direction":"desc"}]');
-    fetch(base + '/articles?filterByFormula=' + filter + '&sort=' + sort)
+    fetch(base + '/articles?filterByFormula=' + filter)
       .then(function(r) { return r.json(); })
       .then(function(data) {
         document.getElementById('blogLoading').style.display = 'none';
-        allArticles = data.records || [];
+        allArticles = (data.records || []).sort(function(a,b){
+          return new Date(b.fields['Published Date']||0) - new Date(a.fields['Published Date']||0);
+        });
         renderArticles(allArticles);
       })
       .catch(function() {
