@@ -406,6 +406,14 @@
       if (refreshBtn) refreshBtn.addEventListener('click', function() {
         var si = document.getElementById('searchInput');
         if (si) si.value = '';
+        var beds = document.getElementById('bedroomsFilter');
+        var baths = document.getElementById('bathroomsFilter');
+        var type = document.getElementById('typeFilter');
+        var sort = document.getElementById('sortFilter');
+        if (beds) beds.value = '';
+        if (baths) baths.value = '';
+        if (type) type.value = '';
+        if (sort) sort.value = 'newest';
         renderGrid(applyFilters());
       });
     });
