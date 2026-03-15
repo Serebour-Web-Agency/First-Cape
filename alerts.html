@@ -177,6 +177,27 @@
                     </select>
                   </div>
 
+                  <div class="col-12">
+                    <label class="form-label fw-semibold">How should we contact you?</label>
+                    <div class="d-flex gap-3 flex-wrap">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="preferredContact" id="prefEmail" value="Email" checked>
+                        <label class="form-check-label" for="prefEmail"><i class="fas fa-envelope me-1"></i>Email</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="preferredContact" id="prefTelegram" value="Telegram">
+                        <label class="form-check-label" for="prefTelegram"><i class="fab fa-telegram me-1"></i>Telegram</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="preferredContact" id="prefWhatsApp" value="WhatsApp">
+                        <label class="form-check-label" for="prefWhatsApp"><i class="fab fa-whatsapp me-1"></i>WhatsApp</label>
+                      </div>
+                    </div>
+                    <p class="text-muted small mt-2 mb-0">
+                      <i class="fab fa-telegram me-1" style="color:#FACC15;"></i>
+                      Telegram users: <a href="https://t.me/FirstCapeEstatesBot" target="_blank" style="color:#374151;font-weight:600;">start a chat with us first</a> so we can reach you.
+                    </p>
+                  </div>
                   <div class="col-12 mt-2">
                     <button type="submit" class="btn btn-lg w-100 fw-bold" style="background:#374151;color:#FACC15;border:none;">
                       <i class="fas fa-bell me-2"></i>Create Alert
@@ -203,7 +224,10 @@
       <div class="mb-3">
         <a href="privacy-policy.html" class="text-white-50 me-3 text-decoration-none small">Privacy Policy</a>
         <a href="terms-of-service.html" class="text-white-50 me-3 text-decoration-none small">Terms of Service</a>
-        <a href="contact.html" class="text-white-50 text-decoration-none small">Contact</a>
+        <a href="contact.html" class="text-white-50 me-3 text-decoration-none small">Contact</a>
+        <a href="https://t.me/FirstCapeEstatesBot" target="_blank" class="text-decoration-none small" style="color:#FACC15;">
+          <i class="fab fa-telegram me-1"></i>Telegram
+        </a>
       </div>
       <p class="mb-0 text-white-50 small">&copy; 2026 FirstCape Estate Management. All Rights Reserved.</p>
     </div>
@@ -250,6 +274,11 @@
       'Status': 'Active'
     };
 
+    // Add preferred contact
+    var preferredContactEl = document.querySelector('[name="preferredContact"]:checked');
+    if (preferredContactEl) alertFields['Notes'] = 'Preferred contact: ' + preferredContactEl.value;
+    var leadPreferred = preferredContactEl ? preferredContactEl.value : 'Email';
+
     // Remove null fields
     Object.keys(alertFields).forEach(function(k) { if (alertFields[k] === null || alertFields[k] === '') delete alertFields[k]; });
 
@@ -261,6 +290,7 @@
       'City / Region': alertFields['Location'] || '',
       'Lead Type': 'Notify',
       'Source Page': 'alerts',
+      'Preferred Contact': leadPreferred || 'Email',
       'Status': 'New',
       'Created At': new Date().toISOString().split('T')[0]
     };

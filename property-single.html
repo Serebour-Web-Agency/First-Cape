@@ -604,7 +604,15 @@ Features:
                   placeholder="Message (optional)"
                 ></textarea>
 
-                <button type="submit" class="btn btn-hub w-100 py-2">
+                <div class="mb-3">
+                <label class="form-label fw-semibold small">Preferred contact method</label>
+                <select class="form-select form-select-sm" name="preferredContact">
+                  <option value="Phone">Phone / WhatsApp</option>
+                  <option value="Email">Email</option>
+                  <option value="Telegram">Telegram (<a href="https://t.me/FirstCapeEstatesBot" target="_blank">start chat first</a>)</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-hub w-100 py-2">
                   <i class="icon-paper-plane"></i> Send Enquiry
                 </button>
 
@@ -628,7 +636,10 @@ Features:
       <div class="mb-3">
         <a href="privacy-policy.html" class="text-white-50 me-3 text-decoration-none small">Privacy Policy</a>
         <a href="terms-of-service.html" class="text-white-50 me-3 text-decoration-none small">Terms of Service</a>
-        <a href="contact.html" class="text-white-50 text-decoration-none small">Contact</a>
+        <a href="contact.html" class="text-white-50 me-3 text-decoration-none small">Contact</a>
+        <a href="https://t.me/FirstCapeEstatesBot" target="_blank" class="text-decoration-none small" style="color:#FACC15;">
+          <i class="fab fa-telegram me-1"></i>Telegram
+        </a>
       </div>
       <p class="mb-0 text-white-50 small">&copy; 2026 FirstCape Estate Management. All Rights Reserved.</p>
     </div>
@@ -813,6 +824,7 @@ Features:
           'Notes': (msgEl ? msgEl.value + '\n' : '') + 'Property: ' + (propTitle ? propTitle.textContent : recordId),
           'Lead Type': 'Buy',
           'Source Page': 'property-single',
+          'Preferred Contact': (form.querySelector('[name="preferredContact"]') || {}).value || 'Phone',
           'Status': 'New',
           'Created At': new Date().toISOString().split('T')[0]
         })
