@@ -57,7 +57,7 @@
     const status = f['Status'] || '';
 
     return `
-      <div class="col-md-6 col-lg-4">
+      <div class="col-md-6 col-lg-3">
         <div class="card h-100 shadow-sm property-card border-0">
           <div style="position:relative;overflow:hidden;height:220px;">
             <img src="${image}"
