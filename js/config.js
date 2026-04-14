@@ -1,6 +1,6 @@
 const FIRSTCAPE_CONFIG = {
   // Worker URL - Properties load through here
-  apiProxyUrl: 'https://icy-cherry-d39b.fragrant-sea-e1f1.workers.dev',
+  apiProxyUrl: 'https://icy-cherry-d39b.fragrant-sea-e1f1.workers.dev/properties',
   
   tables: {
     properties: 'Properties',
