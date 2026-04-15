@@ -318,7 +318,7 @@
       var fieldParams = fields.map(function(f) {
         return 'fields%5B%5D=' + encodeURIComponent(f);
       }).join('&');
-      var url = config.apiProxyUrl + '/properties' +
+      var url = config.apiProxyUrl + '/properties' + '/properties' +
         '?filterByFormula=' + encodeURIComponent("AND({Listing Type}='Rent',{Status}='Active')") +
         '&pageSize=100&' + fieldParams;
       if (offset) url += '&offset=' + encodeURIComponent(offset);
