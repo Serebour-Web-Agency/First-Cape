@@ -26,6 +26,20 @@
       transition: all 0.2s; cursor: pointer; text-decoration: none; }
     .share-btn:hover { background: #374151; color: #FACC15; }
   </style>
+  <!-- SEO — updated dynamically when article loads -->
+  <meta name="robots" content="index, follow">
+  <meta name="description" id="metaDesc" content="Real estate articles and property insights from FirstCape Estate Management Ghana.">
+  <link rel="canonical" id="metaCanonical" href="https://firstcapeestatemanagement.com/blog.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="FirstCape Estate Management">
+  <meta property="og:title" id="metaOgTitle" content="Article | FirstCape Estate Management">
+  <meta property="og:description" id="metaOgDesc" content="">
+  <meta property="og:image" id="metaOgImage" content="">
+  <meta property="og:url" id="metaOgUrl" content="">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" id="metaTwitterTitle" content="">
+  <meta name="twitter:description" id="metaTwitterDesc" content="">
+  <meta name="twitter:image" id="metaTwitterImage" content="">
 </head>
 <body>
 
@@ -209,6 +223,20 @@
 
         // Update page title
         document.title = (f['Title'] || 'Article') + ' | FirstCape';
+        // Update SEO meta tags dynamically
+        var pageUrl = 'https://firstcapeestatemanagement.com/article.html?id=' + id;
+        var pageTitle = (f['Title'] || 'Article') + ' | FirstCape Estate Management';
+        var pageDesc = f['Summary'] || 'Property insights from FirstCape Estate Management Ghana.';
+        var pageImg = f['Cover Image URL'] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80';
+        document.getElementById('metaDesc').setAttribute('content', pageDesc);
+        document.getElementById('metaCanonical').setAttribute('href', pageUrl);
+        document.getElementById('metaOgTitle').setAttribute('content', pageTitle);
+        document.getElementById('metaOgDesc').setAttribute('content', pageDesc);
+        document.getElementById('metaOgImage').setAttribute('content', pageImg);
+        document.getElementById('metaOgUrl').setAttribute('content', pageUrl);
+        document.getElementById('metaTwitterTitle').setAttribute('content', pageTitle);
+        document.getElementById('metaTwitterDesc').setAttribute('content', pageDesc);
+        document.getElementById('metaTwitterImage').setAttribute('content', pageImg);
 
         // Hero
         if (f['Cover Image URL']) {
