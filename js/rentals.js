@@ -117,6 +117,7 @@ class RentalsLoader {
       id: record.id,
       name: fields[fieldMap.name] || 'Untitled Property',
       price: fields[fieldMap.price] || 0,
+        currency: fields[fieldMap.currency] || 'GHS',
       city: fields[fieldMap.city] || 'Unknown',
       state: fields[fieldMap.state] || '',
       country: fields[fieldMap.country] || 'Ghana',
@@ -573,7 +574,7 @@ class RentalsLoader {
     card.className = 'property-card';
     
     const featuredImage = property.cdnImages[0];
-    const formattedPrice = this.formatPrice(property.price);
+    const formattedPrice = this.formatPrice(property.price, property.currency);
     
     const locationParts = [property.city, property.state].filter(Boolean);
     const location = locationParts.join(', ');
@@ -610,13 +611,13 @@ class RentalsLoader {
     return card;
   }
 
-  formatPrice(price) {
+  formatPrice(price, currency) {
     if (typeof price !== 'number' || price === 0) {
       return 'Price on request';
     }
-    return new Intl.NumberFormat('en-GH', {
+    return new Intl.NumberFormat(currency === 'USD' ? 'en-US' : 'en-GH', {
       style: 'currency',
-      currency: 'GHS',
+      currency: currency === 'USD' ? 'USD' : 'GHS',
       minimumFractionDigits: 0
     }).format(price);
   }

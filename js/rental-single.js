@@ -93,7 +93,7 @@ class RentalDetailLoader {
     
     const priceElement = document.getElementById('rentalPrice');
     if (priceElement) {
-      priceElement.textContent = `${this.formatPrice(this.rental.monthlyRent)}/month`;
+      priceElement.textContent = `${this.formatPrice(this.rental.monthlyRent, this.rental.currency)}/month`;
     }
     
     const specsElement = document.getElementById('rentalSpecs');
@@ -215,7 +215,7 @@ class RentalDetailLoader {
       const email = form.querySelector('[name="email"]').value;
       const message = form.querySelector('[name="message"]').value;
       
-      const notes = `Rental Inquiry: ${this.rental.name} (${this.rental.city}) - Rent: ${this.formatPrice(this.rental.monthlyRent)}/month\n\nMessage: ${message}`;
+      const notes = `Rental Inquiry: ${this.rental.name} (${this.rental.city}) - Rent: ${this.formatPrice(this.rental.monthlyRent, this.rental.currency)}/month\n\nMessage: ${message}`;
       
       try {
         await smartHubNotifyLead({
@@ -247,10 +247,10 @@ class RentalDetailLoader {
     setTimeout(() => successMsg.remove(), 5000);
   }
 
-  formatPrice(price) {
-    return new Intl.NumberFormat('en-GH', {
+  formatPrice(price, currency) {
+    return new Intl.NumberFormat(currency === 'USD' ? 'en-US' : 'en-GH', {
       style: 'currency',
-      currency: 'GHS',
+      currency: currency === 'USD' ? 'USD' : 'GHS',
       minimumFractionDigits: 0
     }).format(price);
   }

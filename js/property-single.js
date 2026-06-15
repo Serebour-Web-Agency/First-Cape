@@ -118,6 +118,7 @@ class PropertyDetailLoader {
       id: record.id,
       name: fields[fieldMap.name] || 'Untitled Property',
       price: fields[fieldMap.price] || 0,
+        currency: fields[fieldMap.currency] || 'GHS',
       city: fields[fieldMap.city] || 'Unknown',
       state: fields[fieldMap.state] || '',
       address: fields[fieldMap.address] || '',
@@ -159,8 +160,8 @@ class PropertyDetailLoader {
     const priceElement = document.getElementById('propertyPrice');
     if (priceElement) {
       const priceText = isBuy 
-        ? this.formatPrice(this.property.price)
-        : `${this.formatPrice(this.property.price)}/month`;
+        ? this.formatPrice(this.property.price, this.property.currency)
+        : `${this.formatPrice(this.property.price, this.property.currency)}/month`;
       priceElement.textContent = priceText;
     }
     
@@ -456,8 +457,8 @@ class PropertyDetailLoader {
       const message = form.querySelector('[name="message"]')?.value.trim() || '';
       
       const priceText = leadType === 'Buy' 
-        ? this.formatPrice(this.property.price)
-        : `${this.formatPrice(this.property.price)}/month`;
+        ? this.formatPrice(this.property.price, this.property.currency)
+        : `${this.formatPrice(this.property.price, this.property.currency)}/month`;
       
       const notes = `${leadType} Inquiry: ${this.property.name} (${this.property.city}) - Price: ${priceText}\n\nMessage: ${message}`;
       
@@ -504,13 +505,13 @@ class PropertyDetailLoader {
     }
   }
 
-  formatPrice(price) {
+  formatPrice(price, currency) {
     if (typeof price !== 'number' || price === 0) {
       return 'Price on request';
     }
-    return new Intl.NumberFormat('en-GH', {
+    return new Intl.NumberFormat(currency === 'USD' ? 'en-US' : 'en-GH', {
       style: 'currency',
-      currency: 'GHS',
+      currency: currency === 'USD' ? 'USD' : 'GHS',
       minimumFractionDigits: 0
     }).format(price);
   }
