@@ -18,11 +18,13 @@
     return getConfig().apiProxyUrl || '';
   }
 
-  function formatPrice(price, listingType) {
+  function formatPrice(price, listingType, currency) {
     if (!price) return 'Price on Request';
-    const formatted = new Intl.NumberFormat('en-US', {
+    const cur = currency === 'USD' ? 'USD' : 'GHS';
+  const locale = cur === 'USD' ? 'en-US' : 'en-GH';
+  const formatted = new Intl.NumberFormat(locale, {
       style: 'currency',
-      currency: 'USD',
+      currency: cur,
       maximumFractionDigits: 0,
     }).format(price);
     return listingType === 'Rent' ? `${formatted}/mo` : formatted;
@@ -44,7 +46,7 @@
   // ─── Card renderer ───────────────────────────────────────────────────────
   function renderCard(record) {
     const f = record.fields;
-    const price = formatPrice(f['Price'], f['Listing Type']);
+    const price = formatPrice(f['Price'], f['Listing Type'], f['Currency']);
     const image = getImageUrl(record);
     const detailUrl = buildDetailUrl(record);
     const beds = f['Bedrooms'] ?? '—';
