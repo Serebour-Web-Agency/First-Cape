@@ -548,6 +548,9 @@ Features:
             <!-- Virtual Tour -->
             <div id="propertyVirtualTour" class="mb-4"></div>
 
+            <!-- Floor Plan -->
+            <div id="propertyFloorplan" class="mb-4"></div>
+
             <!-- Google Maps Location -->
             <div id="propertyMapSection" class="property-map-section mb-4" style="display:none;">
               <h4><i class="icon-location-pin"></i> Property Location</h4>
@@ -665,6 +668,13 @@ Features:
   <!-- CDN-ENABLED PROPERTY DETAIL LOADER -->
   <script src="js/config.js?v=1.0"></script>
   <script src="js/airtable.js?v=1.0"></script>
+
+  <!-- 360 Panorama Viewer -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.css">
+  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.js"></script>
+
+  <!-- Floor Plan Pan/Zoom -->
+  <script src="https://cdn.jsdelivr.net/npm/panzoom@9.4.3/dist/panzoom.min.js"></script>
   
   <!-- ENHANCED PROPERTY SINGLE JS WITH 360° PANORAMA -->
   <script>
@@ -718,6 +728,28 @@ Features:
       });
     }
 
+    function buildVideoEmbed(url, posterUrl) {
+      var yt = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{6,})/);
+      if (yt) {
+        return '<div class="video-player-wrapper" style="position:relative;padding-top:56.25%;">' +
+          '<iframe src="https://www.youtube.com/embed/'+yt[1]+'" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" ' +
+          'allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>';
+      }
+      var vimeo = url.match(/vimeo\.com\/(?:.*\/)?(\d+)/);
+      if (vimeo) {
+        return '<div class="video-player-wrapper" style="position:relative;padding-top:56.25%;">' +
+          '<iframe src="https://player.vimeo.com/video/'+vimeo[1]+'" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" ' +
+          'allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>';
+      }
+      var ext = (url.split('?')[0].split('.').pop() || '').toLowerCase();
+      var mime = { mp4:'video/mp4', webm:'video/webm', mov:'video/quicktime', ogg:'video/ogg', m4v:'video/mp4' }[ext] || 'video/mp4';
+      return '<div class="video-player-wrapper">' +
+        '<video controls preload="metadata" playsinline'+(posterUrl ? ' poster="'+posterUrl+'"' : '')+'>' +
+        '<source src="'+url+'" type="'+mime+'">' +
+        'Your browser does not support the video tag.' +
+        '</video></div>';
+    }
+
     function renderProperty(record) {
       var f = record.fields;
       document.title = (f['Property Name']||'Property') + ' | FirstCape';
@@ -747,15 +779,7 @@ Features:
       var videoEl = document.getElementById('propertyVideo');
       if (videoEl) {
         var videoUrl = f['CDN Video Tour URL'] || f['Video Tour URL'] || '';
-        videoEl.innerHTML = videoUrl ? (
-          '<h4>Video Tour</h4>' +
-          '<div class="video-player-wrapper">' +
-          '<video controls preload="metadata" playsinline'+(images[0] ? ' poster="'+images[0]+'"' : '')+'>' +
-          '<source src="'+videoUrl+'" type="video/mp4">' +
-          'Your browser does not support the video tag.' +
-          '</video>' +
-          '</div>'
-        ) : '';
+        videoEl.innerHTML = videoUrl ? ('<h4>Video Tour</h4>' + buildVideoEmbed(videoUrl, images[0])) : '';
       }
 
       var virtualTourEl = document.getElementById('propertyVirtualTour');
@@ -766,6 +790,38 @@ Features:
           '<a href="'+tourUrl+'" target="_blank" rel="noopener" class="btn btn-lg fw-bold" style="background:#374151;color:#FACC15;border:none;">' +
           '<i class="fas fa-vr-cardboard me-2"></i>Take the Virtual Tour</a>'
         ) : '';
+      }
+
+      var panoEl = document.getElementById('property360');
+      if (panoEl) {
+        var panoUrl = f['CDN 360 Panorama URL'] || f['360 Panorama URL'] || '';
+        if (panoUrl) {
+          panoEl.innerHTML = '<h4>360&deg; Virtual Walkthrough</h4>' +
+            '<div id="panoramaViewer" style="width:100%;height:400px;"></div>' +
+            '<div class="panorama-info"><i class="fas fa-info-circle"></i>Click and drag to look around, scroll to zoom.</div>';
+          if (window.pannellum) {
+            pannellum.viewer('panoramaViewer', { type: 'equirectangular', panorama: panoUrl, autoLoad: true });
+          }
+        } else {
+          panoEl.innerHTML = '';
+        }
+      }
+
+      var floorplanEl = document.getElementById('propertyFloorplan');
+      if (floorplanEl) {
+        var floorplanUrl = f['CDN Floorplan SVG URL'] || f['Floorplan SVG URL'] || '';
+        if (floorplanUrl) {
+          floorplanEl.innerHTML = '<h4>Floor Plan</h4>' +
+            '<div id="floorplan-container" style="width:100%;height:400px;overflow:hidden;position:relative;border-radius:12px;border:1px solid #e5e7eb;background:#f9fafb;">' +
+            '<img id="floorplanImage" src="'+floorplanUrl+'" style="width:100%;height:100%;object-fit:contain;cursor:grab;" alt="Floor plan">' +
+            '</div>' +
+            '<p class="text-muted small mt-2 mb-0"><i class="fas fa-arrows-alt me-1"></i>Drag to pan, scroll or pinch to zoom.</p>';
+          if (window.panzoom) {
+            panzoom(document.getElementById('floorplanImage'), { maxZoom: 5, minZoom: 1, bounds: true, boundsPadding: 0.1 });
+          }
+        } else {
+          floorplanEl.innerHTML = '';
+        }
       }
 
       renderGallery(images);
