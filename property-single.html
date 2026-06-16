@@ -728,7 +728,7 @@ Features:
       var specsEl = document.getElementById('propertySpecs');
       var descEl = document.getElementById('propertyDescription');
       if (titleEl) titleEl.textContent = f['Property Name']||'Property Details';
-      var price = f['Price'] ? 'GH₵'+Number(f['Price']).toLocaleString()+(f['Listing Type']==='Rent'?'/mo':'') : 'Price on Request';
+      var cur = f['Currency'] === 'USD' ? '$' : 'GH₵'; var price = f['Price'] ? cur+Number(f['Price']).toLocaleString()+(f['Listing Type']==='Rent'?'/mo':'') : 'Price on Request';
       if (priceEl) priceEl.textContent = price;
       var loc = [f['Address'],f['City'],f['State/Province'],f['Country']].filter(Boolean).join(', ');
       if (locEl) locEl.innerHTML = '<i class="fas fa-map-marker-alt me-1"></i>'+(loc||'Ghana');
