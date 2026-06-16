@@ -165,8 +165,14 @@
                     </select>
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label fw-semibold">Max Price (GH₵)</label>
-                    <input type="number" class="form-control" id="alertMaxPrice" placeholder="e.g. 500000">
+                    <label class="form-label fw-semibold">Max Price</label>
+                    <div class="input-group">
+                      <select class="form-select" id="alertCurrency" style="max-width:100px;flex:0 0 auto;">
+                        <option value="GHS">GH₵</option>
+                        <option value="USD">$</option>
+                      </select>
+                      <input type="number" class="form-control" id="alertMaxPrice" placeholder="e.g. 500000">
+                    </div>
                   </div>
                   <div class="col-md-6">
                     <label class="form-label fw-semibold">How often to notify</label>
@@ -247,6 +253,7 @@
     if (p.get('bedrooms')) document.getElementById('alertBedrooms').value = p.get('bedrooms');
     if (p.get('bathrooms')) document.getElementById('alertBathrooms').value = p.get('bathrooms');
     if (p.get('type')) document.getElementById('alertPropertyType').value = p.get('type');
+    if (p.get('currency')) document.getElementById('alertCurrency').value = p.get('currency');
   })();
 
   document.getElementById('alertForm').addEventListener('submit', function(e) {
@@ -270,6 +277,7 @@
       'Min Bedrooms': document.getElementById('alertBedrooms').value ? Number(document.getElementById('alertBedrooms').value) : null,
       'Min Bathrooms': document.getElementById('alertBathrooms').value ? Number(document.getElementById('alertBathrooms').value) : null,
       'Price Max': maxPrice ? Number(maxPrice) : null,
+      'Currency': document.getElementById('alertCurrency').value || 'GHS',
       'Frequency': document.getElementById('alertFrequency').value,
       'Status': 'Active'
     };
