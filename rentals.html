@@ -328,12 +328,12 @@
     function fetchPage(offset) {
       var config = window.FIRSTCAPE_CONFIG;
       if (!config || !config.apiProxyUrl) return;
-      var fields = ['Property Name','Price','City','Bedrooms','Bathrooms',
+      var fields = ['Property Name','Price','Currency','City','Bedrooms','Bathrooms',
                     'Size (sq ft)','CDN Main Image URL','Main Image','Photos','Property Type'];
       var fieldParams = fields.map(function(f) {
         return 'fields%5B%5D=' + encodeURIComponent(f);
       }).join('&');
-      var url = config.apiProxyUrl + '/properties' + '/properties' +
+      var url = config.apiProxyUrl + '/properties' +
         '?filterByFormula=' + encodeURIComponent("AND({Listing Type}='Rent',{Status}='Active')") +
         '&pageSize=100&' + fieldParams;
       if (offset) url += '&offset=' + encodeURIComponent(offset);
