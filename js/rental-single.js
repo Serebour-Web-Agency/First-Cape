@@ -35,7 +35,7 @@ class RentalDetailLoader {
 
   async loadRental() {
     try {
-      const config = SMARTHUB_CONFIG.airtable;
+      const config = FIRSTCAPE_CONFIG.airtable;
       
       const record = await airtableClient.fetchRecord(
         config.tables.rentals,
@@ -62,21 +62,45 @@ class RentalDetailLoader {
 
   transformRecord(record) {
     const fields = record.fields;
-    const fieldMap = SMARTHUB_CONFIG.airtable.rentalFields;
-    
+    const fieldMap = FIRSTCAPE_CONFIG.airtable.propertyFields;
+
+    let cdnImages = [];
+
+    if (fields[fieldMap.cdnGalleryJSON]) {
+      try {
+        const parsed = JSON.parse(fields[fieldMap.cdnGalleryJSON]);
+        if (Array.isArray(parsed)) {
+          cdnImages = parsed;
+        }
+      } catch (e) {
+        console.warn('[RentalDetail] Failed to parse CDN Gallery JSON for', record.id, e);
+      }
+    }
+
+    if (cdnImages.length === 0 && fields[fieldMap.cdnGalleryURLs]) {
+      cdnImages = fields[fieldMap.cdnGalleryURLs]
+        .split(/[,\n]/)
+        .map(url => url.trim())
+        .filter(url => url.length > 0 && url.startsWith('http'));
+    }
+
+    if (cdnImages.length === 0 && fields[fieldMap.cdnMainImage]) {
+      cdnImages = [fields[fieldMap.cdnMainImage]];
+    }
+
     return {
       id: record.id,
       name: fields[fieldMap.name] || 'Untitled Rental',
-      monthlyRent: fields[fieldMap.monthlyRent] || 0,
+      price: fields[fieldMap.price] || 0,
+      currency: fields[fieldMap.currency] || 'GHS',
       city: fields[fieldMap.city] || 'Unknown',
       bedrooms: fields[fieldMap.bedrooms] || 0,
       bathrooms: fields[fieldMap.bathrooms] || 0,
-      area: fields[fieldMap.area] || 0,
+      size: fields[fieldMap.size] || 0,
       propertyType: fields[fieldMap.propertyType] || 'Property',
       description: fields[fieldMap.description] || '',
-      cdnImages: fields[fieldMap.cdnImages] || [],
-      cdnVideo: fields[fieldMap.cdnVideo] || null,
-      featured: fields[fieldMap.featured] || false
+      cdnImages: cdnImages,
+      cdnVideo: fields[fieldMap.cdnVideo] || null
     };
   }
 
@@ -93,7 +117,7 @@ class RentalDetailLoader {
     
     const priceElement = document.getElementById('rentalPrice');
     if (priceElement) {
-      priceElement.textContent = `${this.formatPrice(this.rental.monthlyRent, this.rental.currency)}/month`;
+      priceElement.textContent = `${this.formatPrice(this.rental.price, this.rental.currency)}/month`;
     }
     
     const specsElement = document.getElementById('rentalSpecs');
@@ -109,7 +133,7 @@ class RentalDetailLoader {
         </div>
         <div class="spec-item">
           <i class="icon-area"></i>
-          <span>${this.rental.area} m²</span>
+          <span>${this.rental.size} m²</span>
         </div>
         <div class="spec-item">
           <i class="icon-type"></i>
@@ -215,7 +239,7 @@ class RentalDetailLoader {
       const email = form.querySelector('[name="email"]').value;
       const message = form.querySelector('[name="message"]').value;
       
-      const notes = `Rental Inquiry: ${this.rental.name} (${this.rental.city}) - Rent: ${this.formatPrice(this.rental.monthlyRent, this.rental.currency)}/month\n\nMessage: ${message}`;
+      const notes = `Rental Inquiry: ${this.rental.name} (${this.rental.city}) - Rent: ${this.formatPrice(this.rental.price, this.rental.currency)}/month\n\nMessage: ${message}`;
       
       try {
         await smartHubNotifyLead({
@@ -248,6 +272,9 @@ class RentalDetailLoader {
   }
 
   formatPrice(price, currency) {
+    if (typeof price !== 'number' || price === 0) {
+      return 'Price on request';
+    }
     return new Intl.NumberFormat(currency === 'USD' ? 'en-US' : 'en-GH', {
       style: 'currency',
       currency: currency === 'USD' ? 'USD' : 'GHS',

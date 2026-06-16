@@ -14,9 +14,9 @@
   window.smartHubNotifyLead = async function(payload) {
     console.log('[Lead] Submitting lead:', payload);
 
-    const config = window.SMARTHUB_CONFIG?.airtable;
+    const config = window.FIRSTCAPE_CONFIG?.airtable;
     if (!config) {
-      console.error('[Lead] SMARTHUB_CONFIG not found');
+      console.error('[Lead] FIRSTCAPE_CONFIG not found');
       throw new Error('Configuration not loaded');
     }
 

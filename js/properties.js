@@ -33,7 +33,7 @@ class PropertiesLoader {
     try {
       this.isLoading = true;
       
-      const config = SMARTHUB_CONFIG.airtable;
+      const config = FIRSTCAPE_CONFIG.airtable;
       const fields = Object.values(config.propertyFields);
       
       const filterFormula = `AND(
@@ -78,7 +78,7 @@ class PropertiesLoader {
 
   transformRecord(record) {
     const fields = record.fields;
-    const fieldMap = SMARTHUB_CONFIG.airtable.propertyFields;
+    const fieldMap = FIRSTCAPE_CONFIG.airtable.propertyFields;
     
     let cdnImages = [];
     
@@ -105,7 +105,7 @@ class PropertiesLoader {
     }
     
     if (cdnImages.length === 0) {
-      cdnImages = [SMARTHUB_CONFIG.display.placeholderImage || '/images/placeholder-property.jpg'];
+      cdnImages = [FIRSTCAPE_CONFIG.display.placeholderImage || '/images/placeholder-property.jpg'];
     }
     
     return {

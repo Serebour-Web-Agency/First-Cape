@@ -43,7 +43,7 @@ class PropertyDetailLoader {
 
   async loadProperty() {
     try {
-      const config = SMARTHUB_CONFIG.airtable;
+      const config = FIRSTCAPE_CONFIG.airtable;
       
       console.log('[PropertyDetail] Fetching record:', this.propertyId);
       
@@ -65,7 +65,7 @@ class PropertyDetailLoader {
       // Validate CDN images exist
       if (!this.property.cdnImages || this.property.cdnImages.length === 0) {
         console.warn('[PropertyDetail] No CDN images, using placeholder');
-        this.property.cdnImages = [SMARTHUB_CONFIG.display.placeholderImage || '/images/placeholder-property.jpg'];
+        this.property.cdnImages = [FIRSTCAPE_CONFIG.display.placeholderImage || '/images/placeholder-property.jpg'];
       }
       
       console.log('[PropertyDetail] Property loaded successfully:', this.property.name);
@@ -79,7 +79,7 @@ class PropertyDetailLoader {
 
   transformRecord(record) {
     const fields = record.fields;
-    const fieldMap = SMARTHUB_CONFIG.airtable.propertyFields;
+    const fieldMap = FIRSTCAPE_CONFIG.airtable.propertyFields;
     
     console.log('[PropertyDetail] Transforming record with fields:', Object.keys(fields));
     

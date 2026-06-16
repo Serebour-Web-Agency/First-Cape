@@ -48,6 +48,52 @@ const FIRSTCAPE_CONFIG = {
     properties: 'images/properties/',
     hero: 'images/hero/',
     logos: 'images/logos/'
+  },
+
+  airtable: {
+    tables: {
+      properties: 'Properties',
+      rentals: 'Properties',
+      leads: 'Leads'
+    },
+    leadFields: {
+      fullName: 'Full Name',
+      phone: 'Phone',
+      email: 'Email',
+      city: 'City',
+      leadType: 'Lead Type',
+      notes: 'Notes',
+      sourcePage: 'Source Page'
+    },
+    propertyFields: {
+      name: 'Property Name',
+      price: 'Price',
+      currency: 'Currency',
+      city: 'City',
+      state: 'State/Province',
+      country: 'Country',
+      address: 'Address',
+      bedrooms: 'Bedrooms',
+      bathrooms: 'Bathrooms',
+      size: 'Size (sq ft)',
+      yearBuilt: 'Year Built',
+      propertyType: 'Property Type',
+      listingType: 'Listing Type',
+      status: 'Status',
+      description: 'Description',
+      cdnGalleryJSON: 'CDN Gallery JSON',
+      cdnGalleryURLs: 'CDN Gallery URLs',
+      cdnMainImage: 'CDN Main Image URL',
+      cdnVideo: 'CDN Video Tour URL',
+      cdn360: 'CDN 360 Panorama URL',
+      virtualTourURL: 'Virtual Tour URL',
+      slug: 'Slug',
+      mediaUploadStatus: 'Media Upload Status'
+    }
+  },
+
+  display: {
+    placeholderImage: '/images/placeholder-property.jpg'
   }
 };
 
