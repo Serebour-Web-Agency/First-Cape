@@ -772,9 +772,13 @@ Features:
         f['Year Built'] ? '<span><i class="fas fa-calendar me-1"></i>Built '+f['Year Built']+'</span>' : ''
       ].filter(Boolean).join('');
       if (specsEl) specsEl.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:8px;font-size:0.95rem;">'+specs+'</div>';
+      function extractText(field) {
+        if (field && typeof field === 'object' && 'value' in field) return field.value;
+        return field;
+      }
       if (descEl) {
         descEl.style.whiteSpace = 'pre-line';
-        descEl.textContent = f['Property Overview & Recommendations'] || f['Description'] || f['Notes'] || 'Contact us for full property details.';
+        descEl.textContent = extractText(f['Property Overview & Recommendations']) || extractText(f['Description']) || extractText(f['Notes']) || 'Contact us for full property details.';
       }
 
       var images = getImages(f);
