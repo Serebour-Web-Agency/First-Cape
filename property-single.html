@@ -79,7 +79,7 @@ Features:
   .section { padding: 60px 0; }
   .loading-state { text-align:center; padding:60px 20px; }
   .gallery-wrap { margin-bottom: 24px; }
-  #mainPropertyImage { width:100%; height:450px; object-fit:cover; border-radius:8px; }
+  #mainPropertyImage { width:100%; height:450px; object-fit:contain; background:#f3f4f6; border-radius:8px; }
   #imageThumbnails { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
   #gallery-nav { margin-top:8px; display:flex; gap:12px; }
   #prevImage, #nextImage { cursor:pointer; padding:6px 16px; background:#374151; color:#FACC15; border-radius:4px; font-weight:600; user-select:none; }
@@ -741,7 +741,34 @@ Features:
       ].filter(Boolean).join('');
       if (specsEl) specsEl.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:8px;font-size:0.95rem;">'+specs+'</div>';
       if (descEl) descEl.textContent = f['Description']||f['Notes']||'Contact us for full property details.';
-      renderGallery(getImages(f));
+
+      var images = getImages(f);
+
+      var videoEl = document.getElementById('propertyVideo');
+      if (videoEl) {
+        var videoUrl = f['CDN Video Tour URL'] || f['Video Tour URL'] || '';
+        videoEl.innerHTML = videoUrl ? (
+          '<h4>Video Tour</h4>' +
+          '<div class="video-player-wrapper">' +
+          '<video controls preload="metadata" playsinline'+(images[0] ? ' poster="'+images[0]+'"' : '')+'>' +
+          '<source src="'+videoUrl+'" type="video/mp4">' +
+          'Your browser does not support the video tag.' +
+          '</video>' +
+          '</div>'
+        ) : '';
+      }
+
+      var virtualTourEl = document.getElementById('propertyVirtualTour');
+      if (virtualTourEl) {
+        var tourUrl = f['Virtual Tour URL'] || '';
+        virtualTourEl.innerHTML = tourUrl ? (
+          '<h4>Virtual Tour</h4>' +
+          '<a href="'+tourUrl+'" target="_blank" rel="noopener" class="btn btn-lg fw-bold" style="background:#374151;color:#FACC15;border:none;">' +
+          '<i class="fas fa-vr-cardboard me-2"></i>Take the Virtual Tour</a>'
+        ) : '';
+      }
+
+      renderGallery(images);
       var spinner = document.getElementById('loadingSpinner');
       var propContent = document.getElementById('propertyContent');
       if (spinner) spinner.style.display='none';
