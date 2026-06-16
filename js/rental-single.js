@@ -63,6 +63,7 @@ class RentalDetailLoader {
   transformRecord(record) {
     const fields = record.fields;
     const fieldMap = FIRSTCAPE_CONFIG.airtable.propertyFields;
+    console.log('[DEBUG] currency field name:', fieldMap.currency, '| raw value:', fields[fieldMap.currency], '| fields keys:', Object.keys(fields).slice(0, 5));
 
     let cdnImages = [];
 
@@ -92,7 +93,7 @@ class RentalDetailLoader {
       id: record.id,
       name: fields[fieldMap.name] || 'Untitled Rental',
       price: fields[fieldMap.price] || 0,
-      currency: fields[fieldMap.currency] || 'GHS',
+      currency: fields[fieldMap.currency] || 'USD',
       city: fields[fieldMap.city] || 'Unknown',
       bedrooms: fields[fieldMap.bedrooms] || 0,
       bathrooms: fields[fieldMap.bathrooms] || 0,

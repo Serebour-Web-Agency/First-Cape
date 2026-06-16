@@ -80,7 +80,8 @@ class PropertyDetailLoader {
   transformRecord(record) {
     const fields = record.fields;
     const fieldMap = FIRSTCAPE_CONFIG.airtable.propertyFields;
-    
+    console.log('[DEBUG] currency field name:', fieldMap.currency, '| raw value:', fields[fieldMap.currency], '| fields keys:', Object.keys(fields).slice(0, 5));
+
     console.log('[PropertyDetail] Transforming record with fields:', Object.keys(fields));
     
     // Parse CDN Gallery URLs - try multiple formats
@@ -118,7 +119,7 @@ class PropertyDetailLoader {
       id: record.id,
       name: fields[fieldMap.name] || 'Untitled Property',
       price: fields[fieldMap.price] || 0,
-        currency: fields[fieldMap.currency] || 'GHS',
+        currency: fields[fieldMap.currency] || 'USD',
       city: fields[fieldMap.city] || 'Unknown',
       state: fields[fieldMap.state] || '',
       address: fields[fieldMap.address] || '',
