@@ -264,7 +264,7 @@
 
     function renderCard(r) {
       var f = r.fields;
-      var price = f['Price'] ? 'GH₵' + Number(f['Price']).toLocaleString() + '/mo' : 'Price on Request';
+      var cur = f['Currency'] === 'USD' ? '$' : 'GH₵'; var price = f['Price'] ? cur + Number(f['Price']).toLocaleString() + '/mo' : 'Price on Request';
       var meta = [
         f['Bedrooms'] ? f['Bedrooms'] + ' bed' : '',
         f['Bathrooms'] ? f['Bathrooms'] + ' bath' : '',
