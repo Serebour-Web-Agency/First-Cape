@@ -352,6 +352,14 @@
   background-color: var(--bg-tertiary);
 }
 
+
+/* ========================================
+   PROPERTY PRICES
+   ======================================== */
+
+.dark-mode .property-price {
+  color: var(--brand-accent) !important;
+}
 /* ========================================
    FOOTER
    ======================================== */

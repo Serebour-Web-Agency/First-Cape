@@ -90,7 +90,7 @@
             </div>
             ${propType ? `<p class="text-muted small mb-2"><i class="fas fa-home me-1"></i>${propType}</p>` : ''}
             <div class="mt-auto d-flex align-items-center justify-content-between">
-              <span class="fw-bold fs-5" style="color:#374151;">${price}</span>
+              <span class="property-price fw-bold fs-5" style="color:#374151;">${price}</span>
               <a href="${detailUrl}"
                  class="btn btn-sm fw-semibold"
                  style="background:#374151;color:#FACC15;border:none;">
