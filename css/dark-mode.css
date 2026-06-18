@@ -1,5 +1,5 @@
-/* SmartHub Dark Mode Styles */
-/* Version: 1.0 */
+/* FirstCape Estate Management - Dark Mode Styles */
+/* Version: 2.0 */
 
 /* ========================================
    CSS VARIABLES - LIGHT MODE (DEFAULT)
@@ -24,9 +24,9 @@
   --border-focus: #3b82f6;
   
   /* Brand Colors */
-  --brand-primary: #064635;
-  --brand-secondary: #065f46;
-  --brand-accent: #10b981;
+  --brand-primary: #374151;
+  --brand-secondary: #1f2937;
+  --brand-accent: #FACC15;
   
   /* UI Colors */
   --ui-blue: #3b82f6;

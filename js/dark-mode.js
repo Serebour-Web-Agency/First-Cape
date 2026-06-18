@@ -1,10 +1,10 @@
-// SmartHub Dark Mode System
+// FirstCape Estate Management - Dark Mode System
 // Version: 1.0
 // Toggle between light and dark themes with persistence
 
 class DarkMode {
   constructor() {
-    this.storageKey = 'smarthub_dark_mode';
+    this.storageKey = 'firstcape_dark_mode';
     this.isDark = this.loadPreference();
     this.listeners = [];
     this.init();
