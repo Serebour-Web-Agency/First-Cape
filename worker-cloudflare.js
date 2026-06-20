@@ -41,6 +41,15 @@ export default {
         body: JSON.stringify({ fields: body })
       });
       const data = await response.json();
+
+      if (response.ok) {
+        if (tableName === 'Leads') {
+          await sendLeadEmails(env, body);
+        } else if (tableName === 'Alerts') {
+          await sendAlertEmails(env, body);
+        }
+      }
+
       return new Response(JSON.stringify(data), {
         status: response.status,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -90,7 +99,11 @@ export default {
   },
 
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(runNewsBot(env));
+    if (event.cron === '0 * * * *') {
+      ctx.waitUntil(syncInstagram(env));
+    } else {
+      ctx.waitUntil(runNewsBot(env));
+    }
   }
 };
 
@@ -228,4 +241,255 @@ function classifyArticle(text) {
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ============================================================
+// EMAIL NOTIFICATIONS (via Resend)
+// Requires env.RESEND_API_KEY and env.STAFF_NOTIFICATION_EMAIL
+// (Worker secrets). Sender address must be on a domain verified
+// in Resend, e.g. notifications@firstcapeestatemanagement.com.
+// ============================================================
+const FROM_EMAIL = 'FirstCape Estate Management <notifications@firstcapeestatemanagement.com>';
+
+async function sendEmail(env, { to, subject, html }) {
+  if (!env.RESEND_API_KEY) {
+    console.error('Email skipped: RESEND_API_KEY not configured');
+    return;
+  }
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ from: FROM_EMAIL, to, subject, html })
+    });
+    if (!res.ok) {
+      const err = await res.text();
+      console.error(`Resend error (${res.status}):`, err);
+    }
+  } catch (err) {
+    console.error('Email send failed:', err.message);
+  }
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+async function sendLeadEmails(env, fields) {
+  const name = fields['Full Name'] || 'A visitor';
+  const phone = fields['Phone / WhatsApp'] || '—';
+  const email = fields['Email'] || '';
+  const notes = fields['Notes'] || '—';
+
+  if (env.STAFF_NOTIFICATION_EMAIL) {
+    await sendEmail(env, {
+      to: env.STAFF_NOTIFICATION_EMAIL,
+      subject: `New website enquiry: ${name}`,
+      html: `
+        <h2>New Enquiry</h2>
+        <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+        <p><strong>Phone/WhatsApp:</strong> ${escapeHtml(phone)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+        <p><strong>Message:</strong><br>${escapeHtml(notes)}</p>
+      `
+    });
+  }
+
+  if (email) {
+    await sendEmail(env, {
+      to: email,
+      subject: 'Thanks for reaching out to FirstCape Estate Management',
+      html: `
+        <p>Hi ${escapeHtml(name)},</p>
+        <p>Thanks for getting in touch with FirstCape Estate Management. We've received your enquiry and will respond shortly.</p>
+        <p>Best regards,<br>FirstCape Estate Management</p>
+      `
+    });
+  }
+}
+
+async function sendAlertEmails(env, fields) {
+  const email = fields['Email'] || '';
+  const minBedrooms = fields['Min Bedrooms'] || '';
+  const minBathrooms = fields['Min Bathrooms'] || '';
+  const priceMax = fields['Price Max'];
+  const currency = fields['Currency'] === 'USD' ? '$' : 'GH₵';
+  const priceLine = priceMax ? `${currency}${Number(priceMax).toLocaleString()}` : 'Any';
+
+  if (env.STAFF_NOTIFICATION_EMAIL) {
+    await sendEmail(env, {
+      to: env.STAFF_NOTIFICATION_EMAIL,
+      subject: `New price alert signup: ${email || 'unknown email'}`,
+      html: `
+        <h2>New Price Alert</h2>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+        <p><strong>Max Price:</strong> ${escapeHtml(priceLine)}</p>
+        <p><strong>Min Bedrooms:</strong> ${escapeHtml(minBedrooms)}</p>
+        <p><strong>Min Bathrooms:</strong> ${escapeHtml(minBathrooms)}</p>
+      `
+    });
+  }
+
+  if (email) {
+    await sendEmail(env, {
+      to: email,
+      subject: 'Your FirstCape property alert is set up',
+      html: `
+        <p>Hi,</p>
+        <p>Your property alert has been created. We'll keep an eye out for listings matching your criteria (max price ${escapeHtml(priceLine)}).</p>
+        <p>Best regards,<br>FirstCape Estate Management</p>
+      `
+    });
+  }
+}
+
+// ============================================================
+// INSTAGRAM SYNC
+// Requires env.IG_USER_ID and env.IG_ACCESS_TOKEN (Worker secrets),
+// and an "Instagram Media ID" text field on the Properties table.
+// Check developers.facebook.com for the current Graph API version
+// if this one becomes deprecated.
+// ============================================================
+const IG_API_VERSION = 'v21.0';
+
+async function syncInstagram(env) {
+  if (!env.IG_USER_ID || !env.IG_ACCESS_TOKEN) {
+    console.error('Instagram sync skipped: IG_USER_ID or IG_ACCESS_TOKEN not configured');
+    return;
+  }
+  await publishNewListings(env);
+  await removeDelistedPosts(env);
+}
+
+function getPropertyImages(f) {
+  let imgs = [];
+  if (f['CDN Main Image URL']) imgs.push(f['CDN Main Image URL']);
+  if (f['CDN Gallery JSON']) {
+    try { const g = JSON.parse(f['CDN Gallery JSON']); if (Array.isArray(g)) imgs = imgs.concat(g); } catch (e) {}
+  }
+  if (f['Main Image']) f['Main Image'].forEach(a => imgs.push(a.url));
+  if (f['Photos']) f['Photos'].forEach(a => imgs.push(a.url));
+  return [...new Set(imgs)];
+}
+
+function buildCaption(f) {
+  const cur = f['Currency'] === 'USD' ? '$' : 'GH₵';
+  const price = f['Price'] ? cur + Number(f['Price']).toLocaleString() : '';
+  return [f['Property Name'], price].filter(Boolean).join(' — ');
+}
+
+async function airtableListProperties(env, formula, fields) {
+  const fieldParams = fields.map(f => 'fields%5B%5D=' + encodeURIComponent(f)).join('&');
+  const url = `https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/Properties?filterByFormula=${encodeURIComponent(formula)}&pageSize=100&${fieldParams}`;
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${env.AIRTABLE_API_KEY}` } });
+  const data = await res.json();
+  return data.records || [];
+}
+
+async function airtableUpdateProperty(env, recordId, fields) {
+  await fetch(`https://api.airtable.com/v0/${env.AIRTABLE_BASE_ID}/Properties/${recordId}`, {
+    method: 'PATCH',
+    headers: { Authorization: `Bearer ${env.AIRTABLE_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields })
+  });
+}
+
+async function publishNewListings(env) {
+  const records = await airtableListProperties(
+    env,
+    "AND({Status}='Active', {Instagram Media ID}='')",
+    ['Property Name', 'Price', 'Currency', 'CDN Main Image URL', 'CDN Gallery JSON', 'Main Image', 'Photos', 'Instagram Media ID']
+  );
+  for (const rec of records) {
+    try {
+      const images = getPropertyImages(rec.fields).slice(0, 10); // Instagram carousel max = 10
+      if (images.length === 0) { console.error(`IG publish skipped, no images: ${rec.id}`); continue; }
+      const caption = buildCaption(rec.fields);
+      const mediaId = images.length === 1
+        ? await igPublishSingleImage(env, images[0], caption)
+        : await igPublishCarousel(env, images, caption);
+      await airtableUpdateProperty(env, rec.id, { 'Instagram Media ID': mediaId });
+      await sleep(1500); // be gentle between posts
+    } catch (err) {
+      console.error(`IG publish failed for ${rec.id}:`, err.message);
+    }
+  }
+}
+
+async function removeDelistedPosts(env) {
+  const records = await airtableListProperties(
+    env,
+    "AND({Instagram Media ID}!='', {Status}!='Active')",
+    ['Instagram Media ID']
+  );
+  for (const rec of records) {
+    try {
+      await igDeleteMedia(env, rec.fields['Instagram Media ID']);
+      await airtableUpdateProperty(env, rec.id, { 'Instagram Media ID': '' });
+      await sleep(1000);
+    } catch (err) {
+      console.error(`IG delete failed for ${rec.id}:`, err.message);
+    }
+  }
+}
+
+async function igCreateContainer(env, params) {
+  const url = `https://graph.facebook.com/${IG_API_VERSION}/${env.IG_USER_ID}/media`;
+  const body = new URLSearchParams({ ...params, access_token: env.IG_ACCESS_TOKEN });
+  const res = await fetch(url, { method: 'POST', body });
+  const data = await res.json();
+  if (!res.ok || data.error) throw new Error(`IG container error: ${JSON.stringify(data.error || data)}`);
+  return data.id;
+}
+
+async function igWaitUntilReady(env, containerId, maxAttempts = 5) {
+  for (let i = 0; i < maxAttempts; i++) {
+    const url = `https://graph.facebook.com/${IG_API_VERSION}/${containerId}?fields=status_code&access_token=${encodeURIComponent(env.IG_ACCESS_TOKEN)}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data.status_code === 'FINISHED') return;
+    if (data.status_code === 'ERROR') throw new Error('IG container processing failed: ' + JSON.stringify(data));
+    await sleep(2000);
+  }
+}
+
+async function igPublish(env, creationId) {
+  await igWaitUntilReady(env, creationId);
+  const url = `https://graph.facebook.com/${IG_API_VERSION}/${env.IG_USER_ID}/media_publish`;
+  const body = new URLSearchParams({ creation_id: creationId, access_token: env.IG_ACCESS_TOKEN });
+  const res = await fetch(url, { method: 'POST', body });
+  const data = await res.json();
+  if (!res.ok || data.error) throw new Error(`IG publish error: ${JSON.stringify(data.error || data)}`);
+  return data.id;
+}
+
+async function igPublishSingleImage(env, imageUrl, caption) {
+  const containerId = await igCreateContainer(env, { image_url: imageUrl, caption });
+  return await igPublish(env, containerId);
+}
+
+async function igPublishCarousel(env, imageUrls, caption) {
+  const childIds = [];
+  for (const url of imageUrls) {
+    const childId = await igCreateContainer(env, { image_url: url, is_carousel_item: 'true' });
+    childIds.push(childId);
+    await sleep(500);
+  }
+  const carouselId = await igCreateContainer(env, {
+    media_type: 'CAROUSEL',
+    children: childIds.join(','),
+    caption
+  });
+  return await igPublish(env, carouselId);
+}
+
+async function igDeleteMedia(env, mediaId) {
+  const url = `https://graph.facebook.com/${IG_API_VERSION}/${mediaId}?access_token=${encodeURIComponent(env.IG_ACCESS_TOKEN)}`;
+  const res = await fetch(url, { method: 'DELETE' });
+  const data = await res.json();
+  if (!res.ok || data.error) throw new Error(`IG delete error: ${JSON.stringify(data.error || data)}`);
+  return data;
 }
