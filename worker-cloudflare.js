@@ -280,9 +280,10 @@ function escapeHtml(s) {
 
 async function sendLeadEmails(env, fields) {
   const name = fields['Full Name'] || 'A visitor';
+  const firstName = getFirstName(name);
   const phone = fields['Phone / WhatsApp'] || '—';
   const email = fields['Email'] || '';
-  const notes = fields['Notes'] || '—';
+  const notes = fields['Notes'] || 'No message provided';
 
   if (env.STAFF_NOTIFICATION_EMAIL) {
     await sendEmail(env, {
@@ -303,7 +304,7 @@ async function sendLeadEmails(env, fields) {
       to: email,
       subject: 'Thanks for reaching out to FirstCape Estate Management',
       html: `
-        <p>Hi ${escapeHtml(name)},</p>
+        <p>Hi${firstName ? ' ' + escapeHtml(firstName) : ''},</p>
         <p>Thanks for getting in touch with FirstCape Estate Management. We've received your enquiry and will respond shortly.</p>
         <p>Best regards,<br>FirstCape Estate Management</p>
       `
@@ -311,10 +312,17 @@ async function sendLeadEmails(env, fields) {
   }
 }
 
+function getFirstName(fullName) {
+  if (!fullName) return '';
+  return String(fullName).trim().split(/\s+/)[0];
+}
+
 async function sendAlertEmails(env, fields) {
+  const name = fields['Name'] || '';
+  const firstName = getFirstName(name);
   const email = fields['Email'] || '';
-  const minBedrooms = fields['Min Bedrooms'] || '';
-  const minBathrooms = fields['Min Bathrooms'] || '';
+  const minBedrooms = fields['Min Bedrooms'] || 'Any';
+  const minBathrooms = fields['Min Bathrooms'] || 'Any';
   const priceMax = fields['Price Max'];
   const currency = fields['Currency'] === 'USD' ? '$' : 'GH₵';
   const priceLine = priceMax ? `${currency}${Number(priceMax).toLocaleString()}` : 'Any';
@@ -322,9 +330,10 @@ async function sendAlertEmails(env, fields) {
   if (env.STAFF_NOTIFICATION_EMAIL) {
     await sendEmail(env, {
       to: env.STAFF_NOTIFICATION_EMAIL,
-      subject: `New price alert signup: ${email || 'unknown email'}`,
+      subject: `New price alert signup: ${name || email || 'unknown'}`,
       html: `
         <h2>New Price Alert</h2>
+        <p><strong>Name:</strong> ${escapeHtml(name || '—')}</p>
         <p><strong>Email:</strong> ${escapeHtml(email)}</p>
         <p><strong>Max Price:</strong> ${escapeHtml(priceLine)}</p>
         <p><strong>Min Bedrooms:</strong> ${escapeHtml(minBedrooms)}</p>
@@ -338,7 +347,7 @@ async function sendAlertEmails(env, fields) {
       to: email,
       subject: 'Your FirstCape property alert is set up',
       html: `
-        <p>Hi,</p>
+        <p>Hi${firstName ? ' ' + escapeHtml(firstName) : ''},</p>
         <p>Your property alert has been created. We'll keep an eye out for listings matching your criteria (max price ${escapeHtml(priceLine)}).</p>
         <p>Best regards,<br>FirstCape Estate Management</p>
       `
